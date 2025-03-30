@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
     return (
@@ -6,13 +7,13 @@ export default function Header() {
             <Image
                 src="/logo.svg"
                 alt="logo"
-                width={100}
-                height={100}
+                width={60}
+                height={60}
             />
             <ul className="flex space-x-6 font-semibold">
-                <li className="hover:text-white transition-colors">Home</li>
-                <li className="hover:text-white transition-colors">Contact</li>
-                <li className="hover:text-white transition-colors">Offers</li>
+               <Link href="/"> <li className="hover:text-white transition-colors">Home</li></Link>
+               <Link href="/contact"><li className="hover:text-white transition-colors">Contact</li></Link>
+               <Link href="/offers"><li className="hover:text-white transition-colors">Offers</li></Link>
             </ul>
         </nav>
     );
