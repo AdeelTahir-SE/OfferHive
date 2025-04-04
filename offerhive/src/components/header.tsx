@@ -14,6 +14,7 @@ export default function Header() {
                <Link href="/"> <li className="hover:text-white transition-colors">Home</li></Link>
                <Link href="/contact"><li className="hover:text-white transition-colors">Contact</li></Link>
                <Link href="/offers"><li className="hover:text-white transition-colors">Offers</li></Link>
+               <Link href="/groups"><li className="hover:text-white transition-colors">Groups</li></Link>
             </ul>
         </nav>
     );
