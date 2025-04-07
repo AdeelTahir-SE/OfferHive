@@ -6,13 +6,14 @@ import { ImagesSlider } from "@/components/offerPageImages";
 
   
 
-export default function OfferDetails({ id }) {
+export default function OfferDetails({params}) {
+    console.log(params.id);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [data, setData] = useState({
         "id": "123",
         "title": "Exclusive Discount on Electronics",
-        "description": "Get up to 50% off on selected electronics for a limited time! Don't miss out on these fantastic deals!",
+        "description": "Get up to 50% off on selecFRted electronics for a limited time! Don't miss out on these fantastic deals!",
         "images": ["/offer1.jpeg", "/offer1.jpeg", "/offer1.jpeg", "/offer1.jpeg"],
         "details": "This offer is valid until the end of the month. Limited stock available! Purchase now to avail this exclusive discount before it's gone.",
         "tags": ["Discount", "Electronics", "Limited Offer"],
