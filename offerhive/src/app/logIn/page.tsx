@@ -1,27 +1,29 @@
 "use client";
 import { Eye, EyeClosed } from "lucide-react";
-import { useState } from "react";
+import {useState } from "react";
 import { useRouter } from "next/navigation";
 import OAuthSection from "@/components/oAuthsSection";
-import { signIn } from "@/lib/user"; // Make sure you have this function in your lib
-
+import { signIn } from "@/lib/DB/user"; // Make sure you have this function in your lib
+import { useDispatch } from "react-redux"; 
+import { setUser } from "@/lib/redux/user/userSlice";
 export default function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
+  const dispatch=useDispatch();
 
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     const email = (document.getElementById("email") as HTMLInputElement).value;
     const password = (document.getElementById("password") as HTMLInputElement).value;
 
-    const { data: user, error } = await signIn(email, password);
-
-    if (error) {
-      console.log("Error logging in");
-      setError(error?.message || "Something went wrong. Please try again.");
+    const { userData,findingError,signInError} = await signIn(email, password);
+    if (signInError || findingError) {
+      setError(signInError?.message || findingError?.message || "An error occurred");
+      console.log("Error signing in:", signInError?.message || findingError?.message);
     } else {
-      console.log("User logged in:", user);
+      dispatch(setUser(userData)); 
+      console.log("User signed in:", userData);
       router.push("/");
     }
   }

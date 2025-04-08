@@ -3,26 +3,33 @@ import { Eye, EyeClosed } from "lucide-react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import OAuthSection from "@/components/oAuthsSection";
-import { signUp } from "@/lib/user";
-
+import { signUp } from "@/lib/DB/user";
+import { useDispatch } from "react-redux"; 
+import { setUser } from "@/lib/redux/user/userSlice";
 export default function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
-
+  const dispatch=useDispatch();
   async function handleLogin(e: React.FormEvent) {
     e.preventDefault();
     const email = (document.getElementById("email") as HTMLInputElement).value;
-    const password = (document.getElementById("password") as HTMLInputElement).value;
+    const password = (document.getElementById("password") as HTMLInputElement)
+      .value;
 
-    const {data:user,error} = await signUp(email, password);
-    if (error) {
-        console.log("Error signing up");
-        setError(error?.message || "Something went wrong. Please try again.");
+    const { userData, signUpError, insertError } = await signUp(
+      email,
+      password
+    );
+    if (signUpError || insertError) {
+      setError(
+        signUpError?.message || insertError?.message || "An error occurred"
+      );
+      console.log("Error signing up:", signUpError?.message || insertError?.message);
     } else {
-        console.log("User signed up:", user);
-        router.push("/");
- 
+      dispatch(setUser(userData as any));
+      console.log("User signed up:", userData);
+      router.push("/");
     }
   }
 
@@ -41,7 +48,10 @@ export default function Login() {
 
         <form onSubmit={handleLogin} className="w-full">
           <section className="flex flex-col gap-5 w-full max-w-xs mx-auto">
-            <label htmlFor="email" className="text-base font-semibold text-gray-700">
+            <label
+              htmlFor="email"
+              className="text-base font-semibold text-gray-700"
+            >
               Email
             </label>
             <input
@@ -52,7 +62,10 @@ export default function Login() {
               required
             />
 
-            <label htmlFor="password" className="text-base font-semibold text-gray-700">
+            <label
+              htmlFor="password"
+              className="text-base font-semibold text-gray-700"
+            >
               Password
             </label>
             <section className="flex items-center justify-between gap-4">

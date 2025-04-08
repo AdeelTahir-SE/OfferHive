@@ -3,29 +3,40 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="flex flex-col items-center justify-center bg-gray-100 rounded-xl border-t-2 relative bottom-0 border-gray-300  py-6 w-full">
-      <section className=" rounded-2xl  p-6 grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-4xl">
+    <footer className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-10 px-4 mt-12">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
-        <section className="flex flex-row items-center justify-center space-x-6">
-          <Image src="/facebook.svg" alt="Facebook" width={30} height={30} />
-          <Image src="/instagram.svg" alt="Instagram" width={30} height={30} />
-          <Image src="/github.svg" alt="GitHub" width={30} height={30} />
-        </section>
-        
-        <section className="flex flex-col items-center justify-center">
-          <ul className="flex flex-col items-center justify-center gap-4 font-semibold">
-            <li><Link href="/"><span className="hover:text-white">Home</span></Link></li>
-            <li><Link href="/contact"><span className="hover:text-white">Contact</span></Link></li>
-            <li><Link href="/offers"><span className="hover:text-white">Offers</span></Link></li>
-          </ul>
-        </section>
-        
-        <section className="flex flex-col items-center justify-center"></section>
-      </section>
-      
-      <section className="mt-4 text-sm text-black">
-        All rights reserved {new Date().getFullYear()} OfferHive
-      </section>
+        {/* Social Icons */}
+        <div className="flex items-center justify-center md:justify-start space-x-6">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+            <Image src="/facebook.svg" alt="Facebook" width={28} height={28} className="hover:scale-110 transition-transform" />
+          </a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <Image src="/instagram.svg" alt="Instagram" width={28} height={28} className="hover:scale-110 transition-transform" />
+          </a>
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+            <Image src="/github.svg" alt="GitHub" width={28} height={28} className="hover:scale-110 transition-transform" />
+          </a>
+        </div>
+
+        {/* Navigation Links */}
+        <div className="flex flex-col items-center space-y-4 text-sm font-medium">
+          <Link href="/" className="hover:underline hover:text-yellow-400 transition duration-300">Home</Link>
+          <Link href="/contact" className="hover:underline hover:text-yellow-400 transition duration-300">Contact</Link>
+          <Link href="/offers" className="hover:underline hover:text-yellow-400 transition duration-300">Offers</Link>
+        </div>
+
+        {/* Extra Info or Logo */}
+        <div className="flex flex-col items-center md:items-end text-sm">
+          <p className="mb-2">Need help? Email us at</p>
+          <a href="mailto:support@offerhive.com" className="text-yellow-400 hover:underline">support@offerhive.com</a>
+        </div>
+      </div>
+
+      {/* Bottom copyright */}
+      <div className="mt-8 text-center text-xs text-gray-400">
+        © {new Date().getFullYear()} OfferHive. All rights reserved.
+      </div>
     </footer>
   );
 }

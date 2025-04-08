@@ -1,4 +1,4 @@
-import {signInWithOAuth} from "@/lib/user"
+import {signInWithOAuth} from "@/lib/DB/user"
 export default function OAuthSection(){
     return(
         <section className="flex flex-row items-center justify-center gap-2 mt-4 *:hover:bg-amber-600 *:cursor-pointer *:transition-all *:duration-300 *:ease-in-out">
