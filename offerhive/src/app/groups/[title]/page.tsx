@@ -1,5 +1,5 @@
 
-import OfferCard from "@/components/offerCard";
+import OffererCard from "@/components/offererCard";
 export default function GroupPage({ params }: { params: { title: string } }) {
     const groupShops = [
         {
@@ -45,7 +45,7 @@ export default function GroupPage({ params }: { params: { title: string } }) {
                 groupShops.length > 0 ? (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 w-full max-w-4xl">
                         {groupShops.map((shop, index) => (
-                          <OfferCard 
+                          <OffererCard 
                             key={index}
                             image={shop.image}
                             title={shop.title}

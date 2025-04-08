@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-export default function OfferCard({ image, title, tags, group, address }:{image:string,title:string,tags:string[],group:string,address:string}) {
+export default function OffererCard({ image, title, tags, group, address }:{image:string,title:string,tags:string[],group:string|null,address:string}) {
   return (
     <Link href={`/offers/${title}`} >
     <section className="flex flex-col items-center justify-center  w-80 hover:bg-gray-50 rounded-xl p-4">
@@ -26,7 +26,7 @@ export default function OfferCard({ image, title, tags, group, address }:{image:
           </section>
         </section>
         <section className="flex flex-row items-center justify-center space-x-2">
-          <span className="text-sm font-semibold bg-gray-400 rounded-2xl my-2 p-2">{group}</span>
+          <span className="text-sm font-semibold bg-gray-400 rounded-2xl my-2 p-2">{group?group:"No group"}</span>
         </section>
         <section className="flex flex-row items-center justify-center space-x-2">
           <span className="text-sm font-semibold">{address}</span>

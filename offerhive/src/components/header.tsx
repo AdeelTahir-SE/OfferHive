@@ -16,10 +16,13 @@ export default function Header() {
           <li className="hover:text-white transition-colors">Contact</li>
         </Link>
         <Link href="/offers">
-          <li className="hover:text-white transition-colors">Offers</li>
+          <li className="hover:text-white transition-colors">Offerers</li>
         </Link>
         <Link href="/groups">
           <li className="hover:text-white transition-colors">Groups</li>
+        </Link>
+        <Link href="/shop/createStore">
+          <li className="hover:text-white transition-colors">Create Shop</li>
         </Link>
         {user?.email ? (
           <Link href="/profile">
