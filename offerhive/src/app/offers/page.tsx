@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import SearchBar from "@/components/searchBar";
 import OffererCard from "@/components/offererCard";
 import { searchOfferers, getOfferers } from "@/lib/DB/offerer";
-
+import SearchIcon from "@/components/searchIcon";
 export default function Offers() {
   const [offers, setOffers] = useState<any[]>([]);
   const [counter, setCounter] = useState(0);
@@ -34,6 +34,7 @@ export default function Offers() {
   }, [fetchOffers]);
 
   const handleScroll = () => {
+    if(offers.length === 0) return; 
     if (
       window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 &&
       !isFetching
@@ -59,22 +60,32 @@ export default function Offers() {
       <p className="text-lg">Check out amazing offers by different Offerers!</p>
 
       <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
-
+      {offers.length === 0 && !isFetching && (
+          
+          <section className="flex flex-col items-center justify-center text-yellow-400">
+          <SearchIcon/>
+          <h2 className="text-2xl font-bold mt-4">No Offerers Found</h2>
+        </section>
+        )
+        }
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 w-full max-w-4xl">
+       
+        
         {offers?.map((offer, index) => (
           <OffererCard
             key={index}
-            user_id={offer.user_id}
+            id={offer.user_id}
             image={offer.shop_images?.[0]}
             title={offer.shop_title}
             tags={offer.shop_tags}
             group={offer.group}
             address={offer.shop_address}
+            type="offers"
           />
         ))}
-      </section>
+    </section>
 
       {isFetching && <p className="text-center mt-4">Loading more offerers...</p>}
     </section>

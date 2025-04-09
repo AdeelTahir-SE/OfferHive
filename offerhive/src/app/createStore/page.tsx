@@ -2,7 +2,8 @@
 import { useState } from "react";
 import { createShop } from "@/lib/DB/offerer";
 import { useSelector } from "react-redux";
-
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 export interface Shop {
   shop_desc: string;
   shop_title: string;
@@ -30,8 +31,8 @@ export default function CreateStore() {
   const [error, setError] = useState(""); // Error state
 
   const user = useSelector((state: any) => state.user);
+  console.log("user",user)
 
-  // Handle input change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setShop((prevState) => ({
@@ -40,7 +41,6 @@ export default function CreateStore() {
     }));
   };
 
-  // Handle image change
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
@@ -125,7 +125,31 @@ export default function CreateStore() {
       setLoading(false); 
     }
   };
+  if(user?.email==""){
+    return (
+      <section className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-yellow-50 to-white p-6">
+      <div className="bg-white shadow-xl rounded-2xl p-10 max-w-3xl w-full text-center border border-yellow-200">
+        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
+          Create Shop and Offers
+        </h1>
+        <p className="text-lg md:text-xl text-red-600 font-medium">
+          Please login to create a shop.
+        </p>
 
+        <Link
+          href="/logIn"
+          className="inline-flex items-center gap-3 justify-center mt-8 text-white bg-yellow-500 hover:bg-yellow-400 text-xl font-semibold py-3 px-6 rounded-full transition-all duration-200 shadow-md"
+        >
+          Login
+          <ArrowRight className="w-5 h-5" />
+        </Link>
+      </div>
+    </section>
+    );
+    
+  }
+
+  else if(user.is_shop_owner === false ){
   return (
     <section className="flex flex-col items-center justify-center p-6 max-w-6xl mx-auto">
       <h1 className="text-5xl text-center font-extrabold text-gray-800 mb-4">Create Shop and Offers</h1>
@@ -305,5 +329,7 @@ export default function CreateStore() {
         </section>
       </form>
     </section>
+   
   );
+}
 }

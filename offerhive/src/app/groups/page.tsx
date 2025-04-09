@@ -3,7 +3,7 @@ import { useState, useEffect, useCallback } from "react";
 import SearchBar from "@/components/searchBar";
 import GroupCard from "@/components/groupCard";
 import { getGroups, searchGroups } from "@/lib/DB/group";
-
+import SearchIcon from "@/components/searchIcon";
 export default function Groups() {
   const [groups, setGroups] = useState<any[]>([]);
   const [counter, setCounter] = useState(0);
@@ -19,6 +19,7 @@ export default function Groups() {
         : await getGroups(counter);
 
       if (data) {
+        console.log("sa",data)
         setGroups((prev) => [...prev, ...data]);
       }
     } catch (err) {
@@ -33,6 +34,8 @@ export default function Groups() {
   }, [fetchGroups]);
 
   const handleScroll = useCallback(() => {
+    if(groups.length === 0) return;
+
     const bottom =
       window.innerHeight + document.documentElement.scrollTop ===
       document.documentElement.offsetHeight;
@@ -47,9 +50,9 @@ export default function Groups() {
   }, [handleScroll]);
 
   const handleSearch = (term: string) => {
-    setGroups([]);       // Clear current groups
-    setCounter(0);       // Reset pagination
-    setSearchTerm(term); // Set new search term
+    setGroups([]);      
+    setCounter(0);       
+    setSearchTerm(term); 
   };
 
   return (
@@ -60,15 +63,23 @@ export default function Groups() {
       </p>
       <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+      {groups.length === 0 && !isFetching && (
+                
+                <section className="flex flex-col items-center justify-center text-yellow-400">
+                <SearchIcon/>
+                <h2 className="text-2xl font-bold mt-4">No Groups Found</h2>
+              </section>
+              )
+              }
       <section className="flex flex-col items-start justify-center gap-6">
-        {groups.map((group, index) => (
+        {groups?.map((group, index) => (
           <GroupCard
             key={index}
-            image={group.image}
-            title={group.title}
-            desc={group.desc}
-            members={group.members}
-          />
+            image={group.GroupDetail[0]?.group_image}
+            title={group.GroupDetail[0]?.group_title}
+            desc={group.GroupDetail[0]?.group_desc}
+            members={group?.GroupUser?.map((groupUser: any) => groupUser?.User?.UserShop?.shop_title)
+            }          />
         ))}
       </section>
       {isFetching && <p className="text-center mt-4">Loading more groups...</p>}

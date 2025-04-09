@@ -139,7 +139,7 @@ export default function ManageShop() {
               ))}
             </section>
             <button
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+              className="mt-4 px-4 py-2 bg-yellow-500 hover:bg-yellow-300 cursor-pointer text-white rounded-md"
               onClick={() => {
                 const updatedTags = [...shop.shop_tags, "New Tag"];
                 setShop({ ...shop, shop_tags: updatedTags });
@@ -195,11 +195,11 @@ export default function ManageShop() {
                     setShop({ ...shop, links: updatedLinks });
                     updateShop(id, { links: updatedLinks });
                   }}
-                  className="text-blue-500 underline text-lg"
+                  className="text-yellow-500 hover:bg-yellow-300 cursor-pointer underline text-lg"
                 />
               ))}
               <button
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md"
+                className="mt-4 px-4 py-2 bg-yellow-500 hover:bg-yellow-300 cursor-pointer text-white rounded-md"
                 onClick={() => {
                   const updatedLinks = [...shop.links, "https://newlink.com"];
                   setShop({ ...shop, links: updatedLinks });

@@ -5,14 +5,19 @@ export interface userState {
   user_id: string;
   email: string;
   profile_image: string;
-  is_shop_owner:boolean
+  is_shop_owner:boolean,
+  joined_groups: string[]; 
+  subscribed_groups: string[];
 }
 
 const initialState: userState = {
   user_id: "",
   email: "",
   profile_image: "",
-  is_shop_owner:false
+  is_shop_owner:false,
+  joined_groups: [],
+  subscribed_groups: [],
+
 };
 
 export const userSlice = createSlice({
@@ -29,6 +34,8 @@ export const userSlice = createSlice({
       state.email = email || "";
       state.profile_image = profile_image || "";
       state.is_shop_owner = action.payload.is_shop_owner || false; 
+      state.joined_groups = action.payload.joined_groups || [];
+      state.subscribed_groups = action.payload.subscribed_groups || [];
 
     },
   },
