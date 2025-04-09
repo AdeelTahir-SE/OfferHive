@@ -5,12 +5,14 @@ export interface userState {
   user_id: string;
   email: string;
   profile_image: string;
+  is_shop_owner:boolean
 }
 
 const initialState: userState = {
   user_id: "",
   email: "",
   profile_image: "",
+  is_shop_owner:false
 };
 
 export const userSlice = createSlice({
@@ -26,6 +28,8 @@ export const userSlice = createSlice({
       state.user_id = user_id || "";
       state.email = email || "";
       state.profile_image = profile_image || "";
+      state.is_shop_owner = action.payload.is_shop_owner || false; 
+
     },
   },
 });

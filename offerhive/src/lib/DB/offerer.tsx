@@ -23,8 +23,10 @@ export async function searchOfferers(searchTerm: string, counter: number) {
     const { data, error } = await supabase
         .from('UserShop')
         .select('*')
-        .ilike('title', `%${searchTerm}%`) 
+        .ilike('shop_title', `%${searchTerm}%`) 
         .range(rangeStart, rangeEnd);
+
+    console.log(data)
     if (error) {
         console.error("Error fetching offers:", error);
         return null;
@@ -33,6 +35,7 @@ export async function searchOfferers(searchTerm: string, counter: number) {
 }
 
 export async function getShopById(id: string) {
+  
   const { data, error } = await supabase
     .from("UserShop")
     .select(
@@ -86,6 +89,7 @@ export async function createShop(userid: string, shop: any, images: File[]) {
       .from("images") 
       .upload(filepath, images[i], {
         cacheControl: "3600", 
+        upsert: true,
       });
 
     if (error) {
@@ -127,4 +131,87 @@ export async function createShop(userid: string, shop: any, images: File[]) {
   }
 
   return { data: shopData, error: shopError };
+}
+
+
+export async function updateShop(id: string, updatedFields: Partial<any>) {
+  if(!id){
+    console.log("no id provided")
+    return ;
+  }
+  console.log(updatedFields);
+  const { data, error } = await supabase
+    .from("UserShop")
+    .update(updatedFields)
+    .eq("user_id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    console.error("Error updating shop:", error);
+    return null;
+  }
+
+  return data;
+}
+export async function updateOffer(id: string, index: number, updatedFields: Partial<any>) {
+  console.log(updatedFields);
+  const { data, error } = await supabase
+    .from("UserShop")
+    .update({
+      [`Offers:${index}`]: updatedFields,
+    })
+    .eq("user_id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    console.error("Error updating offer:", error);
+    return null;
+  }
+
+  return data;
+}
+export async function deleteShop(id: string) {
+  const { data, error } = await supabase
+    .from("UserShop")
+    .delete()
+    .eq("user_id", id)
+    .select("*")
+    .single();
+
+  if (error) {
+    console.error("Error deleting shop:", error);
+    return null;
+  }
+
+  return data;
+}
+
+
+export async function uploadImage(file: File, userId: string) {
+  const filepath=`shop_pics/${userId}/${file.name}`;
+  const { data, error } = await supabase.storage
+    .from("images")
+    .upload(filepath, file, {
+      cacheControl: "3600",
+      upsert: true,
+    });
+
+  if (error) {
+    console.error("Error uploading image:", error);
+    return null;
+  }
+
+  const { data:Data } = supabase.storage
+    .from("images")
+    .getPublicUrl(filepath);
+  const publicURL = Data?.publicUrl;
+
+  if (!publicURL) {
+    console.error("Error getting public URL:");
+    return null;
+  }
+
+  return publicURL;
 }

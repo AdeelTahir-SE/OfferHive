@@ -27,7 +27,7 @@ export async function getGroups(counter: number) {
   return data;
 }
 
-export async function searchGroup(searchTerm: string, counter: number) {
+export async function searchGroups(searchTerm: string, counter: number) {
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
 

@@ -1,37 +1,48 @@
-"use client"
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+
 export default function Header() {
   const user = useSelector((state: any) => state.user);
+  console.log("owner", user?.is_shop_owner);
+
   return (
     <nav className="bg-yellow-500 text-black p-4 flex justify-between items-center">
       <Image src="/logo.svg" alt="logo" width={60} height={60} />
+
       <ul className="flex space-x-6 font-semibold items-center">
-        <Link href="/">
-          {" "}
-          <li className="hover:text-white transition-colors">Home</li>
-        </Link>
-        <Link href="/contact">
-          <li className="hover:text-white transition-colors">Contact</li>
-        </Link>
-        <Link href="/offers">
-          <li className="hover:text-white transition-colors">Offerers</li>
-        </Link>
-        <Link href="/groups">
-          <li className="hover:text-white transition-colors">Groups</li>
-        </Link>
-        <Link href="/shop/createStore">
-          <li className="hover:text-white transition-colors">Create Shop</li>
-        </Link>
-        {user?.email ? (
-          <Link href="/profile">
-            <li className="hover:text-yellow-400 transition-colors rounded-full p-2 bg-gray-200 border-yellow-700 m-1">{user.email}</li>
-          </Link>
+        <li className="hover:text-white transition-colors">
+          <Link href="/">Home</Link>
+        </li>
+        <li className="hover:text-white transition-colors">
+          <Link href="/contact">Contact</Link>
+        </li>
+        <li className="hover:text-white transition-colors">
+          <Link href="/offers">Offerers</Link>
+        </li>
+        <li className="hover:text-white transition-colors">
+          <Link href="/groups">Groups</Link>
+        </li>
+        
+        {user?.is_shop_owner ? (
+          <li className="hover:text-white transition-colors">
+            <Link href="/shop/dashboard">My Shop</Link>
+          </li>
         ) : (
-          <Link href="/logIn">
-            <li className="hover:text-white transition-colors">Sign In</li>
-          </Link>
+          <li className="hover:text-white transition-colors">
+            <Link href="/createStore">Create Shop</Link>
+          </li>
+        )}
+
+        {user?.email ? (
+          <li className="hover:text-yellow-400 transition-colors rounded-full p-2 bg-gray-200 border-yellow-700 m-1">
+            <Link href="/profile">{user.email}</Link>
+          </li>
+        ) : (
+          <li className="hover:text-white transition-colors">
+            <Link href="/logIn">Sign In</Link>
+          </li>
         )}
       </ul>
     </nav>

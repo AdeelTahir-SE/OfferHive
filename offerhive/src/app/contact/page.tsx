@@ -40,8 +40,8 @@ export default function Contact() {
   return (
     <section className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
       <h1 className="text-3xl font-bold mb-4">Get in Touch</h1>
-      <p className="text-gray-600 mb-8 text-center max-w-xl">
-        We'd love to hear from you! Whether you have a question, suggestion, or just want to say hi — drop us a message.
+      <p className="text-gray-600 mb-4 text-center max-w-xl">
+        If notice any bugs or have suggestions, please let us know. We appreciate your feedback and are always looking to improve.
       </p>
 
       {errorMessage && (

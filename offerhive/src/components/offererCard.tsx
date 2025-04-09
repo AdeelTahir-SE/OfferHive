@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-export default function OffererCard({ image, title, tags, group, address }:{image:string,title:string,tags:string[],group:string|null,address:string}) {
+export default function OffererCard({ user_id,image, title, tags, group, address }:{user_id:string,image:string,title:string,tags:string[],group:string|null,address:string}) {
   return (
-    <Link href={`/offers/${title}`} >
+    <Link href={`/offers/${user_id}`} >
     <section className="flex flex-col items-center justify-center  w-80 hover:bg-gray-50 rounded-xl p-4">
       <Image
         src={image}
