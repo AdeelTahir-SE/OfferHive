@@ -82,7 +82,6 @@ export default function Offers() {
             tags={offer.shop_tags}
             group={offer.group}
             address={offer.shop_address}
-            type="offers"
           />
         ))}
     </section>

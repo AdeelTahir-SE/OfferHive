@@ -19,7 +19,6 @@ export default function Groups() {
         : await getGroups(counter);
 
       if (data) {
-        console.log("sa",data)
         setGroups((prev) => [...prev, ...data]);
       }
     } catch (err) {
@@ -75,6 +74,7 @@ export default function Groups() {
         {groups?.map((group, index) => (
           <GroupCard
             key={index}
+            id={group.group_id}
             image={group.GroupDetail[0]?.group_image}
             title={group.GroupDetail[0]?.group_title}
             desc={group.GroupDetail[0]?.group_desc}

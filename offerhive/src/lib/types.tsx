@@ -48,3 +48,47 @@ export interface Group {
   GroupDetail?: GroupDetail[];
   GroupUser?: GroupUser[];
 }
+
+
+
+
+//for group with id
+export interface GroupDetailUnique {
+  group_id: string;
+  group_title: string;
+  group_desc: string;
+}
+
+export interface GroupSubscriptionUnique {
+  user_id: string;
+}
+
+export interface GroupUserUnique {
+  user_id: string;
+  status: 'joined' | 'subscribed'; // Assuming status can be 'joined' or 'subscribed'
+  User: UserUnique; // Assuming you have a User type defined elsewhere
+}
+
+export interface UserUnique {
+  user_id: string;
+  UserShop: UserShopUnique;
+
+}
+export interface UserShopUnique {
+  user_id:string,
+  shop_title:string,
+  contact_info:string,
+  links:string[],
+  shop_images:string[],
+  shop_tags:string[],
+  shop_address:string,
+}
+
+export interface GroupUnique {
+  group_id: string;
+  created_at: string;
+  user_id: string;
+  GroupDetail: GroupDetailUnique[];
+  GroupSubscription: GroupSubscriptionUnique[];
+  GroupUser: GroupUserUnique[];
+}

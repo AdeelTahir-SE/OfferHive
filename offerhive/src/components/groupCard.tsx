@@ -6,17 +6,19 @@ export default function GroupCard({
   title,
   desc,
   members,
+  id
 }: {
   image: string;
   title: string;
   desc: string;
   members: string[];
+  id: string;
 }) {
   const visibleMembers = members.slice(0, 6);
   const remaining = members.length - visibleMembers.length;
 
   return (
-    <Link href={`/groups/${title}`} className="w-full h-full">
+    <Link href={`/groups/${id}`} className="w-full h-full">
       <section className="flex flex-row items-center justify-center p-4 hover:border rounded-xl shadow-md gap-6">
         <Image
           src={image}

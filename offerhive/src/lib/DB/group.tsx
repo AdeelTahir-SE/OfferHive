@@ -1,5 +1,6 @@
 import { supabase } from "./db";
 import { Group } from "../types";
+import { GroupUnique } from "../types";
 export async function getGroups(counter: number) {
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
@@ -81,76 +82,13 @@ export async function searchGroups(searchTerm: string, counter: number) {
     return null;
   }
 
-
   const filteredGroups = data?.filter((group) =>
+    group.GroupDetail?.length > 0 &&
     group.GroupUser?.some((user: any) => user.status?.toLowerCase() === 'joined')
   ) || [];
 
   return filteredGroups;
 }
-
-
-
-export async function getGroupById(id: string, user_id: string): Promise<any | null> {
-  const { data, error } = await supabase
-    .from('Group')
-    .select(`
-      *,
-      GroupDetail (
-        group_id,
-        group_title,
-        group_desc
-      ),
-      User (
-        user_id,
-        UserShop (
-          user_id,
-          shop_title,
-          shop_desc,
-          shop_images,
-          shop_tags,
-          shop_address
-        )
-      ),
-      GroupSubscription (
-        user_id
-      ),
-      GroupUser (
-        user_id,
-        status
-      )
-    `)
-    .eq('group_id', id)
-    .single();
-
-  if (error) {
-    console.error("Error fetching group:", error);
-    return null;
-  }
-
-  const subscribedUserIds = data.GroupSubscription.map((sub:any) => sub.user_id);
-
-  const joinedUserIds = data.GroupUser
-    .filter((groupUser:any) => groupUser.status === 'joined')
-    .map((groupUser:any) => groupUser.user_id);
-
-  const subscribedUsers = data.User.filter((user:any) =>
-    subscribedUserIds.includes(user.user_id)
-  );
-
- const joinedUsers = data.User.filter((user:any) =>
-    joinedUserIds.includes(user.user_id)
-  );
-
-  return {
-    ...data,
-    subscribedUsers,
-    joinedUsers,
-  };
-}
-
-
-
 
 
 export async function subscribeGroup(user_id:string,group_id:string,isSubscribed:boolean) {
@@ -192,3 +130,56 @@ export async function joinGroup(user_id:string,group_id:string) {
   return data;
 }
 
+
+
+export async function getGroupById(id: string): Promise<GroupUnique | null> {
+  const { data, error } = await supabase
+    .from('Group')
+    .select(`
+      *,
+      GroupDetail (
+        group_id,
+        group_title,
+        group_desc
+      ),
+      GroupSubscription (
+        user_id
+        ,User(
+        user_id
+        )
+      ),
+      GroupUser (
+        user_id,
+        status,
+        User (
+          user_id,
+          UserShop(
+            user_id,
+            shop_title,
+            shop_desc,
+            contact_info,
+            links,
+            shop_images,
+            shop_tags,
+            shop_address
+
+          )
+        )
+      )
+    `)
+    .eq('group_id', id)  
+    .single();  // Ensure only a single row is returned
+
+  if (error) {
+    console.error("Error fetching group:", error);
+    return null;
+  }
+
+  if (!data) {
+    console.warn("No group found for the provided group_id:", id);
+    return null; // Handle case where no data is found
+  }
+console.log(data)
+
+  return data;
+}
