@@ -50,6 +50,7 @@ export async function getShopById(id: string) {
       shop_address,
       Offers (
         user_id,
+        offer_id,
         starts_at,
         valid_uptill,
         image,
@@ -67,6 +68,7 @@ export async function getShopById(id: string) {
   }
 
   const shop = {
+    user_id: data?.user_id,
     shop_desc: data.shop_desc,
     shop_title: data.shop_title,
     contact_info: data.contact_info,
@@ -154,14 +156,12 @@ export async function updateShop(id: string, updatedFields: Partial<any>) {
 
   return data;
 }
-export async function updateOffer(id: string, index: number, updatedFields: Partial<any>) {
+export async function updateOffer(id: string, updatedFields: Partial<any>) {
   console.log(updatedFields);
   const { data, error } = await supabase
-    .from("UserShop")
-    .update({
-      [`Offers:${index}`]: updatedFields,
-    })
-    .eq("user_id", id)
+    .from("Offers")
+    .update(updatedFields)
+    .eq("offer_id", id)
     .select("*")
     .single();
 
@@ -171,6 +171,59 @@ export async function updateOffer(id: string, index: number, updatedFields: Part
   }
 
   return data;
+}
+
+export async function deleteOffer(offer_id:string){
+  const{data,error}=await supabase
+  .from("Offers")
+  .delete()
+  .eq("offer_id",offer_id)
+  .select()
+  if(!data){
+    console.log("error deleting data");
+  }
+  if (error) {
+    console.error("Error deleting offer:", error);
+    return null;
+  }
+  return data;
+}
+export async function createOffer(offer){
+  console.log("offer to be created",offer)
+  const { data, error } = await supabase
+    .from("Offers")
+    .insert({
+      user_id: offer?.user_id,
+      offer_desc: offer?.offer_desc,
+      offer_title: offer?.offer_title,
+      image: offer?.image,
+      starts_at: offer?.starts_at,
+      valid_uptill: offer?.valid_uptill,
+    })
+    .select("*")
+    .single();
+console.log(data)
+  if (error) {
+    console.error("Error creating offer:", error);
+    return null;
+  }
+
+  return data;
+}
+
+export async function getOffersById(user_id:string){
+  const { data, error } = await supabase
+    .from("Offers")
+    .select("*")
+    .eq("user_id", user_id);
+
+  if (error) {
+    console.error("Error fetching offers:", error);
+    return null;
+  }
+
+  return data;
+
 }
 export async function deleteShop(id: string) {
   const { data, error } = await supabase
@@ -191,6 +244,33 @@ export async function deleteShop(id: string) {
 
 export async function uploadImage(file: File, userId: string) {
   const filepath=`shop_pics/${userId}/${file.name}`;
+  const { data, error } = await supabase.storage
+    .from("images")
+    .upload(filepath, file, {
+      cacheControl: "3600",
+      upsert: true,
+    });
+
+  if (error) {
+    console.error("Error uploading image:", error);
+    return null;
+  }
+
+  const { data:Data } = supabase.storage
+    .from("images")
+    .getPublicUrl(filepath);
+  const publicURL = Data?.publicUrl;
+
+  if (!publicURL) {
+    console.error("Error getting public URL:");
+    return null;
+  }
+
+  return publicURL;
+}
+
+export async function uploadOfferImage(file: File, userId: string, offerId: string) {
+  const filepath=`offer_pics/${userId}/${offerId}/${file.name}`;
   const { data, error } = await supabase.storage
     .from("images")
     .upload(filepath, file, {

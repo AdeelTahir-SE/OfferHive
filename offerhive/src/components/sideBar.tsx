@@ -1,5 +1,6 @@
 import Link from "next/link"
-import { LayoutDashboard, Users, ShoppingBag, LogOut} from "lucide-react"
+import { LayoutDashboard, ShoppingBag, LogOut} from "lucide-react"
+import OfferSvg from "./offerSvg"
 
 export default async function SideBar() {
     return (
@@ -8,15 +9,12 @@ export default async function SideBar() {
                 <TooltipItem href="/shop/dashboard" label="Dashboard">
                     <LayoutDashboard className="w-6 h-6 text-black" />
                 </TooltipItem>
-                <TooltipItem href="/shop/people" label="People">
-                    <Users className="w-6 h-6 text-black" />
-                </TooltipItem>
                 <TooltipItem href="/shop/manageShop" label="Shop">
                     <ShoppingBag className="w-6 h-6 text-black" />
                 </TooltipItem>
-                <TooltipItem href="/shop/offers" label="Offers">
-                    <ShoppingBag className="w-6 h-6 text-black" />
-                </TooltipItem>
+                {/* <TooltipItem href="/shop/offers" label="Offers">
+                    <OfferSvg className="w-6 h-6 text-black" />
+                </TooltipItem> */}
                 <TooltipItem href="/shop/logout" label="Logout">
                     <LogOut className="w-6 h-6 text-black" />
                 </TooltipItem>

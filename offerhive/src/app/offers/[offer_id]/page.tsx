@@ -1,21 +1,24 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ImagesSlider } from "@/components/offerPageImages";
-import { getShopById } from "@/lib/DB/offerer"; 
-import { Offer,Shop } from "@/lib/types";
+import { getShopById } from "@/lib/DB/offerer";
+import { Shop } from "@/lib/types";
 import React from "react";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
 
-
-export default function OfferDetails({ params }: { params: { offer_id: string } }) {
+export default function OfferDetails() {
   const [shop, setShop] = useState<Shop | null>(null);
   const [loading, setLoading] = useState(true);
-  const {offer_id}= React.use(params)
+  const { offer_id }: { offer_id: string } = useParams();
+  const user = useSelector((state: any) => state.user);
   useEffect(() => {
     const fetchShop = async () => {
       try {
-        console.log(offer_id)
-        const data = await getShopById(offer_id); 
-        console.log(data)
+        console.log(offer_id);
+        const data = await getShopById(offer_id);
+        console.log(data);
         setShop(data);
       } catch (error) {
         console.error("Failed to fetch shop:", error);
@@ -32,7 +35,9 @@ export default function OfferDetails({ params }: { params: { offer_id: string } 
   }
 
   if (!shop) {
-    return <div className="text-center text-red-500 text-xl">Shop not found.</div>;
+    return (
+      <div className="text-center text-red-500 text-xl">Shop not found.</div>
+    );
   }
 
   return (
@@ -47,16 +52,24 @@ export default function OfferDetails({ params }: { params: { offer_id: string } 
       <ImagesSlider images={shop.shop_images} />
 
       <div className="w-full mt-10">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">Available Offers</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+          Available Offers
+        </h2>
         <div className="flex flex-wrap justify-center gap-6">
           {shop.offers.map((offer, index) => (
             <div
               key={index}
               className="bg-white rounded-xl shadow-md overflow-hidden w-80 border border-gray-200"
             >
-              <img src={offer.image} alt={offer.offer_title} className="w-full h-48 object-cover" />
+              <img
+                src={offer?.image}
+                alt={offer.offer_title}
+                className="w-full h-48 object-cover"
+              />
               <div className="p-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">{offer.offer_title}</h3>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                  {offer.offer_title}
+                </h3>
                 <p className="text-gray-600 mb-2">{offer.offer_desc}</p>
                 <p className="text-sm text-gray-500">
                   Valid: {new Date(offer.starts_at).toLocaleDateString()} -{" "}
@@ -85,9 +98,18 @@ export default function OfferDetails({ params }: { params: { offer_id: string } 
 
       {/* Contact Info */}
       <div className="flex flex-col items-center justify-center mt-10 w-full bg-gray-100 p-6 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">Contact the Seller</h2>
-        <p className="text-lg text-gray-700 mb-1">{shop.shop_address}</p>
-        <p className="text-lg text-gray-700 mb-1">Phone: {shop.contact_info}</p>
+        <h2 className="text-3xl font-bold text-gray-800 mb-4">
+          Contact the Seller
+        </h2>
+        <p className="text-lg font-bold text-gray-700 mb-1">{shop.shop_address}</p>
+        <p className="text-lg font-bold text-gray-700 mb-1">Phone: {shop.contact_info}</p>
+        {user && user?.is_shop_owner=="false" && (
+          <Link href={`/people/${shop?.user_id}`} className="">
+            <button className="rounded-xl bg-yellow-500 hover:bg-yellow-400 cursor-pointer p-4 text-xl">
+              Chat with Seller
+            </button>
+          </Link>
+        )}
         {shop.links?.map((link, index) => (
           <a
             key={index}
@@ -103,7 +125,6 @@ export default function OfferDetails({ params }: { params: { offer_id: string } 
     </section>
   );
 }
-
 
 // const shop: Shop = {
 //     shop_desc: "A trendy boutique offering exclusive fashion and accessories.",
@@ -128,7 +149,7 @@ export default function OfferDetails({ params }: { params: { offer_id: string } 
 //         offer_desc: "Buy one get one free on selected items!",
 //         offer_title: "BOGO Bonanza",
 //       },
-      
+
 //       {
 //         starts_at: "2025-05-01T09:00:00Z",
 //         valid_uptill: "2025-05-15T23:59:59",
@@ -136,7 +157,7 @@ export default function OfferDetails({ params }: { params: { offer_id: string } 
 //         offer_desc: "Buy one get one free on selected items!",
 //         offer_title: "BOGO Bonanza",
 //       },
-      
+
 //       {
 //         starts_at: "2025-05-01T09:00:00Z",
 //         valid_uptill: "2025-05-15T23:59:59",

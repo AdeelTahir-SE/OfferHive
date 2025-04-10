@@ -1,12 +1,15 @@
 export interface Offer {
+  user_id: string;
   starts_at: string;
   valid_uptill: string;
   image: string;
   offer_desc: string;
   offer_title: string;
+  offer_id: string;
 }
 
 export interface Shop {
+  user_id:string
   shop_desc: string;
   shop_title: string;
   contact_info: string;
@@ -14,7 +17,6 @@ export interface Shop {
   shop_images: string[];
   shop_tags: string[];
   shop_address: string;
-  offers: Offer[];
 }
 export interface UserShop {
   user_id: string;

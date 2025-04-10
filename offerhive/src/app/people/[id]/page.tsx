@@ -147,8 +147,7 @@ export default function PersonChat() {
 
   return (
     <section className="flex flex-col items-center justify-center bg-gray-100 min-h-screen p-6">
-      <h1 className="text-3xl font-bold mb-4">Chat Room</h1>
-      <p className="text-lg mb-6">Chat with {user.email}</p>
+      <p className="text-3xl mb-6">Chat with {user.email}</p>
 
       {/* Chat display */}
       <div className="p-4 rounded-lg w-full max-w-3xl h-auto mb-4">
@@ -163,7 +162,7 @@ export default function PersonChat() {
                   key={index}
                   className={`flex items-start space-x-3 ${
                     isSender ? "flex-row-reverse" : ""
-                  }`} // Apply flex-row-reverse when sender
+                  }`} 
                 >
                   <div className="w-10 h-10 flex items-center justify-center">
                     {profileImage?(<Image
@@ -172,12 +171,12 @@ export default function PersonChat() {
                       width={300}
                       height={300}
                       className="w-full h-full rounded-full object-cover"
-                    />):(<span>{isSender ? "You" : user.email}</span>)}
+                    />):(<span >{isSender ? "You" : user?.email?.split("@")[0]}</span>)}
                   </div>
                   <div className="flex flex-col">
                     <div
                       className={`p-3 rounded-lg max-w-md ${
-                        isSender ? "bg-blue-200" : "bg-yellow-200"
+                        isSender ? "bg-yellow-200" : "bg-yellow-300"
                       }`}
                     >
                       <p>{message.message}</p>
