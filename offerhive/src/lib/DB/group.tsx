@@ -92,13 +92,19 @@ export async function searchGroups(searchTerm: string, counter: number) {
 
 
 export async function subscribeGroup(user_id:string,group_id:string,isSubscribed:boolean) {
+  console.log("user_id",user_id)
+  console.log("group_id",group_id)
+  console.log("isSubscribed",isSubscribed)
   if(isSubscribed) {
+
     const { data, error } = await supabase
       .from("GroupSubscription")
       .delete()
       .eq("user_id", user_id)
       .eq("group_id", group_id)
       .select();
+
+      console.log(data)
     if (error) {
       console.error("Error unsubscribing from group:", error);
       return null;
@@ -140,7 +146,9 @@ export async function getGroupById(id: string): Promise<GroupUnique | null> {
       GroupDetail (
         group_id,
         group_title,
-        group_desc
+        group_desc,
+        group_image,
+        group_tags
       ),
       GroupSubscription (
         user_id
@@ -168,8 +176,7 @@ export async function getGroupById(id: string): Promise<GroupUnique | null> {
       )
     `)
     .eq('group_id', id)  
-    .single();  // Ensure only a single row is returned
-
+    .single();  
   if (error) {
     console.error("Error fetching group:", error);
     return null;
@@ -177,7 +184,7 @@ export async function getGroupById(id: string): Promise<GroupUnique | null> {
 
   if (!data) {
     console.warn("No group found for the provided group_id:", id);
-    return null; // Handle case where no data is found
+    return null; 
   }
 console.log(data)
 

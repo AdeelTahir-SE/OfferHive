@@ -13,6 +13,9 @@ export default function Header() {
 
       <ul className="flex space-x-6 font-semibold items-center">
         <li className="hover:text-white transition-colors">
+          <Link href="/people/7c6c8674-4a74-4bec-8f77-56c78e4ac499">a</Link>
+        </li>
+        <li className="hover:text-white transition-colors">
           <Link href="/">Home</Link>
         </li>
         <li className="hover:text-white transition-colors">

@@ -57,6 +57,8 @@ export interface GroupDetailUnique {
   group_id: string;
   group_title: string;
   group_desc: string;
+  group_image : string;
+  group_tags: string[];
 }
 
 export interface GroupSubscriptionUnique {

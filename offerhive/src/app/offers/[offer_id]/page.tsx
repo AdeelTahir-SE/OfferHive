@@ -3,17 +3,18 @@ import { useEffect, useState } from "react";
 import { ImagesSlider } from "@/components/offerPageImages";
 import { getShopById } from "@/lib/DB/offerer"; 
 import { Offer,Shop } from "@/lib/types";
+import React from "react";
 
 
-export default function OfferDetails({ params }: any) {
+export default function OfferDetails({ params }: { params: { offer_id: string } }) {
   const [shop, setShop] = useState<Shop | null>(null);
   const [loading, setLoading] = useState(true);
-
+  const {offer_id}= React.use(params)
   useEffect(() => {
     const fetchShop = async () => {
       try {
-        console.log(params.id)
-        const data = await getShopById(params.id); 
+        console.log(offer_id)
+        const data = await getShopById(offer_id); 
         console.log(data)
         setShop(data);
       } catch (error) {
@@ -24,7 +25,7 @@ export default function OfferDetails({ params }: any) {
     };
 
     fetchShop();
-  }, [params.id]);
+  }, [offer_id]);
 
   if (loading) {
     return <div className="text-center text-xl font-medium">Loading...</div>;
