@@ -27,7 +27,7 @@ export default function Dashboard() {
     getClicksInfo();
     getLatestMessagesInfo();
     setLoading(false)
-  },[    getClicksInfo(),    getLatestMessagesInfo()  ])
+  },[])
    
   if(loading){
      <section className=" flex items-center justify-center h-screen w-screen"><Loader size={3}/></section>
