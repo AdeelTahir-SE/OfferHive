@@ -43,20 +43,21 @@ export default function PersonChat() {
     if (id && User?.user_id) {
       const fetchChat = async () => {
         let chatData;
+
         if (!User?.is_shop_owner) {
           chatData = await getChat(User?.user_id, id);
         } else {
           chatData = await getChat(id, User?.user_id);
         }
-
-        if (Array.isArray(chatData?.chat)) {
+        
+        if (chatData && 'chat' in chatData && Array.isArray(chatData.chat)) {
           setChat(chatData.chat);
         } else {
           setChat([]);
         }
-      };
+        
       fetchChat();
-    }
+    
   }, [id, User?.user_id, User?.is_shop_owner]);
 
   useEffect(() => {
@@ -115,7 +116,7 @@ export default function PersonChat() {
 
   return (
     <section className="flex flex-col items-center justify-center bg-gray-100 min-h-screen p-6">
-      <p className="text-3xl mb-6">Chat with {user.email}</p>
+      <p className="text-3xl mb-6">Chat with {user?.email}</p>
       <div className="p-4 rounded-lg w-full max-w-3xl h-auto mb-4 bg-white shadow">
         <div className="flex flex-col space-y-4">
           {chat?.length > 0 &&
@@ -128,7 +129,7 @@ export default function PersonChat() {
                   <div className="w-10 h-10 flex items-center justify-center">
                     <Image
                       src={profileImage || "/profile_placeholder.png"}
-                      alt={isSender ? "You" : user.email}
+                      alt={isSender ? "You" : user?.email}
                       width={300}
                       height={300}
                       className="w-full h-full rounded-full object-cover"
