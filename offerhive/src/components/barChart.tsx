@@ -10,16 +10,19 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-export default function BarGraph() {
-  const data = [
-    { day: "Mon", clicks: 120 },
-    { day: "Tue", clicks: 200 },
-    { day: "Wed", clicks: 150 },
-    { day: "Thu", clicks: 300 },
-    { day: "Fri", clicks: 250 },
-    { day: "Sat", clicks: 180 },
-    { day: "Sun", clicks: 220 },
-  ];
+export default function BarGraph(data: any) {
+
+   if (!data?.data || !data?.data.length) {
+    console.log(data,"linegraph")
+    data = {
+      data: [
+        {
+          date: new Date().toLocaleDateString("en-CA"), 
+          clicks: 0,
+        },
+      ],
+    };
+  }
 
   return (
     <div className="w-96 h-54 p-4  rounded-lg ">
@@ -27,9 +30,9 @@ export default function BarGraph() {
         Clicks by Day (Bar Chart)
       </h2>
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+        <BarChart data={data?.data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="day" />
+          <XAxis dataKey="date" />
           <YAxis />
           <Tooltip />
           <Bar dataKey="clicks" fill="#efb100" radius={[4, 4, 0, 0]} />

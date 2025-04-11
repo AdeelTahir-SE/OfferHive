@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 
 export default function Header() {
-  const user = useSelector((state: any) => state.user);
+  const user = useSelector((state:any) => state.user);
   console.log("owner", user?.is_shop_owner);
 
   return (
@@ -12,9 +12,7 @@ export default function Header() {
       <Image src="/logo.svg" alt="logo" width={60} height={60} />
 
       <ul className="flex space-x-6 font-semibold items-center">
-        <li className="hover:text-white transition-colors">
-          <Link href="/people/7c6c8674-4a74-4bec-8f77-56c78e4ac499">a</Link>
-        </li>
+
         <li className="hover:text-white transition-colors">
           <Link href="/">Home</Link>
         </li>

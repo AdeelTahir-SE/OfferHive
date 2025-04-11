@@ -96,3 +96,17 @@ export interface GroupUnique {
   GroupSubscription: GroupSubscriptionUnique[];
   GroupUser: GroupUserUnique[];
 }
+
+
+export interface Click{
+date:string,
+clicks:number
+}
+
+export interface Message  {
+  message: string;
+  profile_image: string;
+  email: string;
+  user_id:string
+  
+};

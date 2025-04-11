@@ -7,12 +7,51 @@ import React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
-
+import { setClicks, getClicks } from "@/lib/DB/shop";
+import { Click } from "@/lib/types";
 export default function OfferDetails() {
   const [shop, setShop] = useState<Shop | null>(null);
   const [loading, setLoading] = useState(true);
   const { offer_id }: { offer_id: string } = useParams();
   const user = useSelector((state: any) => state.user);
+
+  async function clicksHandler(offer_id) {
+    const { clicks }: { clicks: Click[]  } = await getClicks(
+     offer_id
+    );
+    const today = new Date().toISOString().split("T")[0];
+    if (clicks?.length == 0) {
+      const newClick = {
+        clicks: 1,
+        date: today,
+      };
+      setClicks(offer_id, [newClick]);
+      return;
+    }
+
+    let matched = false;
+    let updatedClicks: Click[] = [];
+
+    const validClicks = clicks ?? [];
+
+    updatedClicks = validClicks.map((click: Click) => {
+      if (click.date === today) {
+        matched = true;
+        click.clicks += 1;
+      }
+      return { ...click };
+    });
+
+    if (!matched) {
+      updatedClicks.push({
+        date: today,
+        clicks: 1,
+      });
+    }
+
+    setClicks(offer_id, updatedClicks);
+  }
+
   useEffect(() => {
     const fetchShop = async () => {
       try {
@@ -26,7 +65,7 @@ export default function OfferDetails() {
         setLoading(false);
       }
     };
-
+    clicksHandler(offer_id);
     fetchShop();
   }, [offer_id]);
 
@@ -101,9 +140,13 @@ export default function OfferDetails() {
         <h2 className="text-3xl font-bold text-gray-800 mb-4">
           Contact the Seller
         </h2>
-        <p className="text-lg font-bold text-gray-700 mb-1">{shop.shop_address}</p>
-        <p className="text-lg font-bold text-gray-700 mb-1">Phone: {shop.contact_info}</p>
-        {user && user?.is_shop_owner=="false" && (
+        <p className="text-lg font-bold text-gray-700 mb-1">
+          {shop.shop_address}
+        </p>
+        <p className="text-lg font-bold text-gray-700 mb-1">
+          Phone: {shop.contact_info}
+        </p>
+        {user && user?.is_shop_owner == "false" && (
           <Link href={`/people/${shop?.user_id}`} className="">
             <button className="rounded-xl bg-yellow-500 hover:bg-yellow-400 cursor-pointer p-4 text-xl">
               Chat with Seller

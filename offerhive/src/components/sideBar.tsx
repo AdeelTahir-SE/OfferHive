@@ -30,7 +30,7 @@ function TooltipItem({ href, label, children }: { href: string, label: string, c
             <Link href={href}>
                 {children}
             </Link>
-            <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs px-2 py-1 rounded-md whitespace-nowrap transition-opacity duration-200 z-10">
+            <span className="absolute left-full ml-2 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 bg-black text-white text-xs px-2 py-1 rounded-md whitespace-nowrap transition-opacity duration-200 z-50">
                 {label}
             </span>
         </li>

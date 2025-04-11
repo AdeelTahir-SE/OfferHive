@@ -5,10 +5,10 @@ export async function getOfferers(counter: number) {
   const rangeEnd = rangeStart + 9;
 
   const { data, error } = await supabase
-    .from('UserShop')
-    .select('*')
-    .range(rangeStart, rangeEnd); 
-    console.log(data)
+    .from("UserShop")
+    .select("*")
+    .range(rangeStart, rangeEnd);
+  console.log(data);
   if (error) {
     console.error("Error fetching offers:", error);
     return null;
@@ -17,25 +17,24 @@ export async function getOfferers(counter: number) {
 }
 
 export async function searchOfferers(searchTerm: string, counter: number) {
-    const rangeStart = counter * 10;
-    const rangeEnd = rangeStart + 9;
+  const rangeStart = counter * 10;
+  const rangeEnd = rangeStart + 9;
 
-    const { data, error } = await supabase
-        .from('UserShop')
-        .select('*')
-        .ilike('shop_title', `%${searchTerm}%`) 
-        .range(rangeStart, rangeEnd);
+  const { data, error } = await supabase
+    .from("UserShop")
+    .select("*")
+    .ilike("shop_title", `%${searchTerm}%`)
+    .range(rangeStart, rangeEnd);
 
-    console.log(data)
-    if (error) {
-        console.error("Error fetching offers:", error);
-        return null;
-    }
-    return data;
+  console.log(data);
+  if (error) {
+    console.error("Error fetching offers:", error);
+    return null;
+  }
+  return data;
 }
 
 export async function getShopById(id: string) {
-  
   const { data, error } = await supabase
     .from("UserShop")
     .select(
@@ -82,27 +81,26 @@ export async function getShopById(id: string) {
   return shop;
 }
 export async function createShop(userid: string, shop: any, images: File[]) {
-  const imageurls: string[] = []; 
+  const imageurls: string[] = [];
 
   for (let i = 0; i < images.length; i++) {
-    const filepath = `shop_pics/${userid}/${images[i].name}`; 
+    const filepath = `shop_pics/${userid}/${images[i].name}`;
 
     const { data, error } = await supabase.storage
-      .from("images") 
+      .from("images")
       .upload(filepath, images[i], {
-        cacheControl: "3600", 
+        cacheControl: "3600",
         upsert: true,
       });
 
     if (error) {
       console.error("Error uploading image:", error);
-      return { data: null, error }; 
+      return { data: null, error };
     }
 
-  
-    const { data: urlData } =  supabase.storage
-      .from("images") 
-      .getPublicUrl(filepath); 
+    const { data: urlData } = supabase.storage
+      .from("images")
+      .getPublicUrl(filepath);
 
     if (!urlData) {
       console.error("Error getting public URL for image:");
@@ -120,26 +118,41 @@ export async function createShop(userid: string, shop: any, images: File[]) {
       shop_title: shop.shop_title,
       contact_info: shop.contact_info,
       links: shop.links,
-      shop_images: imageurls, 
+      shop_images: imageurls,
       shop_tags: shop.shop_tags,
       shop_address: shop.shop_address,
     })
     .select("*")
     .single();
 
+  const { data, error } = await supabase
+    .from("UserShopAnalysis")
+    .insert({
+      user_id: userid,
+      clicks: [],
+    })
+    .select("*")
+    .single();
+  if (error) {
+    console.log("error in creating analysis", error);
+  }
+  if (!data) {
+    console.log("error in creating analysis");
+  }
+  
+
   if (shopError) {
     console.error("Error creating shop:", shopError);
-    return { data: null, error: shopError }; 
+    return { data: null, error: shopError };
   }
 
   return { data: shopData, error: shopError };
 }
 
-
 export async function updateShop(id: string, updatedFields: Partial<any>) {
-  if(!id){
-    console.log("no id provided")
-    return ;
+  if (!id) {
+    console.log("no id provided");
+    return;
   }
   console.log(updatedFields);
   const { data, error } = await supabase
@@ -173,13 +186,13 @@ export async function updateOffer(id: string, updatedFields: Partial<any>) {
   return data;
 }
 
-export async function deleteOffer(offer_id:string){
-  const{data,error}=await supabase
-  .from("Offers")
-  .delete()
-  .eq("offer_id",offer_id)
-  .select()
-  if(!data){
+export async function deleteOffer(offer_id: string) {
+  const { data, error } = await supabase
+    .from("Offers")
+    .delete()
+    .eq("offer_id", offer_id)
+    .select();
+  if (!data) {
     console.log("error deleting data");
   }
   if (error) {
@@ -188,8 +201,8 @@ export async function deleteOffer(offer_id:string){
   }
   return data;
 }
-export async function createOffer(offer){
-  console.log("offer to be created",offer)
+export async function createOffer(offer) {
+  console.log("offer to be created", offer);
   const { data, error } = await supabase
     .from("Offers")
     .insert({
@@ -202,7 +215,7 @@ export async function createOffer(offer){
     })
     .select("*")
     .single();
-console.log(data)
+  console.log(data);
   if (error) {
     console.error("Error creating offer:", error);
     return null;
@@ -211,7 +224,7 @@ console.log(data)
   return data;
 }
 
-export async function getOffersById(user_id:string){
+export async function getOffersById(user_id: string) {
   const { data, error } = await supabase
     .from("Offers")
     .select("*")
@@ -223,7 +236,6 @@ export async function getOffersById(user_id:string){
   }
 
   return data;
-
 }
 export async function deleteShop(id: string) {
   const { data, error } = await supabase
@@ -241,9 +253,8 @@ export async function deleteShop(id: string) {
   return data;
 }
 
-
 export async function uploadImage(file: File, userId: string) {
-  const filepath=`shop_pics/${userId}/${file.name}`;
+  const filepath = `shop_pics/${userId}/${file.name}`;
   const { data, error } = await supabase.storage
     .from("images")
     .upload(filepath, file, {
@@ -256,9 +267,7 @@ export async function uploadImage(file: File, userId: string) {
     return null;
   }
 
-  const { data:Data } = supabase.storage
-    .from("images")
-    .getPublicUrl(filepath);
+  const { data: Data } = supabase.storage.from("images").getPublicUrl(filepath);
   const publicURL = Data?.publicUrl;
 
   if (!publicURL) {
@@ -269,8 +278,12 @@ export async function uploadImage(file: File, userId: string) {
   return publicURL;
 }
 
-export async function uploadOfferImage(file: File, userId: string, offerId: string) {
-  const filepath=`offer_pics/${userId}/${offerId}/${file.name}`;
+export async function uploadOfferImage(
+  file: File,
+  userId: string,
+  offerId: string
+) {
+  const filepath = `offer_pics/${userId}/${offerId}/${file.name}`;
   const { data, error } = await supabase.storage
     .from("images")
     .upload(filepath, file, {
@@ -283,9 +296,7 @@ export async function uploadOfferImage(file: File, userId: string, offerId: stri
     return null;
   }
 
-  const { data:Data } = supabase.storage
-    .from("images")
-    .getPublicUrl(filepath);
+  const { data: Data } = supabase.storage.from("images").getPublicUrl(filepath);
   const publicURL = Data?.publicUrl;
 
   if (!publicURL) {

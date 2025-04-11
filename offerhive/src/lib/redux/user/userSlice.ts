@@ -13,7 +13,7 @@ export interface userState {
 const initialState: userState = {
   user_id: "",
   email: "",
-  profile_image: "",
+  profile_image: "/profile_placeholder.png",
   is_shop_owner:false,
   joined_groups: [],
   subscribed_groups: [],

@@ -92,7 +92,6 @@ export async function getChat(user_id: string, shop_user_id: string) {
     .eq("shop_user_id", shop_user_id)
     .single();
 
-  // If no data is found, insert a new row
   if (!data) {
     const { data: insertData, error: insertError } = await supabase
       .from("Chat")
@@ -125,13 +124,13 @@ export async function getChat(user_id: string, shop_user_id: string) {
   return data; // Return the fetched data
 }
 
-
 export async function chatListener(
   user_id: string,
   shop_user_id: string,
-  setChatMessages: React.Dispatch<React.SetStateAction<any[]>>
+  handleNewChat: (message: any) => void
 ) {
-  const chatChannel = supabase
+  console.log(user_id, shop_user_id, "broadcasting");
+  const channel = supabase
     .channel("custom-chat-channel")
     .on(
       "postgres_changes",
@@ -143,39 +142,82 @@ export async function chatListener(
       },
       (payload) => {
         console.log("Change received!", payload);
-        setChatMessages((prevChat: any[]) => [...prevChat, payload.new]);
+        if (payload?.new?.chat) {
+          handleNewChat(payload.new?.chat);
+        }
       }
     )
     .subscribe();
 
-  return chatChannel;
+  console.log("chadasdasdsadasnnel", channel);
+
+  return channel;
 }
 
-export async function setChatDB(user_id: string, shop_user_id: string,chat:any[]) {
-  console.log("userid",user_id)
-  console.log("shop_id",shop_user_id)
-  console.log("chat",chat)
+export async function setChatDB(
+  user_id: string,
+  shop_user_id: string,
+  chat: any[]
+) {
+
   const { data, error } = await supabase
     .from("Chat")
     .update({ chat: chat })
     .eq("user_id", user_id)
-    .eq("shop_user_id", shop_user_id).select();
+    .eq("shop_user_id", shop_user_id)
+    .select();
 
   if (!data) {
     console.log("error in fetching chat!");
     return null;
   }
-  console.log("setted chat",data)
   return data;
 }
 
-
 export async function removeChatListener(chatlistener: RealtimeChannel) {
   try {
-    if (chatlistener && typeof chatlistener.unsubscribe === 'function') {
+    if (chatlistener && typeof chatlistener.unsubscribe === "function") {
       chatlistener.unsubscribe();
     }
   } catch (error) {
-    console.error('Error unsubscribing from channel:', error);
+    console.error("Error unsubscribing from channel:", error);
   }
+}
+
+export async function setProfileImageDB(file: File, user_id: string) {
+  console.log("user_id",user_id);
+  if(!user_id)return;
+  const filepath = `profile_pics/${user_id}/${file.name}`;
+
+  const { data: ImageUpload, error: uploadError } = await supabase.storage
+    .from("images")
+    .upload(filepath, file, {
+      cacheControl: "3600",
+      upsert: true,
+    });
+
+  if (uploadError) {
+    console.error("Error uploading image:", uploadError);
+    return null;
+  }
+
+  const { data: publicData } = supabase.storage.from("images").getPublicUrl(filepath);
+  const publicURL = publicData?.publicUrl;
+
+  if (!publicURL) {
+    console.error("Error getting public URL.");
+    return null;
+  }
+
+  const { data:uploadImage,error: updateError } = await supabase
+    .from("User")
+    .update({ profile_image: publicURL })
+    .eq("user_id", user_id).single();
+console.log(uploadImage)
+  if (updateError) {
+    console.error("Error updating user profile image:", updateError);
+    return null;
+  }
+
+  return publicURL;
 }
