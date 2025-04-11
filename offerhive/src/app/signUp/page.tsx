@@ -26,9 +26,9 @@ export default function Login() {
     );
     if (signUpError || insertError) {
       setError(
-        signUpError?.message || insertError?.message || "An error occurred"
+        signUpError?.message || "An error occurred"
       );
-      console.log("Error signing up:", signUpError?.message || insertError?.message);
+      console.log("Error signing up:", signUpError?.message );
     } else {
       dispatch(setUser(userData as any));
       console.log("User signed up:", userData);

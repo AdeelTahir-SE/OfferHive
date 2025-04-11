@@ -6,9 +6,16 @@ export interface Offer {
   offer_desc: string;
   offer_title: string;
   offer_id: string;
-
-
   
+}
+export interface OfferBeforeCreation{
+  user_id: string;
+  starts_at: string;
+  valid_uptill: string;
+  image: string;
+  offer_desc: string;
+  offer_title: string;
+  // offer_id: string;
 }
 
 export interface Shop {

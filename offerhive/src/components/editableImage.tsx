@@ -36,8 +36,14 @@ export default function EditableImage({
         user_id,
         offer_id
       );
-      setLocalImage(url);
+      if(url){
       onChange(url);
+      setLocalImage(url);
+
+      }
+      else{
+        alert("error setting photo")
+      }
     } catch (error) {
       console.error("Image upload failed", error);
     } finally {

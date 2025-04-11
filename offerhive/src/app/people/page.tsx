@@ -6,7 +6,14 @@ import { chatWithShopOwners } from "@/lib/DB/user";
 import { useSelector } from "react-redux";
 
 export default function People() {
-  const [chat, setChat] = useState<any>([]);
+
+    interface ChatMessage {
+        user_id: string;
+        profile_image: string | null;
+        email: string;
+        message: string;
+      }
+  const [chat, setChat] = useState<ChatMessage[]>([]);
   const user = useSelector((state: any) => state?.user);
   const fetchChat = async (user_id:string) => {
     const chats = await chatWithShopOwners(user_id);

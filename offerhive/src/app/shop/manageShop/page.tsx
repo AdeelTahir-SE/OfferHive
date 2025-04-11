@@ -50,8 +50,11 @@ export default function ManageShop() {
   const handleOfferUpdate = async (
     index: number,
     field: keyof Offer,
-    value: string
+    value: string|null
   ) => {
+    if(!value){
+      return
+    }
     const updatedOffers = [...offers];
     const offer = updatedOffers[index];
     if (!offer) return;
@@ -73,6 +76,7 @@ export default function ManageShop() {
 
   const handleCreateOffer = async () => {
     const newOffer = {
+      
       user_id: id,
       offer_title: "New Offer",
       offer_desc: "Description",
@@ -119,6 +123,10 @@ export default function ManageShop() {
         images={shop.shop_images ?? []}
         id={id}
         onChange={(images) => {
+          if (!Array.isArray(images) || images.some(image => typeof image !== 'string')) {
+            alert("Error setting image: Invalid image data");
+            return;
+          }
           setShop({ ...shop, shop_images: images });
           updateShop(id, { shop_images: images });
         }}
@@ -137,7 +145,7 @@ export default function ManageShop() {
          >
            {/* Image should fill full width of container */}
              <EditableImage
-               image={offer.image ?? ""}
+               image={offer.image ?? "/placeholder_deals.png"}
                user_id={id}
                offer_id={offer.offer_id}
                onChange={(image) => handleOfferUpdate(index, "image", image)}

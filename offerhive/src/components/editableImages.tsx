@@ -20,7 +20,7 @@ export default function EditableImages({
     const updated = [...localImages];
     updated.splice(index, 1);
     setLocalImages(updated);
-    onChange(updated);
+    onChange(updated);  // Always send a string[] to onChange
   };
 
   const handleAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,17 +31,15 @@ export default function EditableImages({
 
     try {
       const url = await uploadImage(file, id);
-      const updated = [...localImages, url];
+      const updated = [...localImages, url] as string[];
       setLocalImages(updated);
-      onChange(updated);
+      onChange(updated);  // Ensure only string[] is passed to onChange
     } catch (error) {
       console.error("Image upload failed", error);
     } finally {
       setLoading(false);
     }
   };
-
-
 
   return (
     <section className="flex flex-wrap items-start gap-4">
@@ -55,11 +53,10 @@ export default function EditableImages({
             onClick={() => handleDelete(index)}
           />
           <Image
-            src={image}
+            src={image || "/placeholder_deals.png"}  // Ensure image is a valid string
             alt={`Image ${index + 1}`}
             layout="fill"
             objectFit="cover"
-            
           />
         </section>
       ))}
@@ -80,8 +77,6 @@ export default function EditableImages({
           />
         </label>
       )}
-
-   
     </section>
   );
 }

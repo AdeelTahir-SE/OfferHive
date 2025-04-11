@@ -8,6 +8,19 @@ import Image from "next/image";
 import React from "react";
 import { RootState } from "@/lib/redux/store";
 
+// Define User type to avoid any implicit any
+interface User {
+  profile_image: string;
+  email: string;
+}
+
+interface ReduxUser {
+  user_id: string;
+  profile_image: string;
+  email: string;
+  is_shop_owner: boolean;
+}
+
 function getFormattedTimestamp() {
   const now = new Date();
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
@@ -27,9 +40,9 @@ function getFormattedTimestamp() {
 export default function PersonChat() {
   const [chat, setChat] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [user, setUser] = useState<{ profile_image: any, email: any}|null>({ profile_image: "", email: "" });
+  const [user, setUser] = useState<User | null>(null);
   const { id }: { id: string } = useParams();
-  const User = useSelector((state: RootState) => state.user);
+  const loggedInUser = useSelector((state: RootState) => state.user) as ReduxUser;
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -40,31 +53,32 @@ export default function PersonChat() {
   }, [id]);
 
   useEffect(() => {
-    if (id && User?.user_id) {
+    if (id && loggedInUser?.user_id) {
       const fetchChat = async () => {
         let chatData;
 
-        if (!User?.is_shop_owner) {
-          chatData = await getChat(User?.user_id, id);
+        if (!loggedInUser?.is_shop_owner) {
+          chatData = await getChat(loggedInUser?.user_id, id);
         } else {
-          chatData = await getChat(id, User?.user_id);
+          chatData = await getChat(id, loggedInUser?.user_id);
         }
-        
+
         if (chatData && 'chat' in chatData && Array.isArray(chatData.chat)) {
           setChat(chatData.chat);
         } else {
           setChat([]);
         }
-        
+      };
+
       fetchChat();
-    
-  }, [id, User?.user_id, User?.is_shop_owner]);
+    }
+  }, [id, loggedInUser?.user_id, loggedInUser?.is_shop_owner]);
 
   useEffect(() => {
-    if (!id || !User?.user_id) return;
+    if (!id || !loggedInUser?.user_id) return;
 
-    const sender = User.is_shop_owner ? id : User.user_id;
-    const receiver = User.is_shop_owner ? User.user_id : id;
+    const sender = loggedInUser.is_shop_owner ? id : loggedInUser.user_id;
+    const receiver = loggedInUser.is_shop_owner ? loggedInUser.user_id : id;
 
     const channel = supabase
       .channel("realtime-chat")
@@ -80,7 +94,7 @@ export default function PersonChat() {
           const isMatch =
             (updated.user_id === sender && updated.shop_user_id === receiver) ||
             (updated.user_id === receiver && updated.shop_user_id === sender);
-         console.log("hello")
+          
           if (isMatch && Array.isArray(updated.chat)) {
             setChat(updated.chat);
           }
@@ -91,7 +105,7 @@ export default function PersonChat() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [id, User?.user_id, User?.is_shop_owner]);
+  }, [id, loggedInUser?.user_id, loggedInUser?.is_shop_owner]);
 
   const handleSendMessage = async () => {
     if (newMessage.trim() === "") return;
@@ -99,16 +113,16 @@ export default function PersonChat() {
     const newMessageData = {
       message: newMessage,
       timestamp: getFormattedTimestamp(),
-      sender: User?.user_id,
+      sender: loggedInUser?.user_id,
     };
 
     const updatedChat = [...chat, newMessageData];
     setChat(updatedChat);
 
-    if (User?.is_shop_owner) {
-      await setChatDB(id, User?.user_id, updatedChat);
+    if (loggedInUser?.is_shop_owner) {
+      await setChatDB(id, loggedInUser?.user_id, updatedChat);
     } else {
-      await setChatDB(User?.user_id, id, updatedChat);
+      await setChatDB(loggedInUser?.user_id, id, updatedChat);
     }
 
     setNewMessage("");
@@ -121,15 +135,15 @@ export default function PersonChat() {
         <div className="flex flex-col space-y-4">
           {chat?.length > 0 &&
             chat.map((message, index) => {
-              const isSender = message.sender === User?.user_id;
-              const profileImage = isSender ? User?.profile_image : user?.profile_image;
+              const isSender = message.sender === loggedInUser?.user_id;
+              const profileImage = isSender ? loggedInUser?.profile_image : user?.profile_image;
 
               return (
                 <div key={index} className={`flex items-start space-x-3 ${isSender ? "flex-row-reverse" : ""}`}>
                   <div className="w-10 h-10 flex items-center justify-center">
                     <Image
                       src={profileImage || "/profile_placeholder.png"}
-                      alt={isSender ? "You" : user?.email}
+                      alt={isSender ? "You" : user?.email as string}
                       width={300}
                       height={300}
                       className="w-full h-full rounded-full object-cover"
@@ -139,7 +153,7 @@ export default function PersonChat() {
                     <div className={`p-3 rounded-lg max-w-md ${isSender ? "bg-yellow-200" : "bg-yellow-300"}`}>
                       <p>{message.message}</p>
                     </div>
-                    <span className="text-xs text-gray-500 mt-1">{message?.timestamp}</span>
+                    <span className="text-xs text-gray-500 mt-1">{message.timestamp}</span>
                   </div>
                 </div>
               );
