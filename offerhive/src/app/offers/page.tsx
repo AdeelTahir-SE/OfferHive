@@ -72,7 +72,7 @@ export default function Offers() {
         }
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 w-full max-w-4xl">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 items-center justify-center w-full max-w-4xl">
        
         
         {offers?.map((offer, index) => (
