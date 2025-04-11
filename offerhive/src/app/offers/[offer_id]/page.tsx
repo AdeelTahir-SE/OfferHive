@@ -94,7 +94,7 @@ console.log(user)
           Available Offers
         </h2>
         <div className="flex flex-wrap justify-center gap-6">
-          {shop.offers.map((offer, index) => (
+          {shop?.offers.map((offer, index:number) => (
             <div
             key={index}
             className="bg-white rounded-xl shadow-md overflow-hidden w-80 border border-gray-200"
@@ -175,52 +175,3 @@ console.log(user)
     </section>
   );
 }
-
-// const shop: Shop = {
-//     shop_desc: "A trendy boutique offering exclusive fashion and accessories.",
-//     shop_title: "StyleHub",
-//     contact_info: "+1-234-567-890",
-//     links: ["https://stylehub.com", "https://instagram.com/stylehub"],
-//     shop_images: ["/offer1.jpeg", "/offer1.jpeg", "/offer1.jpeg", "/offer1.jpeg"],
-//     shop_tags: ["fashion", "trendy", "boutique", "sale"],
-//     shop_address: "123 Fashion Avenue, New York, NY",
-//     offers: [
-//       {
-//         starts_at: "2025-04-01T09:00:00Z",
-//         valid_uptill: "2025-04-30T23:59:59",
-//         image: "/offer1.jpeg",
-//         offer_desc: "Enjoy 30% off on all new summer arrivals. Limited time only!",
-//         offer_title: "Summer Splash Sale",
-//       },
-//       {
-//         starts_at: "2025-05-01T09:00:00Z",
-//         valid_uptill: "2025-05-15T23:59:59",
-//         image: "/offer1.jpeg",
-//         offer_desc: "Buy one get one free on selected items!",
-//         offer_title: "BOGO Bonanza",
-//       },
-
-//       {
-//         starts_at: "2025-05-01T09:00:00Z",
-//         valid_uptill: "2025-05-15T23:59:59",
-//         image: "/offer1.jpeg",
-//         offer_desc: "Buy one get one free on selected items!",
-//         offer_title: "BOGO Bonanza",
-//       },
-
-//       {
-//         starts_at: "2025-05-01T09:00:00Z",
-//         valid_uptill: "2025-05-15T23:59:59",
-//         image: "/offer1.jpeg",
-//         offer_desc: "Buy one get one free on selected items!",
-//         offer_title: "BOGO Bonanza",
-//       },
-//       {
-//         starts_at: "2025-05-01T09:00:00Z",
-//         valid_uptill: "2025-05-15T23:59:59",
-//         image: "/offer1.jpeg",
-//         offer_desc: "Buy one get one free on selected items!",
-//         offer_title: "BOGO Bonanza",
-//       },
-//     ],
-//   };

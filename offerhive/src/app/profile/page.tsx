@@ -25,7 +25,7 @@ export default function Profile() {
     try {
         setLoading(true)
         await signOut()
-        dispatch(setUser({ user_id: "", email: "", profile_image: "/prfoile_image.png", is_shop_owner: false })); // Reset user state
+        dispatch(setUser({ user_id: "", email: "", profile_image: "/prfoile_image.png", is_shop_owner: false,joined_groups:[],subscribed_groups:[] })); // Reset user state
         setMessage("Successfully logged out.")
         setTimeout(() => {
             router.push("/logIn") 

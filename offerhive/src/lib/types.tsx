@@ -6,6 +6,9 @@ export interface Offer {
   offer_desc: string;
   offer_title: string;
   offer_id: string;
+
+
+  
 }
 
 export interface Shop {
@@ -17,6 +20,7 @@ export interface Shop {
   shop_images: string[];
   shop_tags: string[];
   shop_address: string;
+  offers:Offer[]
 }
 export interface UserShop {
   user_id: string;

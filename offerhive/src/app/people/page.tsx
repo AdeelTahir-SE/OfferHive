@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 export default function People() {
   const [chat, setChat] = useState<any>([]);
   const user = useSelector((state: any) => state?.user);
-  const fetchChat = async (user_id) => {
+  const fetchChat = async (user_id:string) => {
     const chats = await chatWithShopOwners(user_id);
     console.log(chats)
     setChat(chats);
@@ -26,7 +26,7 @@ export default function People() {
         {chat.length === 0 ? (
           <p className="text-center text-gray-600">No messages yet.</p>
         ) : (
-          chat.map((message, index) => (
+          chat.map((message, index:number) => (
             <Link href={`/people/${message?.user_id}`} key={index}>
               <div
                 key={index}

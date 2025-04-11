@@ -124,35 +124,35 @@ export async function getChat(user_id: string, shop_user_id: string) {
   return data; // Return the fetched data
 }
 
-export async function chatListener(
-  user_id: string,
-  shop_user_id: string,
-  handleNewChat: (message: any) => void
-) {
-  console.log(user_id, shop_user_id, "broadcasting");
-  const channel = supabase
-    .channel("custom-chat-channel")
-    .on(
-      "postgres_changes",
-      {
-        event: "*",
-        schema: "public",
-        table: "Chat",
-        filter: `user_id=eq.${user_id},shop_user_id=eq.${shop_user_id}`,
-      },
-      (payload) => {
-        console.log("Change received!", payload);
-        if (payload?.new?.chat) {
-          handleNewChat(payload.new?.chat);
-        }
-      }
-    )
-    .subscribe();
+// export async function chatListener(
+//   user_id: string,
+//   shop_user_id: string,
+//   handleNewChat: (message: any) => void
+// ) {
+//   console.log(user_id, shop_user_id, "broadcasting");
+//   const channel = supabase
+//     .channel("custom-chat-channel")
+//     .on(
+//       "postgres_changes",
+//       {
+//         event: "*",
+//         schema: "public",
+//         table: "Chat",
+//         filter: `user_id=eq.${user_id},shop_user_id=eq.${shop_user_id}`,
+//       },
+//       (payload) => {
+//         console.log("Change received!", payload);
+//         if (payload?.new?.chat) {
+//           handleNewChat(payload.new?.chat);
+//         }
+//       }
+//     )
+//     .subscribe();
 
-  console.log("chadasdasdsadasnnel", channel);
+//   console.log("chadasdasdsadasnnel", channel);
 
-  return channel;
-}
+//   return channel;
+// }
 
 export async function setChatDB(
   user_id: string,

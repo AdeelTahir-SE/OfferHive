@@ -38,7 +38,7 @@ export async function setClicks(user_id: string, clicks: Click[]) {
   return data;
 }
 
-export async function getLatestMessages(user_id) {
+export async function getLatestMessages(user_id:string) {
   const { data, error } = await supabase
     .from(`Chat`)
     .select(

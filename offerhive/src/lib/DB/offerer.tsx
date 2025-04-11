@@ -1,3 +1,4 @@
+import { Offer } from "../types";
 import { supabase } from "./db";
 
 export async function getOfferers(counter: number) {
@@ -217,7 +218,7 @@ export async function deleteOffer(offer_id: string) {
   }
   return data;
 }
-export async function createOffer(offer) {
+export async function createOffer(offer:Offer) {
   console.log("offer to be created", offer);
   const { data, error } = await supabase
     .from("Offers")
