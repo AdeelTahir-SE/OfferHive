@@ -27,7 +27,7 @@ function getFormattedTimestamp() {
 export default function PersonChat() {
   const [chat, setChat] = useState<any[]>([]);
   const [newMessage, setNewMessage] = useState("");
-  const [user, setUser] = useState<{ profile_image: string|null, email: string|null }>({ profile_image: "", email: "" });
+  const [user, setUser] = useState<{ profile_image: any, email: any}>({ profile_image: "", email: "" });
   const { id }: { id: string } = useParams();
   const User = useSelector((state: RootState) => state.user);
 
