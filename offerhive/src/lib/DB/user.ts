@@ -1,3 +1,4 @@
+import { Provider } from "react";
 import { supabase } from "./db";
 import { RealtimeChannel } from "@supabase/supabase-js";
 export async function signUp(email: string, password: string) {
@@ -57,18 +58,18 @@ export async function signOut() {
     return true;
   }
 }
-export async function signInWithOAuth(provider: string) {
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: provider,
-  });
-  if (error) {
-    console.log("Error signing in with OAuth:", error.message);
-    return null;
-  } else {
-    console.log("User signed in with OAuth:", data);
-    return data;
-  }
-}
+// export async function signInWithOAuth(provider) {
+//   const { data, error } = await supabase.auth.signInWithOAuth({
+//     provider: provider,
+//   });
+//   if (error) {
+//     console.log("Error signing in with OAuth:", error.message);
+//     return null;
+//   } else {
+//     console.log("User signed in with OAuth:", data);
+//     return data;
+//   }
+// }
 
 export async function getUserwithId(user_id: string) {
   const { data } = await supabase
