@@ -20,7 +20,7 @@ export default function Login() {
     const password = (document.getElementById("password") as HTMLInputElement)
       .value;
 
-    const { userData:SimpleUser, signUpError, insertError } = await signUp(
+    const { userData, signUpError, insertError } = await signUp(
       email,
       password
     );

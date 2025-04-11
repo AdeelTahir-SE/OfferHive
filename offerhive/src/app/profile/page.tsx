@@ -80,9 +80,9 @@ export default function Profile() {
       {/* User Info */}
       <section className="text-center">
         <h1 className="text-3xl font-bold mb-2">{User?.email}</h1>
-        <p className="text-gray-600 text-lg">
+        {/* <p className="text-gray-600 text-lg">
           Account created on {new Date(User?.created_at).toDateString()}
-        </p>
+        </p> */}
       </section>
       <section className="flex flex-col items-center justify-center ">
             <section className="flex flex-col items-center justify-center gap-6 px-8 py-10 border rounded-2xl shadow-lg bg-gray-50 w-[400px]">
