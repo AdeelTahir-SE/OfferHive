@@ -45,5 +45,4 @@ export const userSlice = createSlice({
 });
 
 export const { setProfileImage,setUser ,setIsShopOwner} = userSlice.actions;
-
 export default userSlice.reducer;

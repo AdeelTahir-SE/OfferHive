@@ -8,8 +8,10 @@ import { useDispatch } from "react-redux";
 import { signOut } from "@/lib/DB/user";
 import { setUser } from "@/lib/redux/user/userSlice";
 import { useRouter } from "next/navigation";
+import { RootState } from "@/lib/redux/store";
+
 export default function Profile() {
-  const User = useSelector((state: any) => state?.user);
+  const User = useSelector((state: RootState) => state?.user);
   console.log(User)
   const [preview, setPreview] = useState(User?.profile_image);
   const [uploading, setUploading] = useState(false);

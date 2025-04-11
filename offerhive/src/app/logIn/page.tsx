@@ -88,7 +88,7 @@ export default function Login() {
 
           <OAuthSection />
           <p className="text-center text-gray-600 mt-4">
-            Don't have an account?
+            Don&apos;t have an account?
             <Link href="/signUp" className="text-yellow-500 font-semibold hover:underline">
               Sign Up
             </Link>

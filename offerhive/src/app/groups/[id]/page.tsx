@@ -7,14 +7,18 @@ import { useSelector } from "react-redux";
 import { subscribeGroup, joinGroup } from "@/lib/DB/group";
 import Image from "next/image";
 import Link from "next/link";
-export default function GroupPage({ params }: { params: { id: string } }) {
+import { useParams } from "next/navigation";
+import { RootState } from "@/lib/redux/store";
+
+export default function GroupPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [joinStatus, setJoinStaus] = useState("unjoined");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [group, setGroup] = useState<GroupUnique | null>(null);
-  const { id } = React.use(params);
-  const user = useSelector((state: any) => state.user);
+  const { id }:{id:string} =useParams()
+
+  const user = useSelector((state: RootState) => state.user);
   console.log("user", user);
   const fetchGroupShops = async () => {
     try {
@@ -35,6 +39,7 @@ export default function GroupPage({ params }: { params: { id: string } }) {
       }
     } catch (err) {
       setError("Error fetching group shops. Please try again later.");
+      console.log(err)
     } finally {
       setIsLoading(false);
     }

@@ -82,12 +82,12 @@ export async function getShopById(id: string) {
   return shop;
 }
 export async function createShop(userid: string, shop: any, images: File[]) {
-  const { data: deletedChat, error: chatDeleteError } = await supabase
+  const { error: chatDeleteError } = await supabase
     .from("Chat")
     .delete()
     .eq("user_id", userid);
 
-    const { data: UserUpdatedata, error: UserUpdateError } = await supabase
+    const {  error: UserUpdateError } = await supabase
     .from("User")
     .update({ is_shop_owner: true })
     .eq("user_id", userid);
@@ -101,7 +101,7 @@ export async function createShop(userid: string, shop: any, images: File[]) {
   for (let i = 0; i < images.length; i++) {
     const filepath = `shop_pics/${userid}/${images[i].name}`;
 
-    const { data, error } = await supabase.storage
+    const {  error } = await supabase.storage
       .from("images")
       .upload(filepath, images[i], {
         cacheControl: "3600",
@@ -272,7 +272,7 @@ export async function deleteShop(id: string) {
 
 export async function uploadImage(file: File, userId: string) {
   const filepath = `shop_pics/${userId}/${file.name}`;
-  const { data, error } = await supabase.storage
+  const {  error } = await supabase.storage
     .from("images")
     .upload(filepath, file, {
       cacheControl: "3600",
@@ -301,7 +301,7 @@ export async function uploadOfferImage(
   offerId: string
 ) {
   const filepath = `offer_pics/${userId}/${offerId}/${file.name}`;
-  const { data, error } = await supabase.storage
+  const {  error } = await supabase.storage
     .from("images")
     .upload(filepath, file, {
       cacheControl: "3600",

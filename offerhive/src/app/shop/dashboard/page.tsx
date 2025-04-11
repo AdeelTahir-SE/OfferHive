@@ -7,11 +7,12 @@ import { useSelector } from "react-redux";
 import { useState,useEffect } from "react";
 import { Message } from "@/lib/types";
 import Loader from "@/components/loader";
+import { RootState } from "@/lib/redux/store";
 export default function Dashboard() {
   const[clicksArray,setClicksArray]=useState([]);
   const [latestMessagesArray,setLatestMessagesArray ]=useState<Message[]>([]);
   const [loading,setLoading]=useState(true)
-  const User= useSelector((state: any) => state.user);
+  const User= useSelector((state: RootState) => state.user);
   async function getClicksInfo(){
     const { clicks } = await getClicks(User?.user_id);
     setClicksArray(clicks);
@@ -26,7 +27,7 @@ export default function Dashboard() {
     getClicksInfo();
     getLatestMessagesInfo();
     setLoading(false)
-  },[])
+  },[    getClicksInfo(),    getLatestMessagesInfo()  ])
    
   if(loading){
      <section className=" flex items-center justify-center h-screen w-screen"><Loader size={3}/></section>
@@ -51,7 +52,7 @@ export default function Dashboard() {
             🚧 Coming Soon
           </h1>
           <p className="text-gray-700 text-lg">
-            We're working hard to bring you something amazing. Stay tuned!
+            We&apos;re working hard to bring you something amazing. Stay tuned!
           </p>
         </section>
       </div>

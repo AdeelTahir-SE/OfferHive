@@ -1,10 +1,11 @@
 "use client";
+import { RootState } from "@/lib/redux/store";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 
 export default function Header() {
-  const user = useSelector((state:any) => state.user);
+  const user = useSelector((state:RootState) => state.user);
   console.log("owner", user?.is_shop_owner);
 
   return (

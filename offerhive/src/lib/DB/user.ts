@@ -71,7 +71,7 @@ export async function signInWithOAuth(provider: string) {
 }
 
 export async function getUserwithId(user_id: string) {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("User")
     .select("profile_image,email")
     .eq("user_id", user_id)
@@ -159,7 +159,7 @@ export async function setChatDB(
   shop_user_id: string,
   chat: any[]
 ) {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from("Chat")
     .update({ chat: chat })
     .eq("user_id", user_id)
@@ -188,7 +188,7 @@ export async function setProfileImageDB(file: File, user_id: string) {
   if (!user_id) return;
   const filepath = `profile_pics/${user_id}/${file.name}`;
 
-  const { data: ImageUpload, error: uploadError } = await supabase.storage
+  const { data, error: uploadError } = await supabase.storage
     .from("images")
     .upload(filepath, file, {
       cacheControl: "3600",

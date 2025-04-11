@@ -11,13 +11,14 @@ import { setClicks, getClicks } from "@/lib/DB/shop";
 import { Click } from "@/lib/types";
 import Loader from "@/components/loader";
 import Image from "next/image";
+import { RootState } from "@/lib/redux/store";
+
 export default function OfferDetails() {
   const [shop, setShop] = useState<Shop | null>(null);
   const [loading, setLoading] = useState(true);
   const { offer_id }: { offer_id: string } = useParams();
-  const user = useSelector((state: any) => state.user);
-console.log(user)
-  async function clicksHandler(offer_id) {
+  const user = useSelector((state: RootState) => state.user);
+  async function clicksHandler(offer_id:string) {
     const { clicks }: { clicks: Click[] } = await getClicks(offer_id);
     const today = new Date().toISOString().split("T")[0];
     if (clicks?.length == 0) {

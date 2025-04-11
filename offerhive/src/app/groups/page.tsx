@@ -24,6 +24,7 @@ export default function Groups() {
       }
     } catch (err) {
       setError("Error fetching groups. Please try again later.");
+      console.log(err)
     } finally {
       setIsFetching(false);
     }

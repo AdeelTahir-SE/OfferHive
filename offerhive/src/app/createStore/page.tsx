@@ -4,9 +4,10 @@ import { createShop } from "@/lib/DB/offerer";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { setIsShopOwner } from "@/lib/redux/user/userSlice";
-import { UseDispatch } from "react-redux";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { RootState } from "@/lib/redux/store";
+
 export interface Shop {
   shop_desc: string;
   shop_title: string;
@@ -15,6 +16,7 @@ export interface Shop {
   shop_images: string[];
   shop_tags: string[];
   shop_address: string;
+  
 }
 
 export default function CreateStore() {
@@ -34,8 +36,7 @@ export default function CreateStore() {
   const [error, setError] = useState(""); // Error state
   const dispatch = useDispatch();
   const router=useRouter()
-  const user = useSelector((state: any) => state.user);
-  console.log("user", user);
+  const user = useSelector((state: RootState) => state.user);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>

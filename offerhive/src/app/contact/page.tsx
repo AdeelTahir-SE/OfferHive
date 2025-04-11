@@ -20,7 +20,7 @@ export default function Contact() {
     }
 
     setIsSubmitting(true);
-    const { data, error } = await sendMessage(name, email, message);
+    const {  error } = await sendMessage(name, email, message);
 
     if (error) {
       console.error("Error sending message:", error);

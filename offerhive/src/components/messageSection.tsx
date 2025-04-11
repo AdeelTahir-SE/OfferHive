@@ -2,40 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import Message from "@/lib/types";
+import {Message} from "@/lib/types";
 
-const dummyMessages: Message[] = [
-  {
-    message: "Hi there! I just placed an order.",
-    profile_image: "/avatar.jpg", // Make sure this image exists in your public/ folder
-    email: "user1@example.com",
-    user_id: "12312312",
-  },
-  {
-    message: "Can you confirm my payment?",
-    profile_image: "/avatar.jpg",
-    email: "user2@example.com",
-    user_id: "12312312",
-  },
-  {
-    message: "Order received, thank you!",
-    profile_image: "/avatar.jpg",
-    email: "user3@example.com",
-    user_id: "12312312",
-  },
-  {
-    message: "Order received, thank you!",
-    profile_image: "/avatar.jpg",
-    email: "user3@example.com",
-    user_id: "12312312",
-  },
-  {
-    message: "Order received, thank you!",
-    profile_image: "/avatar.jpg",
-    email: "user3@example.com",
-    user_id: "12312312",
-  },
-];
+
 
 export default function MessageSection({ list }: { list: Message[] }) {
   console.log("list", list);

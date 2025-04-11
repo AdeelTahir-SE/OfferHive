@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import React from "react";
+import { RootState } from "@/lib/redux/store";
 
 function getFormattedTimestamp() {
   const now = new Date();
@@ -28,7 +29,7 @@ export default function PersonChat() {
   const [newMessage, setNewMessage] = useState("");
   const [user, setUser] = useState({ profile_image: "", email: "" });
   const { id }: { id: string } = useParams();
-  const User = useSelector((state: any) => state.user);
+  const User = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
     const fetchUser = async () => {

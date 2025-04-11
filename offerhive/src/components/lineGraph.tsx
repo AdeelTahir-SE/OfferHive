@@ -9,20 +9,18 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import { GraphProps } from "@/lib/types";
 
-export default function LineGraph(data: any) {
-
-
-  if (!data?.data || !data?.data.length) {
-    console.log(data,"linegraph")
-    data = {
-      data: [
-        {
-          date: new Date().toLocaleDateString("en-CA"), 
-          clicks: 0,
-        },
-      ],
-    };
+// ✅ Typed and fixed LineGraph component
+export default function LineGraph({ data }: { data: GraphProps }) {
+  if (!data || data.length === 0) {
+    console.log(data, "linegraph");
+    data = [
+      {
+        date: new Date().toLocaleDateString("en-CA"),
+        clicks: 0,
+      },
+    ];
   }
 
   return (
@@ -33,7 +31,7 @@ export default function LineGraph(data: any) {
 
       <ResponsiveContainer width="100%" height="100%">
         <LineChart
-          data={data.data}
+          data={data}
           margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
         >
           <CartesianGrid strokeDasharray="3 3" />

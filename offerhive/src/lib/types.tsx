@@ -114,3 +114,20 @@ export interface Message  {
   user_id:string
   
 };
+
+export interface simpleUser{
+  user_id:string;
+  email: string;
+  profile_image: string
+  is_shop_owner:boolean
+  joined_groups: string[],
+  subscribed_groups: string[],
+}
+// In @/lib/types.ts
+export interface ClickData {
+  date: string;
+  clicks: number;
+}
+
+export type GraphProps = ClickData[];
+

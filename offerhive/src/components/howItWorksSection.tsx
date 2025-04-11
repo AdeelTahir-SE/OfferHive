@@ -54,7 +54,7 @@ export default function HowItWorksSection() {
               After signing up and signing in, you can chat directly with
               offerers and ask about their deals. <br />
               To start a chat, simply click on the chat button shown on the
-              right side of the offerer's shop page. This allows you to connect
+              right side of the offerer&apos;s shop page. This allows you to connect
               with them instantly and get more details about any offers that
               interest you.
             

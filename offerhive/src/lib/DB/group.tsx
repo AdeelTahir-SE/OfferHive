@@ -1,5 +1,4 @@
 import { supabase } from "./db";
-import { Group } from "../types";
 import { GroupUnique } from "../types";
 export async function getGroups(counter: number) {
   const rangeStart = counter * 10;

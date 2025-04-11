@@ -7,6 +7,7 @@ import { signUp } from "@/lib/DB/user";
 import { useDispatch } from "react-redux"; 
 import { setUser } from "@/lib/redux/user/userSlice";
 import Link from "next/link";
+import { simpleUser } from "@/lib/types";
 import WavySvg from "@/components/wavySvg";
 export default function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -19,7 +20,7 @@ export default function Login() {
     const password = (document.getElementById("password") as HTMLInputElement)
       .value;
 
-    const { userData, signUpError, insertError } = await signUp(
+    const { userData:SimpleUser, signUpError, insertError } = await signUp(
       email,
       password
     );
