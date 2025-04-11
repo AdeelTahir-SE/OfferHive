@@ -81,6 +81,20 @@ export async function getShopById(id: string) {
   return shop;
 }
 export async function createShop(userid: string, shop: any, images: File[]) {
+  const { data: deletedChat, error: chatDeleteError } = await supabase
+    .from("Chat")
+    .delete()
+    .eq("user_id", userid);
+
+    const { data: UserUpdatedata, error: UserUpdateError } = await supabase
+    .from("User")
+    .update({ is_shop_owner: true })
+    .eq("user_id", userid);
+   if(UserUpdateError){
+    console.log("User update error",UserUpdateError)
+    return null
+   }
+
   const imageurls: string[] = [];
 
   for (let i = 0; i < images.length; i++) {
@@ -139,13 +153,15 @@ export async function createShop(userid: string, shop: any, images: File[]) {
   if (!data) {
     console.log("error in creating analysis");
   }
-  
 
   if (shopError) {
     console.error("Error creating shop:", shopError);
     return { data: null, error: shopError };
   }
 
+  if (chatDeleteError) {
+    console.error("Error deleting chat:", chatDeleteError);
+  }
   return { data: shopData, error: shopError };
 }
 

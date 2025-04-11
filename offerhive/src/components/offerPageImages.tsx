@@ -11,24 +11,25 @@ import {
 export function ImagesSlider(props:{images:string[]}) {
     const {images}=props;
   return (
-    <Carousel className="w-4xl">
-      <CarouselContent>
-        {images.map((image, index) => (
-          <CarouselItem key={index} className="basis-1/3">
-            <div className="p-1">
-              <Image
-                className="text-4xl font-semibold "
-                src={image}
-                alt="oops error showing !"
-                width={300}
-                height={300}
-              />
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
-    </Carousel>
+    <Carousel className="w-full max-w-4xl mx-auto">
+    <CarouselContent>
+      {images?.map((image, index) => (
+        <CarouselItem key={index} className="w-full">
+          <div className="relative w-full h-72 overflow-hidden rounded-lg">
+            <Image
+              src={image || "/placeholder_deals.png"}
+              alt="Oops error showing"
+              layout="fill"
+              objectFit="cover"
+              className="rounded-lg"
+            />
+          </div>
+        </CarouselItem>
+      ))}
+    </CarouselContent>
+    <CarouselPrevious />
+    <CarouselNext />
+  </Carousel>
+  
   );
 }

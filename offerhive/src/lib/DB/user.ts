@@ -159,7 +159,6 @@ export async function setChatDB(
   shop_user_id: string,
   chat: any[]
 ) {
-
   const { data, error } = await supabase
     .from("Chat")
     .update({ chat: chat })
@@ -185,8 +184,8 @@ export async function removeChatListener(chatlistener: RealtimeChannel) {
 }
 
 export async function setProfileImageDB(file: File, user_id: string) {
-  console.log("user_id",user_id);
-  if(!user_id)return;
+  console.log("user_id", user_id);
+  if (!user_id) return;
   const filepath = `profile_pics/${user_id}/${file.name}`;
 
   const { data: ImageUpload, error: uploadError } = await supabase.storage
@@ -201,7 +200,9 @@ export async function setProfileImageDB(file: File, user_id: string) {
     return null;
   }
 
-  const { data: publicData } = supabase.storage.from("images").getPublicUrl(filepath);
+  const { data: publicData } = supabase.storage
+    .from("images")
+    .getPublicUrl(filepath);
   const publicURL = publicData?.publicUrl;
 
   if (!publicURL) {
@@ -209,15 +210,45 @@ export async function setProfileImageDB(file: File, user_id: string) {
     return null;
   }
 
-  const { data:uploadImage,error: updateError } = await supabase
+  const { data: uploadImage, error: updateError } = await supabase
     .from("User")
     .update({ profile_image: publicURL })
-    .eq("user_id", user_id).single();
-console.log(uploadImage)
+    .eq("user_id", user_id)
+    .single();
+  console.log(uploadImage);
   if (updateError) {
     console.error("Error updating user profile image:", updateError);
     return null;
   }
 
   return publicURL;
+}
+export async function chatWithShopOwners(user_id: string) {
+  const { data: chats, error: chatError } = await supabase
+    .from("Chat")
+    .select("shop_user_id")
+    .eq("user_id", user_id);
+
+  if (chatError) {
+    console.error("Error fetching chats:", chatError);
+    return [];
+  }
+
+  const shopUserIds = chats?.map(chat => chat.shop_user_id) || [];
+
+  if (shopUserIds.length === 0) {
+    return [];
+  }
+
+  const { data: shopOwners, error: userError } = await supabase
+    .from("User")
+    .select("*")
+    .in("user_id", shopUserIds);
+
+  if (userError) {
+    console.error("Error fetching shop owner data:", userError);
+    return [];
+  }
+
+  return shopOwners;
 }

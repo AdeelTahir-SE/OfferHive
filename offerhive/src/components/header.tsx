@@ -13,6 +13,10 @@ export default function Header() {
 
       <ul className="flex space-x-6 font-semibold items-center">
 
+       {user?.email&&!user?.is_shop_owner&& <li className="hover:text-white transition-colors">
+          <Link href="/people">People</Link>
+        </li>
+      }
         <li className="hover:text-white transition-colors">
           <Link href="/">Home</Link>
         </li>

@@ -48,7 +48,7 @@ export default function EditableImages({
       {localImages.map((image, index) => (
         <section
           key={index}
-          className="relative w-32 h-32 border border-gray-300 rounded-lg overflow-hidden"
+          className="relative w-60 h-60 border border-gray-300 rounded-lg overflow-hidden"
         >
           <Trash2
             className="absolute top-2 right-2 cursor-pointer text-red-500 hover:text-red-700 z-10"
@@ -59,12 +59,13 @@ export default function EditableImages({
             alt={`Image ${index + 1}`}
             layout="fill"
             objectFit="cover"
+            
           />
         </section>
       ))}
 
       {localImages.length < 5 && (
-        <label className="relative w-32 h-32 border border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition duration-200">
+        <label className="relative w-60 h-60 border border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition duration-200">
           {loading ? (
             <span className="text-gray-500 animate-pulse">Uploading...</span>
           ) : (

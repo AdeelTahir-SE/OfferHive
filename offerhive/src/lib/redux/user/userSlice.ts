@@ -27,6 +27,9 @@ export const userSlice = createSlice({
     setProfileImage: (state, action: PayloadAction<string>) => {
       state.profile_image = action.payload;
     },
+    setIsShopOwner:(state,action: PayloadAction<boolean>)=>{
+      state.is_shop_owner=action.payload;
+    },
     setUser(state, action: PayloadAction<userState>) {
       const { user_id, email, profile_image } = action.payload;
 
@@ -41,6 +44,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setProfileImage,setUser } = userSlice.actions;
+export const { setProfileImage,setUser ,setIsShopOwner} = userSlice.actions;
 
 export default userSlice.reducer;

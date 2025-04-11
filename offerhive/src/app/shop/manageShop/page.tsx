@@ -13,6 +13,8 @@ import EditableText from "@/components/editableText";
 import { useSelector } from "react-redux";
 import EditableImages from "@/components/editableImages";
 import EditableImage from "@/components/editableImage";
+import Loader from "@/components/loader";
+import Link from "next/link";
 
 export default function ManageShop() {
   const id = useSelector((state: any) => state.user.user_id);
@@ -81,10 +83,22 @@ export default function ManageShop() {
     const created = await createOffer(newOffer);
     setOffers([...offers, created]);
   };
-
-  if (loading) return <div className="text-center text-xl font-medium">Loading...</div>;
-  if (!shop) return <div className="text-center text-red-500 text-xl">Shop not found.</div>;
-
+ if(loading){
+  return <section className="h-screen w-screen bg-white flex items-center justify-center"><Loader size={12} /></section>
+ }
+  if (!shop){
+  return (
+    <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <h2 className="text-3xl text-red-500 font-bold mb-4">Shop Not Found</h2>
+      <p className="text-gray-600 mb-6">The shop you're looking for doesn't exist or has been removed.</p>
+      <Link href="/">
+        <button className="px-6 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition">
+          Go to Home
+        </button>
+      </Link>
+    </div>
+  );
+  }
   return (
     <section className="flex flex-col items-center justify-center p-6 max-w-6xl mx-auto">
       <h1 className="text-5xl text-center font-extrabold text-gray-800 mb-4">
@@ -117,50 +131,59 @@ export default function ManageShop() {
 
         <div className="flex flex-wrap justify-center gap-6">
           {offers.map((offer, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl shadow-md flex flex-col w-80 border border-gray-200"
-            >
-              <EditableImage
-                image={offer.image ?? ""}
-                user_id={id}
-                offer_id={offer.offer_id}
-                onChange={(image) => handleOfferUpdate(index, "image", image)}
-              />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  <EditableText
-                    text={offer.offer_title}
-                    onSave={(val) => handleOfferUpdate(index, "offer_title", val)}
-                  />
-                </h3>
-                <p className="text-gray-600 mb-2">
-                  <EditableText
-                    text={offer.offer_desc}
-                    onSave={(val) => handleOfferUpdate(index, "offer_desc", val)}
-                  />
-                </p>
-                <p className="text-sm text-gray-500">
-                  Valid:
-                  <EditableText
-                    text={offer.starts_at}
-                    onSave={(val) => handleOfferUpdate(index, "starts_at", val)}
-                  />
-                  Uptill:
-                  <EditableText
-                    text={offer.valid_uptill}
-                    onSave={(val) => handleOfferUpdate(index, "valid_uptill", val)}
-                  />
-                </p>
-
-                <button
-                  className="mt-3 text-red-500 hover:underline text-sm"
-                  onClick={() => handleDeleteOffer(index)}
-                >
-                  Delete Offer
-                </button>
-              </div>
-            </div>
+           <div
+           key={index}
+           className="bg-white rounded-xl shadow-md flex flex-col w-80 border border-gray-200 overflow-hidden"
+         >
+           {/* Image should fill full width of container */}
+             <EditableImage
+               image={offer.image ?? ""}
+               user_id={id}
+               offer_id={offer.offer_id}
+               onChange={(image) => handleOfferUpdate(index, "image", image)}
+             />
+         
+           <div className="p-4 flex flex-col gap-2">
+             <h3 className="text-xl font-semibold text-gray-800">
+               <EditableText
+                 text={offer.offer_title}
+                 onSave={(val) => handleOfferUpdate(index, "offer_title", val)}
+               />
+             </h3>
+         
+             <p className="text-gray-600 text-sm">
+               <EditableText
+                 text={offer.offer_desc}
+                 onSave={(val) => handleOfferUpdate(index, "offer_desc", val)}
+               />
+             </p>
+         
+             <div className="text-gray-500 text-sm space-y-1">
+               <p>
+                 <span className="font-medium">Valid From:</span>{" "}
+                 <EditableText
+                   text={offer.starts_at}
+                   onSave={(val) => handleOfferUpdate(index, "starts_at", val)}
+                 />
+               </p>
+               <p>
+                 <span className="font-medium">Valid Until:</span>{" "}
+                 <EditableText
+                   text={offer.valid_uptill}
+                   onSave={(val) => handleOfferUpdate(index, "valid_uptill", val)}
+                 />
+               </p>
+             </div>
+         
+             <button
+               className="mt-3 text-red-500 hover:underline text-sm self-start"
+               onClick={() => handleDeleteOffer(index)}
+             >
+               Delete Offer
+             </button>
+           </div>
+         </div>
+         
           ))}
           <button
             className="mt-6 px-4 py-2 bg-yellow-500 text-white rounded-md"
@@ -205,7 +228,7 @@ export default function ManageShop() {
       {shop?.shop_address && (
         <div className="flex flex-col items-center justify-center mt-10 w-full bg-gray-100 p-6 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Shop Address</h2>
-          <p className="text-gray-600 mb-2">
+          <p className="text-gray-600 font-extrabold text-3xl mb-2">
             <EditableText
               text={shop.shop_address}
               onSave={(val) => handleShopUpdate("shop_address", val)}
@@ -218,7 +241,7 @@ export default function ManageShop() {
       {shop?.contact_info && (
         <div className="flex flex-col items-center justify-center mt-10 w-full bg-gray-100 p-6 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Contact Info</h2>
-          <p className="text-lg text-gray-700 mb-1">
+          <p className=" font-extrabold text-3xl text-gray-700 mb-1">
             <EditableText
               text={shop.contact_info}
               onSave={(val) => handleShopUpdate("contact_info", val)}

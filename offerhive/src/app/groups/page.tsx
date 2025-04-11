@@ -4,6 +4,7 @@ import SearchBar from "@/components/searchBar";
 import GroupCard from "@/components/groupCard";
 import { getGroups, searchGroups } from "@/lib/DB/group";
 import SearchIcon from "@/components/searchIcon";
+import Loader from "@/components/loader";
 export default function Groups() {
   const [groups, setGroups] = useState<any[]>([]);
   const [counter, setCounter] = useState(0);
@@ -82,7 +83,7 @@ export default function Groups() {
             }          />
         ))}
       </section>
-      {isFetching && <p className="text-center mt-4">Loading more groups...</p>}
+      {isFetching && <section className=" flex items-center justify-center mt-4 mb-4"><Loader size={3}/></section>}
     </section>
   );
 }

@@ -4,6 +4,8 @@ import SearchBar from "@/components/searchBar";
 import OffererCard from "@/components/offererCard";
 import { searchOfferers, getOfferers } from "@/lib/DB/offerer";
 import SearchIcon from "@/components/searchIcon";
+import Loader from "@/components/loader";
+
 export default function Offers() {
   const [offers, setOffers] = useState<any[]>([]);
   const [counter, setCounter] = useState(0);
@@ -86,7 +88,7 @@ export default function Offers() {
         ))}
     </section>
 
-      {isFetching && <p className="text-center mt-4">Loading more offerers...</p>}
+      {isFetching && <section className=" flex items-center justify-center mt-4 mb-4"><Loader size={3}/></section>}
     </section>
   );
 }

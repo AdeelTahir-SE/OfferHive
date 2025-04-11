@@ -1,11 +1,9 @@
-import SideBar from "@/components/sideBar"
+import OptionsBar from "@/components/optionsBar"
 export default function Layout({children}: {children: React.ReactNode}) {
     return (
-        <section>
-            <SideBar/>
-            <section className="left-20 ">
+        <section className="flex flex-col items-center justify-center">
+            <OptionsBar/>
             {children}
-            </section>
         </section>
     )
 }

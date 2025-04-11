@@ -9,16 +9,16 @@ import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import { setClicks, getClicks } from "@/lib/DB/shop";
 import { Click } from "@/lib/types";
+import Loader from "@/components/loader";
+import Image from "next/image";
 export default function OfferDetails() {
   const [shop, setShop] = useState<Shop | null>(null);
   const [loading, setLoading] = useState(true);
   const { offer_id }: { offer_id: string } = useParams();
   const user = useSelector((state: any) => state.user);
-
+console.log(user)
   async function clicksHandler(offer_id) {
-    const { clicks }: { clicks: Click[]  } = await getClicks(
-     offer_id
-    );
+    const { clicks }: { clicks: Click[] } = await getClicks(offer_id);
     const today = new Date().toISOString().split("T")[0];
     if (clicks?.length == 0) {
       const newClick = {
@@ -68,10 +68,9 @@ export default function OfferDetails() {
     clicksHandler(offer_id);
     fetchShop();
   }, [offer_id]);
-
-  if (loading) {
-    return <div className="text-center text-xl font-medium">Loading...</div>;
-  }
+   if(loading){
+    return <section className="h-screen w-screen bg-white flex items-center justify-center"><Loader size={12} /></section>
+   }
 
   if (!shop) {
     return (
@@ -97,25 +96,32 @@ export default function OfferDetails() {
         <div className="flex flex-wrap justify-center gap-6">
           {shop.offers.map((offer, index) => (
             <div
-              key={index}
-              className="bg-white rounded-xl shadow-md overflow-hidden w-80 border border-gray-200"
-            >
-              <img
-                src={offer?.image}
-                alt={offer.offer_title}
-                className="w-full h-48 object-cover"
+            key={index}
+            className="bg-white rounded-xl shadow-md overflow-hidden w-80 border border-gray-200"
+          >
+            <div className="relative w-full h-72">
+              <Image
+                src={offer?.image || "/placeholder_deals.png"}
+                alt={offer?.offer_title}
+                layout="fill"
+                objectFit="cover"
+                className="rounded-lg"
+                priority
               />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                  {offer.offer_title}
-                </h3>
-                <p className="text-gray-600 mb-2">{offer.offer_desc}</p>
-                <p className="text-sm text-gray-500">
-                  Valid: {new Date(offer.starts_at).toLocaleDateString()} -{" "}
-                  {new Date(offer.valid_uptill).toLocaleDateString()}
-                </p>
-              </div>
             </div>
+            <div className="p-4">
+              <h3 className="text-xl font-semibold text-wrap text-gray-800 mb-2">
+                {offer.offer_title}
+              </h3>
+              <p className="text-gray-600 mb-2 break-words max-h-20 overflow-hidden">
+                {offer.offer_desc}
+              </p>
+              <p className="text-sm text-gray-500">
+                Valid: {offer.starts_at} - {offer.valid_uptill}
+              </p>
+            </div>
+          </div>
+          
           ))}
         </div>
       </div>
@@ -146,13 +152,7 @@ export default function OfferDetails() {
         <p className="text-lg font-bold text-gray-700 mb-1">
           Phone: {shop.contact_info}
         </p>
-        {user && user?.is_shop_owner == "false" && (
-          <Link href={`/people/${shop?.user_id}`} className="">
-            <button className="rounded-xl bg-yellow-500 hover:bg-yellow-400 cursor-pointer p-4 text-xl">
-              Chat with Seller
-            </button>
-          </Link>
-        )}
+        
         {shop.links?.map((link, index) => (
           <a
             key={index}
@@ -164,6 +164,13 @@ export default function OfferDetails() {
             {link}
           </a>
         ))}
+        {user && !user?.is_shop_owner  && (
+          <Link href={`/people/${shop?.user_id}`} className="">
+            <button className="rounded-xl bg-yellow-500 mt-4 hover:bg-yellow-400 cursor-pointer p-4 text-xl">
+              Chat with Seller
+            </button>
+          </Link>
+        )}
       </div>
     </section>
   );
