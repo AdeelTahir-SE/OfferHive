@@ -1,24 +1,30 @@
-"use client"
+"use client";
+
 import { BackgroundLines } from "./backgroundLines";
 import { useRouter } from "next/navigation";
+
 export default function HeroSection() {
-  const router=useRouter()
+  const router = useRouter();
+
   const handleButtonClick = () => {
     router.push("/offers");
   };
+
   return (
     <BackgroundLines className="">
-      <section className="flex flex-col items-center justify-center text-center mt-12 px-4 py-20 bg-white">
-        <h1 className="text-4xl md:text-5xl font-bold max-w-3xl mb-6 leading-tight z-10 relative">
-          Discover the Best deals in Universities and even at outside
+      <section className="flex flex-col items-center justify-center text-center px-4 py-20 sm:py-24 md:py-32 bg-white">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold max-w-2xl sm:max-w-3xl mb-6 leading-tight z-10 relative">
+          Discover the Best Deals in Universities and Beyond
         </h1>
-        <p className="text-lg text-gray-600 max-w-xl mb-8 relative z-10">
-          Explore exclusive deals, events, and communities especially for
-          students.
+        <p className="text-base sm:text-lg text-gray-600 max-w-md sm:max-w-xl mb-8 relative z-10">
+          Explore exclusive deals, events, and communities especially for students.
         </p>
-          <button className="px-6 py-3 mt-8 z-10 cursor-pointer rounded-2xl bg-yellow-500 hover:bg-yellow-400 text-black font-semibold transition duration-200 "onClick={handleButtonClick}>
-            Browse Offers
-          </button>
+        <button
+          className="px-6 py-3 mt-2 sm:mt-8 z-10 cursor-pointer rounded-2xl bg-yellow-500 hover:bg-yellow-400 text-black font-semibold transition duration-200"
+          onClick={handleButtonClick}
+        >
+          Browse Offers
+        </button>
       </section>
     </BackgroundLines>
   );
