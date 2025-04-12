@@ -7,9 +7,8 @@ import { signUp } from "@/lib/DB/user";
 import { useDispatch } from "react-redux"; 
 import { setUser } from "@/lib/redux/user/userSlice";
 import Link from "next/link";
-import { simpleUser } from "@/lib/types";
 import WavySvg from "@/components/wavySvg";
-export default function Login() {
+export default function SignUp() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState("");
   const router = useRouter();
