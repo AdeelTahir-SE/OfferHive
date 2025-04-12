@@ -3,20 +3,41 @@ import { RootState } from "@/lib/redux/store";
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { Menu, X } from "lucide-react"; // you can replace with any icons
+import { useEffect, useRef, useState } from "react";
+import { Menu, X } from "lucide-react";
 
 export default function Header() {
   const user = useSelector((state: RootState) => state.user);
   const [menuOpen, setMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLUListElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(event.target as Node) &&
+        buttonRef.current &&
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <nav className="bg-yellow-500 text-black p-4 flex justify-between items-center z-50 relative">
       <div className="flex items-center justify-between w-full md:w-auto">
         <Image src="/logo.svg" alt="logo" width={60} height={60} />
         <button
+          ref={buttonRef}
           onClick={toggleMenu}
           className="md:hidden ml-auto focus:outline-none"
         >
@@ -25,6 +46,7 @@ export default function Header() {
       </div>
 
       <ul
+        ref={menuRef}
         className={`${
           menuOpen ? "block" : "hidden"
         } absolute top-full left-0 w-full bg-yellow-500 flex flex-col items-start p-4 gap-4 font-semibold md:static md:flex md:flex-row md:items-center md:space-x-6 md:p-0 md:gap-0 md:w-auto`}

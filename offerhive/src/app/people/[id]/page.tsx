@@ -8,7 +8,6 @@ import Image from "next/image";
 import React from "react";
 import { RootState } from "@/lib/redux/store";
 
-// Define User type to avoid any implicit any
 interface User {
   profile_image: string;
   email: string;
@@ -94,7 +93,7 @@ export default function PersonChat() {
           const isMatch =
             (updated.user_id === sender && updated.shop_user_id === receiver) ||
             (updated.user_id === receiver && updated.shop_user_id === sender);
-          
+
           if (isMatch && Array.isArray(updated.chat)) {
             setChat(updated.chat);
           }
@@ -129,31 +128,43 @@ export default function PersonChat() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center bg-gray-100 min-h-screen p-6">
-      <p className="text-3xl mb-6">Chat with {user?.email}</p>
-      <div className="p-4 rounded-lg w-full max-w-3xl h-auto mb-4 bg-white shadow">
-        <div className="flex flex-col space-y-4">
+    <section className="flex flex-col items-center justify-center bg-gray-100 min-h-screen p-4 sm:p-6">
+      <p className="text-2xl sm:text-3xl mb-4 text-center">
+        Chat with {user?.email}
+      </p>
+
+      <div className="bg-white shadow rounded-lg w-full max-w-4xl h-full mb-4 p-4 sm:p-6 overflow-hidden">
+        <div className="flex flex-col space-y-4 max-h-[75vh] overflow-y-auto pr-2">
           {chat?.length > 0 &&
             chat.map((message, index) => {
               const isSender = message.sender === loggedInUser?.user_id;
               const profileImage = isSender ? loggedInUser?.profile_image : user?.profile_image;
 
               return (
-                <div key={index} className={`flex items-start space-x-3 ${isSender ? "flex-row-reverse" : ""}`}>
-                  <div className="w-10 h-10 flex items-center justify-center">
+                <div
+                  key={index}
+                  className={`flex items-start ${isSender ? "flex-row-reverse" : "flex-row"} gap-3`}
+                >
+                  <div className="min-w-[2.5rem] min-h-[2.5rem] w-10 h-10">
                     <Image
                       src={profileImage || "/profile_placeholder.png"}
                       alt={isSender ? "You" : user?.email as string}
-                      width={300}
-                      height={300}
-                      className="w-full h-full rounded-full object-cover"
+                      width={40}
+                      height={40}
+                      className="rounded-full object-cover"
                     />
                   </div>
-                  <div className="flex flex-col">
-                    <div className={`p-3 rounded-lg max-w-md ${isSender ? "bg-yellow-200" : "bg-yellow-300"}`}>
-                      <p>{message.message}</p>
+                  <div className="flex flex-col max-w-[75%] sm:max-w-md">
+                    <div
+                      className={`p-3 rounded-lg break-words ${
+                        isSender ? "bg-yellow-200" : "bg-yellow-300"
+                      }`}
+                    >
+                      <p className="text-sm sm:text-base">{message.message}</p>
                     </div>
-                    <span className="text-xs text-gray-500 mt-1">{message.timestamp}</span>
+                    <span className="text-xs text-gray-500 mt-1">
+                      {message.timestamp}
+                    </span>
                   </div>
                 </div>
               );
@@ -161,17 +172,17 @@ export default function PersonChat() {
         </div>
       </div>
 
-      <div className="flex w-full max-w-3xl items-center space-x-4">
+      <div className="flex w-full max-w-4xl flex-col sm:flex-row gap-3">
         <input
           type="text"
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
           placeholder="Type a message..."
-          className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
+          className="flex-1 p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-500"
         />
         <button
           onClick={handleSendMessage}
-          className="bg-yellow-500 text-white p-3 rounded-lg hover:bg-yellow-600"
+          className="bg-yellow-500 text-white px-6 py-3 rounded-lg hover:bg-yellow-600"
         >
           Send
         </button>

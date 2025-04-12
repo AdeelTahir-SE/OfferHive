@@ -12,34 +12,37 @@ export default function Offers() {
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [hasMore, setHasMore] = useState(true);
 
   const fetchOffers = useCallback(async () => {
+    if (!hasMore) return;
     setIsFetching(true);
     try {
       const data = searchTerm
         ? await searchOfferers(searchTerm, counter)
         : await getOfferers(counter);
 
-      if (data) {
+      if (data&&data?.length > 0) {
         setOffers((prev) => [...prev, ...data]);
+      } else {
+        setHasMore(false); // Stop fetching if no data
       }
     } catch (err) {
       setError("Error fetching offers. Please try again later.");
     } finally {
       setIsFetching(false);
     }
-  }, [searchTerm, counter]);
+  }, [searchTerm, counter, hasMore]);
 
-  // Fetch on counter/searchTerm change
   useEffect(() => {
     fetchOffers();
   }, [fetchOffers]);
 
   const handleScroll = () => {
-    if(offers.length === 0) return; 
+    if (offers.length === 0 || isFetching || !hasMore) return;
+
     if (
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 100 &&
-      !isFetching
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
     ) {
       setCounter((prev) => prev + 1);
     }
@@ -48,12 +51,13 @@ export default function Offers() {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [isFetching]);
+  }, [isFetching, hasMore, offers]);
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
     setOffers([]);
-    setCounter(0); 
+    setCounter(0);
+    setHasMore(true); // Reset on new search
   };
 
   return (
@@ -62,19 +66,17 @@ export default function Offers() {
       <p className="text-lg">Check out amazing offers by different Offerers!</p>
 
       <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
+
       {offers.length === 0 && !isFetching && (
-          
-          <section className="flex flex-col items-center justify-center text-yellow-400">
-          <SearchIcon/>
+        <section className="flex flex-col items-center justify-center text-yellow-400">
+          <SearchIcon />
           <h2 className="text-2xl font-bold mt-4">No Offerers Found</h2>
         </section>
-        )
-        }
+      )}
+
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 items-center justify-center w-full max-w-4xl">
-       
-        
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 w-full max-w-4xl place-items-center">
         {offers?.map((offer, index) => (
           <OffererCard
             key={index}
@@ -86,9 +88,17 @@ export default function Offers() {
             address={offer.shop_address}
           />
         ))}
-    </section>
+      </section>
 
-      {isFetching && <section className=" flex items-center justify-center mt-4 mb-4"><Loader size={3}/></section>}
+      {isFetching && (
+        <section className="flex items-center justify-center mt-4 mb-4">
+          <Loader size={3} />
+        </section>
+      )}
+
+      {!hasMore && offers.length > 0 && (
+        <p className="text-gray-500 mt-4">No more offers to show.</p>
+      )}
     </section>
   );
 }
