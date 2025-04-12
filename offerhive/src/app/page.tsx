@@ -18,13 +18,14 @@ export default function Home() {
       <HeroSection />
       <HowItWorksSection />
 
-      <div
-        onClick={handleRedirectClick}
-        className="flex justify-center items-center transition ease-linear gap-2 hover:bg-yellow-500 hover:scale-90 bg-yellow-400 p-4 text-xl rounded-full font-bold cursor-pointer mt-6"
-      >
-        <span>Read Documentation</span>
-        <RedirectIcon className="max-w-12 w-6 h-6" />
-      </div>
+          <button
+          className="px-6 py-3 mt-2 flex flex-row items-center gap-2 sm:mt-8 z-10 cursor-pointer rounded-2xl bg-yellow-500 hover:bg-yellow-400 text-black font-semibold transition duration-200"
+          onClick={handleRedirectClick}
+        >
+          <p>Browse Offers</p>
+          <RedirectIcon className="max-w-12 w-6 h-6" />
+
+        </button>
 
       <WhatOurSaysSection />
     </section>
