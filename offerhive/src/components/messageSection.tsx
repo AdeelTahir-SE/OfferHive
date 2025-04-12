@@ -9,7 +9,7 @@ import {Message} from "@/lib/types";
 export default function MessageSection({ list }: { list: Message[] }) {
   console.log("list", list);
   return (
-    <section className="flex flex-col items-center justify-center px-4 py-6 ml-12 ">
+    <section className="flex flex-col items-center justify-center px-4 py-6  ">
       <div className="text-3xl font-semibold bg-yellow-500 text-black px-6 py-3 rounded-t-lg shadow w-full text-center">
         Check Latest Orders / Messages
       </div>
