@@ -84,8 +84,8 @@ export default function Login() {
               disabled={loading}
               className="w-full py-3 cursor-pointer text-base font-semibold bg-yellow-500 hover:bg-yellow-400 text-white rounded-md transition"
             >
-              Login
-            </button>
+             {loading?"Logging in...":"Sign In"} 
+             </button>
           </section>
 
           {error && <p className="text-red-500 text-center mt-4">{error}</p>}

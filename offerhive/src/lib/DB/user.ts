@@ -46,6 +46,7 @@ export async function signIn(email: string, password: string) {
     .select("*")
     .eq("user_id", data.user?.id)
     .single();
+    
   return { userData, signInError, findingError };
 }
 export async function signOut() {

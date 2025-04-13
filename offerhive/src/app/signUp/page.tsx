@@ -87,7 +87,7 @@ export default function SignUp() {
               disabled={loading}
               className="w-full py-3 cursor-pointer text-base font-semibold bg-yellow-500 hover:bg-yellow-400 text-white rounded-md transition"
             >
-              Sign Up
+             {loading?"Signin up...":"Sign Up"} 
             </button>
           </section>
 
