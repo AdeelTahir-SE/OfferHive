@@ -46,7 +46,7 @@ export default function EditableImages({
       {localImages.map((image, index) => (
         <section
           key={index}
-          className="relative w-60 h-60 border border-gray-300 rounded-lg overflow-hidden"
+          className="relative w-80 h-80 border border-gray-300 rounded-lg overflow-hidden"
         >
           <Trash2
             className="absolute top-2 right-2 cursor-pointer text-red-500 hover:text-red-700 z-10"
