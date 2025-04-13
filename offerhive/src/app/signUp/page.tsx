@@ -11,10 +11,12 @@ import WavySvg from "@/components/wavySvg";
 export default function SignUp() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState("");
+  const [loading,setLoading]=useState(false)
   const [successMessage, setSuccessMessage] = useState("");
   const dispatch = useDispatch();
 
   async function handleSignUp(e: React.FormEvent) {
+    setLoading(true);
     e.preventDefault();
     setError("");
     setSuccessMessage("");
@@ -32,6 +34,7 @@ export default function SignUp() {
       console.log("User signed up:", userData);
       setSuccessMessage("Account created! Please verify your email. Once verified, you can log in.");
     }
+    setLoading(false);
   }
 
   return (
@@ -81,6 +84,7 @@ export default function SignUp() {
 
             <button
               type="submit"
+              disabled={loading}
               className="w-full py-3 cursor-pointer text-base font-semibold bg-yellow-500 hover:bg-yellow-400 text-white rounded-md transition"
             >
               Sign Up
@@ -91,9 +95,6 @@ export default function SignUp() {
           {successMessage && (
             <section className="text-green-600 text-center mt-4">
               <p>{successMessage}</p>
-              <Link href="/logIn" className="mt-2 inline-block text-yellow-600 hover:underline">
-                Back to Log In
-              </Link>
             </section>
           )}
 

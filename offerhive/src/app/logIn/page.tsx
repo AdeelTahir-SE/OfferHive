@@ -11,10 +11,12 @@ import WavySvg from "@/components/wavySvg";
 export default function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState("");
+  const[loading,setLoading]=useState(false)
   const router = useRouter();
   const dispatch=useDispatch();
 
   async function handleLogin(e: React.FormEvent) {
+    setLoading(true)
     e.preventDefault();
     const email = (document.getElementById("email") as HTMLInputElement).value;
     const password = (document.getElementById("password") as HTMLInputElement).value;
@@ -28,6 +30,7 @@ export default function Login() {
       console.log("User signed in:", userData);
       router.push("/");
     }
+    setLoading(false)
   }
 
   return (
@@ -78,6 +81,7 @@ export default function Login() {
 
             <button
               type="submit"
+              disabled={loading}
               className="w-full py-3 cursor-pointer text-base font-semibold bg-yellow-500 hover:bg-yellow-400 text-white rounded-md transition"
             >
               Login
