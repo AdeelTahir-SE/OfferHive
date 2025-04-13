@@ -7,7 +7,11 @@ export async function signUp(email: string, password: string) {
   const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
     email,
     password,
-  });
+    options: {
+      emailRedirectTo: 'https://offer-hive.vercel.app/logIn'
+    }
+  },
+);
 
   if (signUpError || !signUpData.user) {
     return {
