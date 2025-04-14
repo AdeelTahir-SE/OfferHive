@@ -25,6 +25,7 @@ export default function GroupPage() {
       const data = await getGroupById(id);
       console.log(data);
       if (data) {
+        console.log(data)
         setGroup(data);
         if(data?.GroupUser?.filter(user=>user.user_id==user.user_id)?.length > 0) {
           console.log("joined group")
@@ -50,6 +51,7 @@ export default function GroupPage() {
   }, [id]);
 
   async function handleJoinGroup(user_id: string, group_id: string) {
+    if(user_id === undefined || group_id === undefined) return;
     const data = await joinGroup(user_id, group_id);
     if (!data) {
       console.error("Error joining group:");
@@ -78,145 +80,151 @@ export default function GroupPage() {
     return <div className="text-center text-red-500 text-xl">{error}</div>;
 
   return (
-    <section className="flex flex-col items-center justify-center bg-gray-100 m-0 min-h-screen ">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        {group?.GroupDetail?.[0]?.group_title || "Group Offerers"}
-      </h1>
-      <p className="text-lg text-gray-700 font-medium leading-relaxed">
-        {group?.GroupDetail?.[0]?.group_desc}
-      </p>
-
-      {group && group?.GroupUser?.length > 0 ? (
-        <div className="grid grid-cols-5 gap-4 w-full items-start">
-          <div className="w-full max-w-3xl col-span-1 bg-white p-6 rounded-xl shadow-md">
+      <section className="flex flex-col items-center justify-center bg-gray-100 px-4 py-8 min-h-screen">
+        <h1 className="text-3xl font-bold mb-4 text-center">
+          {group?.GroupDetail?.[0]?.group_title || "Group Offerers"}
+        </h1>
+        <p className="text-lg text-gray-700 font-medium leading-relaxed mb-6 text-center max-w-2xl">
+          {group?.GroupDetail?.[0]?.group_desc}
+        </p>
+    
+        {group ? (
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 w-full max-w-[1440px]">
+            {/* Group Details */}
+            <div className="col-span-1 bg-white p-6 rounded-xl shadow-md w-full flex flex-col items-center justify-center text-center">
             <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
-              Group Details
-            </h2>
-
-            <p className="text-lg text-gray-700 font-medium leading-relaxed mb-6 text-center">
-              {group?.GroupDetail?.[0]?.group_desc}
-            </p>
-
-            <div className="flex flex-col items-center space-y-4">
-              <p className="text-base text-gray-600 font-medium">
-                <span className="font-semibold">Group Created On:</span>{" "}
-                {new Date(group?.created_at).toLocaleDateString("en-US", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+                Group Details
+              </h2>
+    
+              <p className="text-base text-gray-700 font-medium leading-relaxed mb-4 text-center">
+                {group?.GroupDetail?.[0]?.group_desc}
               </p>
-
-              <p className="text-base text-gray-600 font-medium">
-                <span className="font-semibold">Group Owner:</span>{" "}
-                {group?.user_id}
-              </p>
-
-              {group?.GroupDetail?.[0]?.group_image && (
-                <Image
-                  src={group?.GroupDetail?.[0]?.group_image}
-                  alt="Group Image"
-                  width={250}
-                  height={250}
-                  className="rounded-lg shadow-sm object-cover"
+    
+              <div className="flex flex-col items-center space-y-4">
+                <p className="text-sm text-gray-600">
+                  <span className="font-semibold">Created On:</span>{" "}
+                  {new Date(group?.created_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+    
+                <p className="text-sm text-gray-600">
+                  <span className="font-semibold">Owner:</span> {group?.user_id}
+                </p>
+    
+                {group?.GroupDetail?.[0]?.group_image && (
+                  <Image
+                    src={group?.GroupDetail?.[0]?.group_image}
+                    alt="Group Image"
+                    width={250}
+                    height={250}
+                    className="rounded-lg shadow-sm object-cover"
+                  />
+                )}
+    
+                {group?.GroupDetail?.[0]?.group_tags?.length > 0 && (
+                  <div className="flex flex-wrap justify-center gap-2 mt-4">
+                    {group.GroupDetail[0].group_tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full shadow"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+    
+            {/* Offerer Cards */}
+            <div className="col-span-3 flex flex-wrap gap-4 justify-center items-start max-h-[80vh] overflow-y-auto px-2">
+              {group.GroupUser.map((shop, index) => (
+                <OffererCard
+                  key={index}
+                  image={shop.User?.UserShop?.shop_images?.[0]}
+                  id={shop?.User?.user_id}
+                  title={shop.User?.UserShop?.shop_title}
+                  tags={shop.User?.UserShop?.shop_tags}
+                  group={null}
+                  address={shop.User?.UserShop?.shop_address}
                 />
-              )}
-
-              {group?.GroupDetail?.[0]?.group_tags?.length > 0 && (
-                <div className="flex flex-wrap justify-center gap-2 mt-4">
-                  {group.GroupDetail[0].group_tags.map((tag, index) => (
-                    <span
-                      key={index}
-                      className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full shadow"
-                    >
-                      {tag}
-                    </span>
-                  ))}
+              ))}
+            </div>
+    
+            {/* Join + Subscribe */}
+            <div className="col-span-1 flex flex-col items-center justify-start space-y-6 w-full">
+              {user && (
+                <div className="text-center flex flex-col space-y-2">
+                  <p className="text-sm text-gray-600">
+                    {user?.is_shop_owner ? (
+                      joinStatus === "unjoined"
+                        ? "Join the group to get the latest updates."
+                        : joinStatus === "pending"
+                        ? "Your request is pending approval."
+                        : "You are already a group member."
+                    ) : (
+                      "Sign in to join the group."
+                    )}
+                  </p>
+                  <button
+                    onClick={() => handleJoinGroup(user.user_id, id)}
+                    className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
+                      joinStatus === "unjoined"
+                        ? "bg-yellow-500 hover:bg-yellow-600"
+                        : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                    disabled={joinStatus !== "unjoined"}
+                  >
+                    {user?.is_shop_owner
+                      ? joinStatus === "unjoined"
+                        ? "Join Group"
+                        : joinStatus === "pending"
+                        ? "Request Pending"
+                        : "Request Accepted"
+                      : "Sign in to join"}
+                  </button>
                 </div>
               )}
-            </div>
-          </div>
-
-          <div className="flex flex-row items-center col-span-3 overflow-y-scroll min-h-5/6 justify-center flex-wrap gap-2">
-            {group.GroupUser.map((shop, index) => (
-              <OffererCard
-                key={index}
-                image={shop.User?.UserShop?.shop_images?.[0]}
-                id={shop?.User?.user_id}
-                title={shop.User?.UserShop?.shop_title}
-                tags={shop.User?.UserShop?.shop_tags}
-                group={null}
-                address={shop.User?.UserShop?.shop_address}
-              />
-            ))}
-          </div>
-
-          <div className="flex flex-col items-center justify-center col-span-1 space-y-6">
-            {user&&user?.is_shop_owner && (
-              <div className="text-center flex flex-col space-y-2">
+    
+              <div className="text-center space-y-2">
                 <p className="text-sm text-gray-600">
-                  {joinStatus === "unjoined"
-                    ? "Join the group to get the latest updates."
-                    : joinStatus === "pending"
-                    ? "Your request is pending approval."
-                    : "You are already a group member."}
+                  {user?.email
+                    ? isSubscribed
+                      ? "Unsubscribe to stop receiving updates."
+                      : "Subscribe to get updates for this group."
+                    : "Please sign in to subscribe to group updates."}
                 </p>
-                <button
-                  onClick={() => handleJoinGroup(user.user_id, id)}
-                  className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
-                    joinStatus === "unjoined"
-                      ? "bg-yellow-500 hover:bg-yellow-600"
-                      : "bg-gray-400 cursor-not-allowed"
-                  }`}
-                  disabled={joinStatus !== "unjoined"}
-                >
-                  {joinStatus === "unjoined"
-                    ? "Join Group"
-                    : joinStatus === "pending"
-                    ? "Request Pending"
-                    : "Request Accepted"}
-                </button>
+    
+                {user?.email ? (
+                  <button
+                    onClick={() => handleSubscribe(user.user_id, id, isSubscribed)}
+                    className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
+                      isSubscribed
+                        ? "bg-red-500 hover:bg-red-600"
+                        : "bg-yellow-500 hover:bg-yellow-600"
+                    }`}
+                  >
+                    {isSubscribed ? "Unsubscribe" : "Subscribe"}
+                  </button>
+                ) : (
+                  <Link
+                    href="/logIn"
+                    className="inline-block px-6 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white transition duration-300"
+                  >
+                    Sign in to Subscribe
+                  </Link>
+                )}
               </div>
-            )}
-
-            <div className="text-center space-y-2">
-              <p className="text-sm text-gray-600">
-                {user?.email
-                  ? isSubscribed
-                    ? "Unsubscribe to stop receiving updates."
-                    : "Subscribe to get updates for this group."
-                  : "Please sign in to subscribe to group updates."}
-              </p>
-
-              {user?.email ? (
-                <button
-                  onClick={() =>
-                    handleSubscribe(user.user_id, id, isSubscribed)
-                  }
-                  className={`px-6 py-2 rounded-lg text-white transition duration-300 cursor-pointer ${
-                    isSubscribed
-                      ? "bg-red-500 hover:bg-red-600"
-                      : "bg-yellow-500 hover:bg-yellow-600"
-                  }`}
-                >
-                  {isSubscribed ? "Unsubscribe" : "Subscribe"}
-                </button>
-              ) : (
-                <Link
-                  href="/logIn"
-                  className="inline-block px-6 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white transition duration-300"
-                >
-                  Sign in to Subscribe
-                </Link>
-              )}
             </div>
           </div>
-        </div>
-      ) : (
-        <p className="text-lg text-gray-500 mt-10">
-          No shops available in this group.
-        </p>
-      )}
-    </section>
-  );
+        ) : (
+          <p className="text-lg text-gray-500 mt-10">
+            No shops available in this group.
+          </p>
+        )}
+      </section>
+    );
 }

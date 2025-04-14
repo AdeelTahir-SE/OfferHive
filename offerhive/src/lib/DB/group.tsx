@@ -5,43 +5,41 @@ export async function getGroups(counter: number) {
   const rangeEnd = rangeStart + 9;
 
   const { data, error } = await supabase
-    .from('Group')
-    .select(`
-      *,
-      GroupDetail (
-        group_id,
-        group_title,
-        group_desc,
-        group_image,
-        group_tags
-      ),
-      GroupUser (
+  .from('Group')
+  .select(`
+    *,
+    GroupDetail (
+      group_id,
+      group_title,
+      group_desc,
+      group_image,
+      group_tags
+    ),
+    GroupUser (
+      user_id,
+      group_id,
+      status,
+      User (
         user_id,
-        group_id,
-        status,
-        User (
+        UserShop!UserShop_user_id_fkey (
           user_id,
-          UserShop (
-            user_id,
-            shop_title
-          )
+          shop_title
         )
       )
-    `)
-    .range(rangeStart, rangeEnd);
+    )
+  `)
+  .range(rangeStart, rangeEnd);
 
+console.log(data)
   if (error) {
     console.error("Error fetching groups:", error);
     return null;
   }
 
 
-  const filteredGroups = data?.filter((group) =>
-    group.GroupUser?.some((user: any) => user.status?.toLowerCase() === 'joined')
-  ) || [];
 
 
-  return filteredGroups;
+  return data;
 }
 
 
@@ -128,10 +126,12 @@ export async function joinGroup(user_id:string,group_id:string) {
     .from("GroupUser")
     .insert([{ user_id, group_id, status: "pending" }])
     .select();
+    console.log(data)
   if (error) {
     console.error("Error joining group:", error);
     return null;
   }
+  
   return data;
 }
 
@@ -160,7 +160,7 @@ export async function getGroupById(id: string): Promise<GroupUnique | null> {
         status,
         User (
           user_id,
-          UserShop(
+        UserShop!UserShop_user_id_fkey (
             user_id,
             shop_title,
             shop_desc,

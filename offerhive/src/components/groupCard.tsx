@@ -25,7 +25,8 @@ export default function GroupCard({
           alt={title}
           width={300}
           height={300}
-          className="w-[300px] h-[300px] object-cover rounded-2xl shadow-md"
+          objectFit="cover"
+          className="object-cover rounded-2xl shadow-md"
         />
         <section className="flex flex-col items-center justify-center gap-2">
           <h2 className="text-xl font-bold">{title}</h2>
