@@ -164,7 +164,7 @@ export default function OfferDetails() {
             {link}
           </a>
         ))}
-        {user && !user?.is_shop_owner  && (
+        {user&&user?.email &&!user?.is_shop_owner  && (
           <Link href={`/people/${shop?.user_id}`} className="">
             <button className="rounded-xl bg-yellow-500 mt-4 hover:bg-yellow-400 cursor-pointer p-4 text-xl">
               Chat with Seller
