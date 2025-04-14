@@ -3,7 +3,7 @@ import { LayoutDashboard, ShoppingBag, LogOut } from "lucide-react";
 
 export default function OptionsBar() {
   return (
-<section className="relative z-0 md:z-20 flex items-center justify-center w-full bg-gray-100 py-4 overflow-visible">
+<section className="relative z-50 md:z-20 flex items-center justify-center w-full bg-gray-100 py-4 overflow-visible">
   <ul className="flex flex-row items-center justify-center space-x-6 rounded-full bg-gray-300 px-6 py-2 shadow-md">
     <TooltipItem href="/shop/dashboard" label="Dashboard">
       <LayoutDashboard className="w-6 h-6 text-black" />
