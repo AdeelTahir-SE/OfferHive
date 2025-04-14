@@ -33,8 +33,8 @@ export default function Header() {
   }, []);
 
   return (
-    <nav className="bg-yellow-500 text-black p-4 flex justify-between items-center mb-0 z-40 md:z-0 relative">
-      <div className="flex items-center justify-between w-full md:w-auto">
+<nav className="bg-yellow-500 text-black p-4 flex justify-between items-center mb-0 relative z-40">
+<div className="flex items-center justify-between w-full md:w-auto z-30 md:z-0">
         <Image src="/hive.svg" alt="logo" width={60} height={60} />
         <button
           ref={buttonRef}
