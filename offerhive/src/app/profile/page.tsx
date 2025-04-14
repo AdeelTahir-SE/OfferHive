@@ -54,7 +54,6 @@ export default function Profile() {
 
   return (
     <section className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-100">
-      {/* Profile Image */}
       <div className="w-32 h-32 relative mb-6">
         <Image
           src={preview || "/profile_placeholder.png"} // Fallback to placeholder if preview is not available
