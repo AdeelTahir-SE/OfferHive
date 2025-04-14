@@ -5,45 +5,51 @@ import GroupCard from "@/components/groupCard";
 import { getGroups, searchGroups } from "@/lib/DB/group";
 import SearchIcon from "@/components/searchIcon";
 import Loader from "@/components/loader";
+
 export default function Groups() {
   const [groups, setGroups] = useState<any[]>([]);
   const [counter, setCounter] = useState(0);
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>("");
+  const [hasMore, setHasMore] = useState(true);
 
   const fetchGroups = useCallback(async () => {
+    if (!hasMore) return;
+    if (searchTerm.trim() === "" && counter !== 0) return;
+
     setIsFetching(true);
     try {
-      const data = searchTerm
+      const data = searchTerm.trim()
         ? await searchGroups(searchTerm, counter)
         : await getGroups(counter);
-console.log(data,"page")
-      if (data) {
+
+      if (data && data.length > 0) {
         setGroups((prev) => [...prev, ...data]);
+      } else {
+        setHasMore(false);
       }
     } catch (err) {
       setError("Error fetching groups. Please try again later.");
-      console.log(err)
+      console.log(err);
     } finally {
       setIsFetching(false);
     }
-  }, [searchTerm, counter]);
+  }, [searchTerm, counter, hasMore]);
 
   useEffect(() => {
     fetchGroups();
   }, [fetchGroups]);
 
   const handleScroll = useCallback(() => {
-    if(groups.length === 0) return;
+    if (groups.length === 0 || isFetching || !hasMore) return;
 
-    const bottom =
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight;
-    if (bottom && !isFetching) {
+    if (
+      window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
+    ) {
       setCounter((prev) => prev + 1);
     }
-  }, [isFetching]);
+  }, [groups, isFetching, hasMore]);
 
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
@@ -51,40 +57,54 @@ console.log(data,"page")
   }, [handleScroll]);
 
   const handleSearch = (term: string) => {
-    setGroups([]);      
-    setCounter(0);       
-    setSearchTerm(term); 
+    setGroups([]);
+    setCounter(0);
+    setSearchTerm(term.trim());
+    setHasMore(true); 
   };
 
   return (
-    <section className="flex flex-col items-center justify-center gap-6 p-4">
+    <section className="flex flex-col items-center justify-center gap-6 p-4 w-full">
       <h1 className="text-3xl font-bold mb-4">Groups</h1>
-      <p className="text-lg">
+      <p className="text-lg text-center">
         Find groups that match your interests and receive relevant offers.
       </p>
+
       <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
+
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
+
       {groups.length === 0 && !isFetching && (
-                
-                <section className="flex flex-col items-center justify-center text-yellow-400">
-                <SearchIcon/>
-                <h2 className="text-2xl font-bold mt-4">No Groups Found</h2>
-              </section>
-              )
-              }
-      <section className="flex flex-col items-start justify-center gap-6">
-        {groups?.map((group, index) => (
+        <section className="flex flex-col items-center justify-center text-yellow-400">
+          <SearchIcon />
+          <h2 className="text-2xl font-bold mt-4">No Groups Found</h2>
+        </section>
+      )}
+
+      <section className="flex flex-col items-start justify-center gap-6 w-full max-w-4xl">
+        {groups.map((group, index) => (
           <GroupCard
             key={index}
             id={group.group_id}
             image={group.GroupDetail[0]?.group_image}
             title={group.GroupDetail[0]?.group_title}
             desc={group.GroupDetail[0]?.group_desc}
-            members={group?.GroupUser?.map((groupUser: any) => groupUser?.User?.UserShop?.shop_title)
-            }          />
+            members={group?.GroupUser?.map(
+              (groupUser: any) => groupUser?.User?.UserShop?.shop_title
+            )}
+          />
         ))}
       </section>
-      {isFetching && <section className=" flex items-center justify-center mt-4 mb-4"><Loader size={3}/></section>}
+
+      {isFetching && (
+        <section className="flex items-center justify-center mt-4 mb-4">
+          <Loader size={3} />
+        </section>
+      )}
+
+      {!hasMore && groups.length > 0 && (
+        <p className="text-gray-500 mt-4">No more groups to show.</p>
+      )}
     </section>
   );
 }

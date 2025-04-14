@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { RootState } from "@/lib/redux/store";
-
+import Loader from "@/components/loader";
 export default function GroupPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -75,7 +75,7 @@ export default function GroupPage() {
   }
 
   if (isLoading)
-    return <div className="text-center text-xl font-medium">Loading...</div>;
+    return <section className="flex flex-col items-center justify-center h-screen"><Loader size={5}/></section>
   if (error)
     return <div className="text-center text-red-500 text-xl">{error}</div>;
 
