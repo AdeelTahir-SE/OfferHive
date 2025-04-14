@@ -64,7 +64,7 @@ export async function searchGroups(searchTerm: string, counter: number) {
         status,
         User (
           user_id,
-          UserShop (
+        UserShop!UserShop_user_id_fkey (
             user_id,
             shop_title
           )
@@ -80,8 +80,7 @@ export async function searchGroups(searchTerm: string, counter: number) {
   }
 
   const filteredGroups = data?.filter((group) =>
-    group.GroupDetail?.length > 0 &&
-    group.GroupUser?.some((user: any) => user.status?.toLowerCase() === 'joined')
+    group.GroupDetail?.length > 0
   ) || [];
 
   return filteredGroups;
