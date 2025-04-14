@@ -33,7 +33,7 @@ export default function Header() {
   }, []);
 
   return (
-    <nav className="bg-yellow-500 text-black p-4 flex justify-between items-center mb-0  z-30 relative">
+    <nav className="bg-yellow-500 text-black p-4 flex justify-between items-center mb-0 z-10 relative">
       <div className="flex items-center justify-between w-full md:w-auto">
         <Image src="/logo.svg" alt="logo" width={60} height={60} />
         <button
@@ -49,7 +49,7 @@ export default function Header() {
         ref={menuRef}
         className={`${
           menuOpen ? "block" : "hidden"
-        } absolute top-full left-0 w-full bg-yellow-500 flex flex-col items-start p-4 gap-4 font-semibold md:static md:flex md:flex-row md:items-center md:space-x-6 md:p-0 md:gap-0 md:w-auto`}
+        } absolute top-full left-0 w-full bg-yellow-500 flex flex-col items-start p-4 gap-4 font-semibold md:static md:flex md:flex-row md:items-center md:space-x-6 md:p-0 md:gap-0 md:w-auto z-50`}
       >
         {user?.email && !user?.is_shop_owner && (
           <li className="hover:text-white transition-colors">

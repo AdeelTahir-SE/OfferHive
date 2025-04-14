@@ -42,7 +42,7 @@ export default function EditableImages({
   };
 
   return (
-    <section className="flex flex-wrap items-start gap-4">
+    <section className="flex md:flex-row flex-wrap items-center justify-center flex-col gap-4">
       {localImages.map((image, index) => (
         <section
           key={index}
@@ -62,7 +62,7 @@ export default function EditableImages({
       ))}
 
       {localImages.length < 5 && (
-        <label className="relative w-60 h-60 border border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition duration-200">
+        <label className="relative w-80 h-80 border border-dashed border-gray-400 rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-100 transition duration-200">
           {loading ? (
             <span className="text-gray-500 animate-pulse">Uploading...</span>
           ) : (
