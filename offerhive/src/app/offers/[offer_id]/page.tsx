@@ -58,7 +58,6 @@ export default function OfferDetails() {
       try {
         console.log(offer_id);
         const data = await getShopById(offer_id);
-        console.log(data);
         setShop(data);
       } catch (error) {
         console.error("Failed to fetch shop:", error);
