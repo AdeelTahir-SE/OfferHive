@@ -13,6 +13,7 @@ export default function Header() {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const toggleMenu = () => setMenuOpen(!menuOpen);
+  const closeMenu = () => setMenuOpen(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -32,9 +33,21 @@ export default function Header() {
     };
   }, []);
 
+  const MenuLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+    <li className="hover:text-white transition-colors">
+      <Link href={href} onClick={closeMenu}>
+        {children}
+      </Link>
+    </li>
+  );
+
   return (
-<nav className={`bg-yellow-500 text-black p-4 flex justify-between items-center mb-0 relative ${menuOpen?"z-40":"z-10"}`}>
-<div className="flex items-center justify-between w-full md:w-auto z-30 md:z-0">
+    <nav
+      className={`bg-yellow-500 text-black p-4 flex justify-between items-center mb-0 relative ${
+        menuOpen ? "z-40" : "z-10"
+      }`}
+    >
+      <div className="flex items-center justify-between w-full md:w-auto z-30 md:z-0">
         <Image src="/hive.svg" alt="logo" width={60} height={60} />
         <button
           ref={buttonRef}
@@ -51,42 +64,26 @@ export default function Header() {
           menuOpen ? "block" : "hidden"
         } absolute top-full left-0 w-full bg-yellow-500 flex flex-col items-start p-4 gap-4 font-semibold md:static md:flex md:flex-row md:items-center md:space-x-6 md:p-0 md:gap-0 md:w-auto z-50`}
       >
-        {user?.email && !user?.is_shop_owner && (
-          <li className="hover:text-white transition-colors">
-            <Link href="/people">People</Link>
-          </li>
-        )}
-        <li className="hover:text-white transition-colors">
-          <Link href="/">Home</Link>
-        </li>
-        <li className="hover:text-white transition-colors">
-          <Link href="/contact">Contact</Link>
-        </li>
-        <li className="hover:text-white transition-colors">
-          <Link href="/offers">Offerers</Link>
-        </li>
-        <li className="hover:text-white transition-colors">
-          <Link href="/groups">Groups</Link>
-        </li>
+        {user?.email && !user?.is_shop_owner && <MenuLink href="/people">People</MenuLink>}
+        <MenuLink href="/">Home</MenuLink>
+        <MenuLink href="/contact">Contact</MenuLink>
+        <MenuLink href="/offers">Offerers</MenuLink>
+        <MenuLink href="/groups">Groups</MenuLink>
 
         {user?.is_shop_owner ? (
-          <li className="hover:text-white transition-colors">
-            <Link href="/shop/dashboard">My Shop</Link>
-          </li>
+          <MenuLink href="/shop/dashboard">My Shop</MenuLink>
         ) : (
-          <li className="hover:text-white transition-colors">
-            <Link href="/createStore">Create Shop</Link>
-          </li>
+          <MenuLink href="/createStore">Create Shop</MenuLink>
         )}
 
         {user?.email ? (
           <li className="hover:text-yellow-400 transition-colors rounded-full p-2 bg-gray-200 border-yellow-700 m-1">
-            <Link href="/profile">{user.email}</Link>
+            <Link href="/profile" onClick={closeMenu}>
+              {user.email}
+            </Link>
           </li>
         ) : (
-          <li className="hover:text-white transition-colors">
-            <Link href="/logIn">Sign In</Link>
-          </li>
+          <MenuLink href="/logIn">Sign In</MenuLink>
         )}
       </ul>
     </nav>
