@@ -90,7 +90,7 @@ export default function Login() {
 
           {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-          <OAuthSection />
+          {/* <OAuthSection /> */}
           <p className="text-center text-gray-600 mt-4">
             Don&apos;t have an account?
             <Link href="/signUp" className="text-yellow-500 font-semibold hover:underline">
