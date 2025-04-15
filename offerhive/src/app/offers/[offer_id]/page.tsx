@@ -90,41 +90,45 @@ export default function OfferDetails() {
       <ImagesSlider images={shop.shop_images} />
 
       <div className="w-full mt-10">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
-          Available Offers
-        </h2>
-        <div className="flex flex-wrap justify-center gap-6">
-          {shop?.offers.map((offer, index:number) => (
-            <div
-            key={index}
-            className="bg-white rounded-xl shadow-md overflow-hidden w-80 border border-gray-200"
-          >
-            <div className="relative w-full h-72">
-              <Image
-                src={offer?.image || "/placeholder_deals.png"}
-                alt={offer?.offer_title}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-lg"
-                priority
-              />
-            </div>
-            <div className="p-4">
-              <h3 className="text-xl font-semibold text-wrap text-gray-800 mb-2">
-                {offer.offer_title}
-              </h3>
-              <p className="text-gray-600 mb-2 break-words max-h-20 overflow-hidden">
-                {offer.offer_desc}
-              </p>
-              <p className="text-sm text-gray-500">
-                Valid: {offer.starts_at} - {offer.valid_uptill}
-              </p>
-            </div>
+  <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+    Available Offers
+  </h2>
+  {shop?.offers.length === 0 ? (
+    <p className="text-center text-gray-600">Sorry, currently no offers available.</p>
+  ) : (
+    <div className="flex flex-wrap justify-center gap-6">
+      {shop?.offers.map((offer, index) => (
+        <div
+          key={index}
+          className="bg-white rounded-xl shadow-md overflow-hidden w-80 border border-gray-200"
+        >
+          <div className="relative w-full h-72">
+            <Image
+              src={offer?.image || "/placeholder_deals.png"}
+              alt={offer?.offer_title}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-lg"
+              priority
+            />
           </div>
-          
-          ))}
+          <div className="p-4">
+            <h3 className="text-xl font-semibold text-wrap text-gray-800 mb-2">
+              {offer.offer_title}
+            </h3>
+            <p className="text-gray-600 mb-2 break-words max-h-20 overflow-hidden">
+              {offer.offer_desc}
+            </p>
+            <p className="text-sm text-gray-500">
+              Valid: {offer.starts_at} - {offer.valid_uptill}
+            </p>
+          </div>
         </div>
-      </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
       {/* Shop tags */}
       <div className="flex flex-col items-center justify-center mt-10">
