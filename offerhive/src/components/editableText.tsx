@@ -32,12 +32,12 @@ export default function EditableText({
     />
   ) : (
     <span className={`flex items-center gap-2 overflow-ellipsis  ${className}`}>
-      <p className="max-w-60 h-auto overflow-hidden text-ellipsis  ">
+      <p className=" h-auto overflow-hidden text-ellipsis  ">
         {text}
       </p>
       <Pencil
         size={24}
-        className="cursor-pointer text-gray-500 hover:text-gray-800  hover:scale-110"
+        className="cursor-pointer text-gray-500 min-w-24  hover:text-gray-800  hover:scale-110"
         onClick={() => setEditing(true)}
       />
     </span>

@@ -109,6 +109,7 @@ export default function ManageShop() {
         <EditableText
           text={shop.shop_title}
           onSave={(val) => handleShopUpdate("shop_title", val)}
+          
         />
       </h1>
 
