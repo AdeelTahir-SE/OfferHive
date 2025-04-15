@@ -6,7 +6,6 @@ export default function Footer() {
     <footer className="bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 text-white py-10 px-4 ">
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
-        {/* Social Icons */}
         <div className="flex items-center justify-center md:justify-start space-x-6">
           <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
             <Image src="/facebook.svg" alt="Facebook" width={28} height={28} className="hover:scale-110 transition-transform" />
@@ -19,21 +18,19 @@ export default function Footer() {
           </a>
         </div>
 
-        {/* Navigation Links */}
         <div className="flex flex-col items-center space-y-4 text-sm font-medium">
           <Link href="/" className="hover:underline hover:text-yellow-400 transition duration-300">Home</Link>
           <Link href="/contact" className="hover:underline hover:text-yellow-400 transition duration-300">Contact</Link>
           <Link href="/offers" className="hover:underline hover:text-yellow-400 transition duration-300">Offers</Link>
+          <p className="text-yellow-300 mt-2">🚀 Many new things coming soon...</p>
         </div>
 
-        {/* Extra Info or Logo */}
         <div className="flex flex-col items-center md:items-end text-sm">
           <p className="mb-2">Need help? Email us at</p>
-          <a href="mailto:support@offerhive.com" className="text-yellow-400 hover:underline">support@offerhive.com</a>
+          <a href="mailto:adeeltahir6a@" className="text-yellow-400 hover:underline">adeeltahir6a@</a>
         </div>
       </div>
 
-      {/* Bottom copyright */}
       <div className="mt-8 text-center text-xs text-gray-400">
         © {new Date().getFullYear()} OfferHive. All rights reserved.
       </div>
