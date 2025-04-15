@@ -13,10 +13,14 @@ export default function Dashboard() {
   const [latestMessagesArray,setLatestMessagesArray ]=useState<Message[]>([]);
   const [loading,setLoading]=useState(true)
   const User= useSelector((state: RootState) => state.user);
-  async function getClicksInfo(){
+  async function getClicksInfo() {
     const { clicks } = await getClicks(User?.user_id);
-    setClicksArray(clicks);
+    
+    const latestClicks = clicks.slice(-7);
+    
+    setClicksArray(latestClicks);
   }
+  
 
   async function getLatestMessagesInfo(){
     const messages=await getLatestMessages(User?.user_id);
