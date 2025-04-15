@@ -106,7 +106,12 @@ export default function Documentation() {
             />
           </svg>
         </div>
+       
+
       </div>
+      <p className="text-sm text-gray-500 text-center px-6 pb-8 max-w-4xl">
+        OfferHive reserves the right to remove your shop or group, and access your data if necessary for moderation or platform policy enforcement.
+      </p>
     </section>
   );
 }
