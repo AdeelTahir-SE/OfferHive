@@ -41,7 +41,7 @@ export default function Contact() {
     <section className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
       <h1 className="text-3xl font-bold mb-4">Get in Touch</h1>
       <p className="text-gray-600 mb-4 text-center max-w-xl">
-        If you notice any bugs or have suggestions, please let us know. We
+        If you notice any bugs or have suggestions or as a shop owner do you want some additional features, please let us know. We
         appreciate your feedback and are always looking to improve. Your
         opinions matter a lot to us — feel free to provide feedback or ideas on
         how we can make things better.

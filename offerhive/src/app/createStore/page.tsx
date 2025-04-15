@@ -225,7 +225,7 @@ export default function CreateStore() {
             </div>
 
             {/* Contact Info */}
-            <div className="flex flex-col">
+            <div className="flex flex-col w-full">
               <label
                 htmlFor="contact_info"
                 className="text-base font-semibold text-gray-700"
@@ -236,7 +236,7 @@ export default function CreateStore() {
                 id="contact_info"
                 type="text"
                 placeholder="Enter your contact info"
-                className="px-4 py-3 border text-base rounded-md focus:outline-none"
+                className="px-4 w-full py-3 border text-base rounded-md focus:outline-none"
                 value={shop.contact_info}
                 onChange={handleChange}
                 required
