@@ -169,7 +169,7 @@ export default function CreateStore() {
             }
           }}
         >
-          <section className="grid grid-cols-1 sm:grid-cols-2 gap-5 w-full max-w-4xl mx-auto">
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-4xl mx-auto">
             {/* Shop Title */}
             <div className="flex flex-col">
               <label
@@ -225,7 +225,7 @@ export default function CreateStore() {
             </div>
 
             {/* Contact Info */}
-            <div className="flex flex-col w-full">
+            <div className="flex flex-col col-span-2 w-full">
               <label
                 htmlFor="contact_info"
                 className="text-base font-semibold text-gray-700"
@@ -378,7 +378,7 @@ export default function CreateStore() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full py-3 cursor-pointer text-base font-semibold bg-yellow-500 hover:bg-yellow-400 text-white rounded-md transition"
+              className="w-full py-3 cursor-pointer col-span-2 md:col-span-1 text-base font-semibold bg-yellow-500 hover:bg-yellow-400 text-white rounded-md transition"
               disabled={loading}
             >
               {loading ? "Creating Shop..." : "Create Shop"}
