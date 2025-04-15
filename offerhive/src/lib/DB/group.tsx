@@ -149,9 +149,9 @@ export async function getGroupById(id: string): Promise<GroupUnique | null> {
         group_tags
       ),
       GroupSubscription (
-        user_id
-        ,User(
-        user_id
+        user_id,
+        User (
+          user_id
         )
       ),
       GroupUser (
@@ -159,7 +159,7 @@ export async function getGroupById(id: string): Promise<GroupUnique | null> {
         status,
         User (
           user_id,
-        UserShop!UserShop_user_id_fkey (
+          UserShop!UserShop_user_id_fkey (
             user_id,
             shop_title,
             shop_desc,
@@ -168,13 +168,13 @@ export async function getGroupById(id: string): Promise<GroupUnique | null> {
             shop_images,
             shop_tags,
             shop_address
-
           )
         )
       )
     `)
-    .eq('group_id', id)  
-    .single();  
+    .eq('group_id', id)
+    .single();
+
   if (error) {
     console.error("Error fetching group:", error);
     return null;
@@ -182,9 +182,15 @@ export async function getGroupById(id: string): Promise<GroupUnique | null> {
 
   if (!data) {
     console.warn("No group found for the provided group_id:", id);
-    return null; 
+    return null;
   }
-console.log(data)
+
+  if (data.GroupUser) {
+    data.GroupUser = data.GroupUser.filter((user: any) => {
+      return user.status !== 'pending' && user.User?.UserShop != null;
+    });
+  }
 
   return data;
 }
+

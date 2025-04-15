@@ -27,7 +27,7 @@ export default function Footer() {
 
         <div className="flex flex-col items-center md:items-end text-sm">
           <p className="mb-2">Need help? Email us at</p>
-          <a href="mailto:adeeltahir6a@" className="text-yellow-400 hover:underline">adeeltahir6a@</a>
+          <p className="text-yellow-400 hover:underline">adeeltahir6a@gmail.com</p>
         </div>
       </div>
 

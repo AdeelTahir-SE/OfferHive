@@ -82,6 +82,9 @@ export async function getShopById(id: string) {
   return shop;
 }
 export async function createShop(userid: string, shop: any, images: File[]) {
+  if(!shop.shop_desc || !shop.shop_title || !shop.contact_info||!userid){
+    return ;
+  }
   const { error: chatDeleteError } = await supabase
     .from("Chat")
     .delete()

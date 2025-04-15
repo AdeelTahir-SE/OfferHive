@@ -26,7 +26,7 @@ export async function signUp(email: string, password: string) {
     .insert([
       {
         email,
-        user_id: signUpData.user.id,
+        user_id: signUpData?.user?.id,
         profile_image: "",
         is_shop_owner: false,
       },
