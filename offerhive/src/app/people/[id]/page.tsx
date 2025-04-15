@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import React from "react";
 import { RootState } from "@/lib/redux/store";
-
+import { useRouter } from "next/router";
 interface User {
   profile_image: string;
   email: string;
@@ -41,6 +41,7 @@ export default function PersonChat() {
   const [newMessage, setNewMessage] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const { id }: { id: string } = useParams();
+  const router=useRouter()
   const loggedInUser = useSelector((state: RootState) => state.user) as ReduxUser;
 
   useEffect(() => {
@@ -126,7 +127,25 @@ export default function PersonChat() {
 
     setNewMessage("");
   };
+  if(!loggedInUser?.email){
+    return(
+      <section className="h-screen flex flex-col items-center justify-center ">
+      <div className="text-center mt-10 max-w-lg mx-auto">
+        <h1 className="text-4xl font-bold text-gray-800">
+          Oops! You can not chat without logging in😅
+        </h1>
 
+        <button
+          onClick={() => router.push("/logIn")}
+          className="mt-8 bg-yellow-400 cursor-pointer text-black py-3 px-8 rounded-full hover:bg-yellow-500 text-lg font-semibold transition duration-300 shadow-lg"
+        >
+          Login
+        </button>
+      </div>
+    </section>
+
+    )
+  }
   return (
     <section className="flex flex-col items-center justify-center bg-gray-100 min-h-screen p-4 sm:p-6">
       <p className="text-2xl sm:text-3xl mb-4 text-center">

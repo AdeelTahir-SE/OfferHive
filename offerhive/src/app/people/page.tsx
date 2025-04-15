@@ -30,7 +30,26 @@ export default function People() {
     console.log(user?.is_shop_owner)
   }, [user]);
 
-  if (user && user?.is_shop_owner) {
+  if(!user?.email){
+    return(
+      <section className="h-screen flex flex-col items-center justify-center ">
+      <div className="text-center mt-10 max-w-lg mx-auto">
+        <h1 className="text-4xl font-bold text-gray-800">
+          Oops! You can not chat without logging in😅
+        </h1>
+
+        <button
+          onClick={() => router.push("/logIn")}
+          className="mt-8 bg-yellow-400 cursor-pointer text-black py-3 px-8 rounded-full hover:bg-yellow-500 text-lg font-semibold transition duration-300 shadow-lg"
+        >
+          Login
+        </button>
+      </div>
+    </section>
+    )
+  }
+
+  if (user&& user?.is_shop_owner) {
     return (
       <section className="h-screen flex flex-col items-center justify-center bg-gray-100">
         <div className="text-center">

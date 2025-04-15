@@ -51,6 +51,24 @@ export default function Profile() {
     }
     setUploading(false);
   };
+  if(User&&!User?.email){
+    return(
+      <section className="h-screen flex flex-col items-center justify-center ">
+      <div className="text-center mt-10 max-w-lg mx-auto">
+        <h1 className="text-4xl font-bold text-gray-800">
+          Oops! You can not manage the profile without logging in😅
+        </h1>
+
+        <button
+          onClick={() => router.push("/logIn")}
+          className="mt-8 bg-yellow-400 cursor-pointer text-black py-3 px-8 rounded-full hover:bg-yellow-500 text-lg font-semibold transition duration-300 shadow-lg"
+        >
+          Login
+        </button>
+      </div>
+    </section>
+    )
+  }
 
   return (
     <section className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-100">
