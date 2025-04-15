@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
         <div className="flex items-center justify-center md:justify-start space-x-6">
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+          {/* <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
             <Image src="/facebook.svg" alt="Facebook" width={28} height={28} className="hover:scale-110 transition-transform" />
           </a>
           <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
@@ -15,7 +15,7 @@ export default function Footer() {
           </a>
           <a href="https://github.com" target="_blank" rel="noopener noreferrer">
             <Image src="/github.svg" alt="GitHub" width={28} height={28} className="hover:scale-110 transition-transform" />
-          </a>
+          </a> */}
         </div>
 
         <div className="flex flex-col items-center space-y-4 text-sm font-medium">
