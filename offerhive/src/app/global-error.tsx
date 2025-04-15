@@ -47,6 +47,9 @@ export default function GlobalError({
           <p className="mt-6 text-gray-500 text-sm">
             Error Digest: <span className="font-mono">{error.digest}</span>
           </p>
+          <p className="mt-6 text-gray-500 text-sm">
+            Error message: <span className="font-mono">{error.message}</span>
+          </p>
         </div>
       </body>
     </html>
