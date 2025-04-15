@@ -16,7 +16,7 @@ export default function GroupPage() {
   const [joinStatus, setJoinStaus] = useState("unjoined");
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [group, setGroup] = useState<GroupUnique | null>(null);
-  const { id }:{id:string} =useParams()
+  const { id }: { id: string } = useParams();
 
   const user = useSelector((state: RootState) => state.user);
   console.log("user", user);
@@ -25,22 +25,29 @@ export default function GroupPage() {
       const data = await getGroupById(id);
       console.log(data);
       if (data) {
-        console.log(data)
+        console.log(data);
         setGroup(data);
-        if(data?.GroupUser?.filter(user=>user.user_id==user.user_id)?.length > 0) {
-          console.log("joined group")
-        setJoinStaus("joined");
+        if (
+          data?.GroupUser?.filter((user) => user.user_id == user.user_id)
+            ?.length > 0
+        ) {
+          console.log("joined group");
+          setJoinStaus("joined");
         }
-        if(data?.GroupSubscription?.filter(user=>user.user_id==user.user_id)?.length > 0) {
-          console.log("subscribed group")
-        setIsSubscribed(true);
+        if (
+          data?.GroupSubscription?.filter(
+            (user) => user.user_id == user.user_id
+          )?.length > 0
+        ) {
+          console.log("subscribed group");
+          setIsSubscribed(true);
         }
       } else {
         setError("No shops found in this group.");
       }
     } catch (err) {
       setError("Error fetching group shops. Please try again later.");
-      console.log(err)
+      console.log(err);
     } finally {
       setIsLoading(false);
     }
@@ -51,7 +58,7 @@ export default function GroupPage() {
   }, [id]);
 
   async function handleJoinGroup(user_id: string, group_id: string) {
-    if(user_id === undefined || group_id === undefined) return;
+    if (user_id === undefined || group_id === undefined) return;
     const data = await joinGroup(user_id, group_id);
     if (!data) {
       console.error("Error joining group:");
@@ -75,31 +82,32 @@ export default function GroupPage() {
   }
 
   if (isLoading)
-    return <section className="flex flex-col items-center justify-center h-screen"><Loader size={5}/></section>
+    return (
+      <section className="flex flex-col items-center justify-center h-screen">
+        <Loader size={5} />
+      </section>
+    );
   if (error)
     return <div className="text-center text-red-500 text-xl">{error}</div>;
 
   return (
-      <section className="flex flex-col items-center justify-center bg-gray-100 px-4 py-8 min-h-screen">
-        <h1 className="text-3xl font-bold mb-4 text-center">
-          {group?.GroupDetail?.[0]?.group_title || "Group Offerers"}
-        </h1>
-        <p className="text-lg text-gray-700 font-medium leading-relaxed mb-6 text-center max-w-2xl">
-          {group?.GroupDetail?.[0]?.group_desc}
-        </p>
-    
-        {group ? (
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 w-full max-w-[1440px]">
-            {/* Group Details */}
-            <div className="col-span-1 bg-white p-6 rounded-xl shadow-md w-full flex flex-col items-center justify-center text-center">
-            <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
+    <section className="flex flex-col items-center justify-center bg-gray-100 px-4 py-8 min-h-screen">
+      <h1 className="text-3xl font-bold mb-4 text-center">
+        {group?.GroupDetail?.[0]?.group_title || "Group Offerers"}
+      </h1>
+      <p className="text-lg text-gray-700 font-medium leading-relaxed mb-6 text-center max-w-2xl">
+        {group?.GroupDetail?.[0]?.group_desc}
+      </p>
+
+      {group ? (
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 w-full max-w-[1440px]">
+          {/* Group Details */}
+          <div className="col-span-1 md:col-span-1 w-full flex justify-center">
+            <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm flex flex-col items-center justify-center text-center">
+              <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
                 Group Details
               </h2>
-    
-              <p className="text-base text-gray-700 font-medium leading-relaxed mb-4 text-center">
-                {group?.GroupDetail?.[0]?.group_desc}
-              </p>
-    
+
               <div className="flex flex-col items-center space-y-4">
                 <p className="text-sm text-gray-600">
                   <span className="font-semibold">Created On:</span>{" "}
@@ -109,21 +117,21 @@ export default function GroupPage() {
                     day: "numeric",
                   })}
                 </p>
-    
+
                 <p className="text-sm text-gray-600">
                   <span className="font-semibold">Owner:</span> {group?.user_id}
                 </p>
-    
+
                 {group?.GroupDetail?.[0]?.group_image && (
                   <Image
-                    src={group?.GroupDetail?.[0]?.group_image}
+                    src={group.GroupDetail[0].group_image}
                     alt="Group Image"
                     width={250}
                     height={250}
                     className="rounded-lg shadow-sm object-cover"
                   />
                 )}
-    
+
                 {group?.GroupDetail?.[0]?.group_tags?.length > 0 && (
                   <div className="flex flex-wrap justify-center gap-2 mt-4">
                     {group.GroupDetail[0].group_tags.map((tag, index) => (
@@ -138,10 +146,11 @@ export default function GroupPage() {
                 )}
               </div>
             </div>
-    
-            {/* Offerer Cards */}
-            <div className="col-span-3 flex flex-wrap gap-4 justify-center items-start max-h-[80vh] overflow-y-auto px-2">
-              {group.GroupUser.map((shop, index) => (
+          </div>
+
+          <div className="col-span-3 flex flex-wrap gap-4 justify-center items-start max-h-[80vh] overflow-y-auto px-2">
+            {group?.GroupUser?.length > 0 ? (
+              group.GroupUser.map((shop, index) => (
                 <OffererCard
                   key={index}
                   image={shop.User?.UserShop?.shop_images?.[0]}
@@ -151,80 +160,85 @@ export default function GroupPage() {
                   group={null}
                   address={shop.User?.UserShop?.shop_address}
                 />
-              ))}
-            </div>
-    
-            {/* Join + Subscribe */}
-            <div className="col-span-1 flex flex-col items-center justify-start space-y-6 w-full">
-              {user && (
-                <div className="text-center flex flex-col space-y-2">
-                  <p className="text-sm text-gray-600">
-                    {user?.is_shop_owner ? (
-                      joinStatus === "unjoined"
-                        ? "Join the group to get the latest updates."
-                        : joinStatus === "pending"
-                        ? "Your request is pending approval."
-                        : "You are already a group member."
-                    ) : (
-                      "Sign in to join the group."
-                    )}
-                  </p>
-                  <button
-                    onClick={() => handleJoinGroup(user.user_id, id)}
-                    className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
-                      joinStatus === "unjoined"
-                        ? "bg-yellow-500 hover:bg-yellow-600"
-                        : "bg-gray-400 cursor-not-allowed"
-                    }`}
-                    disabled={joinStatus !== "unjoined"}
-                  >
-                    {user?.is_shop_owner
-                      ? joinStatus === "unjoined"
-                        ? "Join Group"
-                        : joinStatus === "pending"
-                        ? "Request Pending"
-                        : "Request Accepted"
-                      : "Sign in to join"}
-                  </button>
-                </div>
-              )}
-    
-              <div className="text-center space-y-2">
+              ))
+            ) : (
+              <p className="text-center text-lg text-gray-600 mt-8 w-full">
+                🥇 Be the first one to join this group and showcase your shop!
+              </p>
+            )}
+          </div>
+
+          {/* Join + Subscribe */}
+          <div className="col-span-1 flex flex-col items-center justify-start space-y-6 w-full">
+            {user && (
+              <div className="text-center flex flex-col space-y-2">
                 <p className="text-sm text-gray-600">
-                  {user?.email
-                    ? isSubscribed
-                      ? "Unsubscribe to stop receiving updates."
-                      : "Subscribe to get updates for this group."
-                    : "Please sign in to subscribe to group updates."}
+                  {user?.is_shop_owner
+                    ? joinStatus === "unjoined"
+                      ? "Join the group to get the latest updates."
+                      : joinStatus === "pending"
+                      ? "Your request is pending approval."
+                      : "You are already a group member."
+                    : "Sign in to join the group."}
                 </p>
-    
-                {user?.email ? (
-                  <button
-                    onClick={() => handleSubscribe(user.user_id, id, isSubscribed)}
-                    className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
-                      isSubscribed
-                        ? "bg-red-500 hover:bg-red-600"
-                        : "bg-yellow-500 hover:bg-yellow-600"
-                    }`}
-                  >
-                    {isSubscribed ? "Unsubscribe" : "Subscribe"}
-                  </button>
-                ) : (
-                  <Link
-                    href="/logIn"
-                    className="inline-block px-6 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white transition duration-300"
-                  >
-                    Sign in to Subscribe
-                  </Link>
-                )}
+                <button
+                  onClick={() => handleJoinGroup(user.user_id, id)}
+                  className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
+                    joinStatus === "unjoined"
+                      ? "bg-yellow-500 hover:bg-yellow-600"
+                      : "bg-gray-400 cursor-not-allowed"
+                  }`}
+                  disabled={joinStatus !== "unjoined"}
+                >
+                  {user?.is_shop_owner
+                    ? joinStatus === "unjoined"
+                      ? "Join Group"
+                      : joinStatus === "pending"
+                      ? "Request Pending"
+                      : "Request Accepted"
+                    : "Sign in to join"}
+                </button>
               </div>
+            )}
+
+            <div className="text-center space-y-2">
+              <p className="text-sm text-gray-600">
+                {user?.email
+                  ? isSubscribed
+                    ? "Unsubscribe to stop receiving updates."
+                    : "Subscribe to get updates for this group."
+                  : "Please sign in to subscribe to group updates."}
+              </p>
+
+              {user?.email ? (
+                <button
+                  onClick={() =>
+                    handleSubscribe(user.user_id, id, isSubscribed)
+                  }
+                  className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
+                    isSubscribed
+                      ? "bg-red-500 hover:bg-red-600"
+                      : "bg-yellow-500 hover:bg-yellow-600"
+                  }`}
+                >
+                  {isSubscribed ? "Unsubscribe" : "Subscribe"}
+                </button>
+              ) : (
+                <Link
+                  href="/logIn"
+                  className="inline-block px-6 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-white transition duration-300"
+                >
+                  Sign in to Subscribe
+                </Link>
+              )}
             </div>
           </div>
-        ) : (
-          <p className="text-lg text-gray-500 mt-10">
-            No shops available in this group.
-          </p>
-        )}
-      </section>
-    );
+        </div>
+      ) : (
+        <p className="text-lg text-gray-500 mt-10">
+          No shops available in this group.
+        </p>
+      )}
+    </section>
+  );
 }
