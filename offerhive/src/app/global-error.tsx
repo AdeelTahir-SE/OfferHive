@@ -40,7 +40,7 @@ export default function GlobalError({
             {isThrottled ? 'Please wait...' : 'Try Again'}
           </button>
           <Link href="/">
-            <a className="px-6 py-3 text-white bg-blue-500 hover:bg-blue-400 rounded-lg text-lg transition duration-300">
+            <a className="px-6 py-3 text-white bg-yellow-500 hover:bg-yellow-400 rounded-lg text-lg transition duration-300">
               Go to Home
             </a>
           </Link>

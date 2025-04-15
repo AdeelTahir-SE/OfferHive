@@ -7,7 +7,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import React from "react";
 import { RootState } from "@/lib/redux/store";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 interface User {
   profile_image: string;
   email: string;
