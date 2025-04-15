@@ -104,7 +104,7 @@ export default function Contact() {
         </button>
       </form>
 
-      <div className="mt-10 text-sm text-gray-500 text-center">
+      {/* <div className="mt-10 text-sm text-gray-500 text-center">
         Or reach us directly at{" "}
         <a
           href="mailto:adeeltahir6a@gmail.com"
@@ -112,7 +112,7 @@ export default function Contact() {
         >
           contact@yourwebsite.com
         </a>
-      </div>
+      </div> */}
     </section>
   );
 }
