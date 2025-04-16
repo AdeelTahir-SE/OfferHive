@@ -18,7 +18,7 @@ export default function GroupCard({
   const remaining = members.length - visibleMembers.length;
 
   return (
-    <Link href={`/groups/${id}`} className="w-full h-full">
+    <Link href={`/communities/${id}`} className="w-full h-full">
       <section className="flex flex-col sm:flex-row items-center sm:items-start justify-start bg-white p-4 hover:border rounded-xl shadow-md gap-4 transition-all duration-200">
         <div className="w-full sm:w-[150px] lg:w-[300px]">
           <Image
