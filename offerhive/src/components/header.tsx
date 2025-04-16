@@ -67,8 +67,8 @@ export default function Header() {
         {user?.email && !user?.is_shop_owner && <MenuLink href="/people">People</MenuLink>}
         <MenuLink href="/">Home</MenuLink>
         <MenuLink href="/contact">Contact</MenuLink>
-        <MenuLink href="/offers">Offerers</MenuLink>
-        <MenuLink href="/groups">Groups</MenuLink>
+        <MenuLink href="/providers">Offerers</MenuLink>
+        <MenuLink href="/communities">Groups</MenuLink>
 
         {user?.is_shop_owner ? (
           <MenuLink href="/shop/dashboard">My Shop</MenuLink>

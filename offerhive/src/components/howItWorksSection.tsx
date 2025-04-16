@@ -18,7 +18,7 @@ export default function HowItWorksSection() {
       <div className="flex flex-col md:flex-row items-center justify-center gap-8 px-6 py-12 max-w-6xl">
         <div className="max-w-xl text-center md:text-left">
           <p className="text-gray-700">
-            Click on an offerer to explore their available offers. <br />
+            Click on an provider to explore their available offers. <br />
             You can search for offerers based on the title of the offer, or
             simply keep scrolling to browse offers that match your needs and
             preferences. Discover deals tailored to your interest with ease.

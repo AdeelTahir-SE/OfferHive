@@ -7,7 +7,7 @@ export default function HeroSection() {
   const router = useRouter();
 
   const handleButtonClick = () => {
-    router.push("/offers");
+    router.push("/providers");
   };
 
   return (

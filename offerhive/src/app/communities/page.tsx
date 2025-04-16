@@ -65,9 +65,9 @@ export default function Groups() {
 
   return (
     <section className="flex flex-col items-center justify-center gap-6 p-4 w-full">
-      <h1 className="text-3xl font-bold mb-4">Groups</h1>
+      <h1 className="text-3xl font-bold mb-4">Community</h1>
       <p className="text-lg text-center">
-        Find groups that match your interests and receive relevant offers.
+        Find Community that match your interests and receive relevant offers.
       </p>
 
       <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />

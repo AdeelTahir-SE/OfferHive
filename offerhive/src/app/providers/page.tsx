@@ -62,8 +62,8 @@ export default function Offers() {
 
   return (
     <section className="flex flex-col items-center justify-center rounded-xl py-6 w-full">
-      <h1 className="text-3xl font-bold mb-4">Offerers</h1>
-      <p className="text-lg">Check out amazing offers by different Offerers!</p>
+      <h1 className="text-3xl font-bold mb-4">Providers</h1>
+      <p className="text-lg">Check out amazing offers by different Providers!</p>
 
       <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
 
