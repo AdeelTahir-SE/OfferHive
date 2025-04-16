@@ -1,6 +1,14 @@
+"use client"
 import Image from "next/image";
 import HowItWorksSection from "@/components/howItWorksSection";
+import { useRouter } from "next/navigation";
+import RedirectIcon from "@/components/redirectComponent";
 export default function Documentation() {
+    const router = useRouter();
+  
+    const handleRedirectClick = () => {
+      router.push("/terms&policy");
+    };
   return (
     <section className="flex flex-col items-center justify-center">
       <HowItWorksSection />
@@ -109,9 +117,14 @@ export default function Documentation() {
        
 
       </div>
-      <p className="text-sm text-gray-500 text-center px-6 pb-8 max-w-4xl">
-        OfferHive reserves the right to remove your shop or group, and access your data if necessary for moderation or platform policy enforcement.
-      </p>
+          <button
+          className="px-6 py-3 mt-2 flex flex-row items-center gap-2 sm:mt-8 z-10 cursor-pointer rounded-2xl bg-gray-500 hover:bg-gray-400 text-white mb-2 font-semibold transition duration-200"
+          onClick={handleRedirectClick}
+        >
+          <p>See Terms&Policy</p>
+          <RedirectIcon className="max-w-12 w-6 h-6" />
+
+        </button>
     </section>
   );
 }
