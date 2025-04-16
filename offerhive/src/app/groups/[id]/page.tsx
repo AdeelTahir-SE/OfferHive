@@ -28,12 +28,30 @@ export default function GroupPage() {
         console.log(data);
         setGroup(data);
         if (
-          data?.GroupUser?.filter((user) => user.user_id == user.user_id)
-            ?.length > 0
+          data?.GroupUser?.filter(
+            (user) => user.user_id == user.user_id && user.status == "joined"
+          )?.length > 0
         ) {
           console.log("joined group");
           setJoinStaus("joined");
         }
+        if (
+          data?.GroupUser?.filter(
+            (user) => user.user_id == user.user_id && user.status == "pending"
+          )?.length > 0
+        ) {
+          console.log("pending group");
+          setJoinStaus("pending");
+        }
+        if (
+          data?.GroupUser?.filter(
+            (user) => user.user_id == user.user_id && user.status == "unjoined"
+          )?.length > 0
+        ) {
+          console.log("unjoined group");
+          setJoinStaus("unjoined");
+        }
+
         if (
           data?.GroupSubscription?.filter(
             (user) => user.user_id == user.user_id
@@ -149,18 +167,21 @@ export default function GroupPage() {
           </div>
 
           <div className="col-span-3 flex flex-wrap gap-4 justify-center items-start max-h-[80vh] overflow-y-auto px-2">
-            {group?.GroupUser?.length > 0 ? (
-              group.GroupUser.map((shop, index) => (
-                <OffererCard
-                  key={index}
-                  image={shop.User?.UserShop?.shop_images?.[0]}
-                  id={shop?.User?.user_id}
-                  title={shop.User?.UserShop?.shop_title}
-                  tags={shop.User?.UserShop?.shop_tags}
-                  group={null}
-                  address={shop.User?.UserShop?.shop_address}
-                />
-              ))
+            {group?.GroupUser?.filter((shop) => shop.status !== "pending")
+              ?.length > 0 ? (
+              group.GroupUser.filter((shop) => shop.status !== "pending").map(
+                (shop, index) => (
+                  <OffererCard
+                    key={index}
+                    image={shop.User?.UserShop?.shop_images?.[0]}
+                    id={shop?.User?.user_id}
+                    title={shop.User?.UserShop?.shop_title}
+                    tags={shop.User?.UserShop?.shop_tags}
+                    group={null}
+                    address={shop.User?.UserShop?.shop_address}
+                  />
+                )
+              )
             ) : (
               <p className="text-center text-lg text-gray-600 mt-8 w-full">
                 🥇 Be the first one to join this group and showcase your shop!
@@ -176,35 +197,37 @@ export default function GroupPage() {
                   {user?.is_shop_owner
                     ? joinStatus === "unjoined"
                       ? "Join the group to get the latest updates."
-                      : joinStatus === "pending"
+                      : joinStatus == "pending"
                       ? "Your request is pending approval."
                       : "You are already a group member."
                     : "Sign in to join the group."}
                 </p>
-                {user?.is_shop_owner ? (
-                  <button
-                    onClick={() => handleJoinGroup(user.user_id, id)}
-                    className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
-                      joinStatus === "unjoined"
-                        ? "bg-yellow-500 hover:bg-yellow-600"
-                        : "bg-gray-400 cursor-not-allowed"
-                    }`}
-                    disabled={joinStatus !== "unjoined"}
-                  >
-                    {joinStatus === "unjoined"
-                      ? "Join Group"
-                      : joinStatus === "pending"
-                      ? "Request Pending"
-                      : "Request Accepted"}
-                  </button>
-                ) : (
-                  <button
-                    className="px-6 py-2 rounded-lg text-white bg-gray-400 cursor-not-allowed"
-                    disabled
-                  >
-                    Sign in to join
-                  </button>
-                )}
+                {user?.is_shop_owner ?  (
+                    <button
+                      onClick={() => handleJoinGroup(user.user_id, id)}
+                      className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
+                        joinStatus === "unjoined"
+                          ? "bg-yellow-500 hover:bg-yellow-600"
+                          : "bg-gray-400 cursor-not-allowed"
+                      }`}
+                      disabled={joinStatus !== "unjoined"}
+                    >
+                      {joinStatus === "unjoined"
+                        ? "Click to Join"
+                        : joinStatus === "pending"
+                        ? "Approval Pending"
+                        : "Already Joined"}
+                    </button>
+                  ) : (
+                    <button
+                      className="px-6 py-2 rounded-lg text-white bg-gray-400 cursor-not-allowed"
+                      disabled
+                    >
+                      Create a Shop first
+                    </button>
+                  )
+}
+
               </div>
             )}
 

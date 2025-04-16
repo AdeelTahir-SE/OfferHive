@@ -26,7 +26,6 @@ export function middleware(request: NextRequest) {
               align-items: center;
               height: 100vh;
               background-color: #ffffff;
-              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
               color: #333;
             }
             .container {

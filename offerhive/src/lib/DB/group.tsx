@@ -86,6 +86,7 @@ export async function searchGroups(searchTerm: string, counter: number) {
   const filteredGroups = data?.filter((group) =>
     group.GroupDetail?.length > 0
   ) || [];
+  
   const filteredData = data?.map(group => ({
     ...group,
     GroupUser: group.GroupUser?.filter((user: any) => user.status !== "pending")
@@ -193,11 +194,7 @@ export async function getGroupById(id: string): Promise<GroupUnique | null> {
     return null;
   }
 
-  if (data.GroupUser) {
-    data.GroupUser = data.GroupUser.filter((user: any) => {
-      return user.status !== 'pending' && user.User?.UserShop != null;
-    });
-  }
+
 
   return data;
 }
