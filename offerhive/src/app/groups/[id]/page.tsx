@@ -181,23 +181,30 @@ export default function GroupPage() {
                       : "You are already a group member."
                     : "Sign in to join the group."}
                 </p>
-                <button
-                  onClick={() => handleJoinGroup(user.user_id, id)}
-                  className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
-                    joinStatus === "unjoined"
-                      ? "bg-yellow-500 hover:bg-yellow-600"
-                      : "bg-gray-400 cursor-not-allowed"
-                  }`}
-                  disabled={joinStatus !== "unjoined"}
-                >
-                  {user?.is_shop_owner
-                    ? joinStatus === "unjoined"
+                {user?.is_shop_owner ? (
+                  <button
+                    onClick={() => handleJoinGroup(user.user_id, id)}
+                    className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
+                      joinStatus === "unjoined"
+                        ? "bg-yellow-500 hover:bg-yellow-600"
+                        : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                    disabled={joinStatus !== "unjoined"}
+                  >
+                    {joinStatus === "unjoined"
                       ? "Join Group"
                       : joinStatus === "pending"
                       ? "Request Pending"
-                      : "Request Accepted"
-                    : "Sign in to join"}
-                </button>
+                      : "Request Accepted"}
+                  </button>
+                ) : (
+                  <button
+                    className="px-6 py-2 rounded-lg text-white bg-gray-400 cursor-not-allowed"
+                    disabled
+                  >
+                    Sign in to join
+                  </button>
+                )}
               </div>
             )}
 

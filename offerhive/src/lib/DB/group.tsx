@@ -29,7 +29,11 @@ export async function getGroups(counter: number) {
     )
   `)
   .range(rangeStart, rangeEnd);
-
+  const filteredData = data?.map(group => ({
+    ...group,
+    GroupUser: group.GroupUser?.filter((user: any) => user.status !== "pending")
+  }));
+  
 console.log(data)
   if (error) {
     console.error("Error fetching groups:", error);
@@ -39,7 +43,7 @@ console.log(data)
 
 
 
-  return data;
+  return filteredData ;
 }
 
 
@@ -82,8 +86,12 @@ export async function searchGroups(searchTerm: string, counter: number) {
   const filteredGroups = data?.filter((group) =>
     group.GroupDetail?.length > 0
   ) || [];
-
-  return filteredGroups;
+  const filteredData = data?.map(group => ({
+    ...group,
+    GroupUser: group.GroupUser?.filter((user: any) => user.status !== "pending")
+  }));
+  
+  return filteredData;
 }
 
 
