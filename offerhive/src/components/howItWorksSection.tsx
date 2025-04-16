@@ -12,7 +12,7 @@ export default function HowItWorksSection() {
       </svg>
       <h1 className="text-4xl text-center font-extrabold">How it Works</h1>
       <h2 className="text-2xl text-center font-bold mt-12">
-        Requesting offerer about deals and offers
+        Requesting providers about deals and offers
       </h2>
 
       <div className="flex flex-col md:flex-row items-center justify-center gap-8 px-6 py-12 max-w-6xl">
