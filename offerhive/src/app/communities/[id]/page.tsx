@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { RootState } from "@/lib/redux/store";
 import Loader from "@/components/loader";
+
 export default function GroupPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,44 +21,43 @@ export default function GroupPage() {
 
   const user = useSelector((state: RootState) => state.user);
   console.log("user", user);
+
   const fetchGroupShops = async () => {
     try {
       const data = await getGroupById(id);
       console.log(data);
       if (data) {
-        console.log(data);
         setGroup(data);
+
         if (
           data?.GroupUser?.filter(
-            (user) => user.user_id == user.user_id && user.status == "joined"
+            (user) => user.user_id === user.user_id && user.status === "joined"
           )?.length > 0
         ) {
-          console.log("joined group");
           setJoinStaus("joined");
         }
+
         if (
           data?.GroupUser?.filter(
-            (user) => user.user_id == user.user_id && user.status == "pending"
+            (user) => user.user_id === user.user_id && user.status === "pending"
           )?.length > 0
         ) {
-          console.log("pending group");
           setJoinStaus("pending");
         }
+
         if (
           data?.GroupUser?.filter(
-            (user) => user.user_id == user.user_id && user.status == "unjoined"
+            (user) => user.user_id === user.user_id && user.status === "unjoined"
           )?.length > 0
         ) {
-          console.log("unjoined group");
           setJoinStaus("unjoined");
         }
 
         if (
           data?.GroupSubscription?.filter(
-            (user) => user.user_id == user.user_id
+            (user) => user.user_id === user.user_id
           )?.length > 0
         ) {
-          console.log("subscribed group");
           setIsSubscribed(true);
         }
       } else {
@@ -85,6 +85,7 @@ export default function GroupPage() {
     console.log("Joined group successfully:", data);
     setJoinStaus("pending");
   }
+
   async function handleSubscribe(
     user_id: string,
     group_id: string,
@@ -202,32 +203,30 @@ export default function GroupPage() {
                       : "You are already a group member."
                     : "Sign in to join the group."}
                 </p>
-                {user?.is_shop_owner ?  (
-                    <button
-                      onClick={() => handleJoinGroup(user.user_id, id)}
-                      className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
-                        joinStatus === "unjoined"
-                          ? "bg-yellow-500 hover:bg-yellow-600"
-                          : "bg-gray-400 cursor-not-allowed"
-                      }`}
-                      disabled={joinStatus !== "unjoined"}
-                    >
-                      {joinStatus === "unjoined"
-                        ? "Click to Join"
-                        : joinStatus === "pending"
-                        ? "Approval Pending"
-                        : "Already Joined"}
-                    </button>
-                  ) : (
-                    <button
-                      className="px-6 py-2 rounded-lg text-white bg-gray-400 cursor-not-allowed"
-                      disabled
-                    >
-                      Create a Shop first
-                    </button>
-                  )
-}
-
+                {user?.is_shop_owner ? (
+                  <button
+                    onClick={() => handleJoinGroup(user.user_id, id)}
+                    className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
+                      joinStatus === "unjoined"
+                        ? "bg-yellow-500 hover:bg-yellow-600"
+                        : "bg-gray-400 cursor-not-allowed"
+                    }`}
+                    disabled={joinStatus !== "unjoined"}
+                  >
+                    {joinStatus === "unjoined"
+                      ? "Click to Join"
+                      : joinStatus === "pending"
+                      ? "Approval Pending"
+                      : "Already Joined"}
+                  </button>
+                ) : (
+                  <button
+                    className="px-6 py-2 rounded-lg text-white bg-gray-400 cursor-not-allowed"
+                    disabled
+                  >
+                    Create a Shop first
+                  </button>
+                )}
               </div>
             )}
 
