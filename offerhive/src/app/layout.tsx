@@ -19,10 +19,36 @@ export const metadata: Metadata = {
   description:
     "OfferHive is your go-to platform for exploring trending deals, managing shop promotions, and connecting with local businesses especially for university students.",
 
+  openGraph: {
+    title: "OfferHive",
+    description:
+      "Explore trending deals and connect with local student-run shops on OfferHive.",
+    url: "https://offer-hive.vercel.app/",
+    siteName: "OfferHive",
+    images: [
+      {
+        url: "/hive.svg", // Image path, should be in /public
+        width: 1200,
+        height: 630,
+        alt: "OfferHive - Explore trending deals",
+      },
+    ],
+    type: "website",
+  },
+
+  twitter: {
+    card: "summary_large_image",
+    title: "OfferHive",
+    description:
+      "Explore trending deals and connect with local student-run shops on OfferHive.",
+    images: ["/hive.svg"],
+  },
+
   icons: {
     icon: "/hive.svg",
   },
 };
+
 
 export default function RootLayout({
   children,
