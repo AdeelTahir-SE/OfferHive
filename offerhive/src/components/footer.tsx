@@ -21,7 +21,7 @@ export default function Footer() {
         <div className="flex flex-col items-center space-y-4 text-sm font-medium">
           <Link href="/" className="hover:underline hover:text-yellow-400 transition duration-300">Home</Link>
           <Link href="/contact" className="hover:underline hover:text-yellow-400 transition duration-300">Contact</Link>
-          <Link href="/providers" className="hover:underline hover:text-yellow-400 transition duration-300">Offers</Link>
+          <Link href="/providers" className="hover:underline hover:text-yellow-400 transition duration-300">Providers</Link>
           <p className="text-yellow-300 mt-2">🚀 Many new things coming soon...</p>
         </div>
 
