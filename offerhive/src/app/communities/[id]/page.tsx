@@ -117,7 +117,7 @@ export default function GroupPage() {
       {group ? (
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 w-full max-w-[1440px]">
           {/* Group Details */}
-          <div className="col-span-1 md:col-span-1 w-full flex justify-center md:justify-center">
+          <div className="col-span-1 md:col-span-1 w-full flex justify-center items-center md:justify-center">
   <div className="w-full max-w-sm md:max-w-xs lg:max-w-sm bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
     <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
       Group Details
