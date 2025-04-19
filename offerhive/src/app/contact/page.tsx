@@ -37,8 +37,7 @@ export default function Contact() {
 
   return (
     <section className="relative flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50 overflow-hidden">
-      {/* Spinning Sun in Top Right */}
-      <div className="absolute top-0 right-0 m-4 w-24 h-24 animate-spin-slow">
+      <div className="absolute top-0 right-0 m-4 w-18 h-18 md:w-24 md:h-24 ">
         <Image
           src="/animation.gif"
           alt="Revolving Sun"
