@@ -31,7 +31,6 @@ export default function SignUp() {
       console.log("Error signing up:", signUpError?.message);
     } else {
       dispatch(setUser(userData as any));
-      console.log("User signed up:", userData);
       setSuccessMessage("Account created! Please verify your email. Once verified, you can log in.");
     }
     setLoading(false);

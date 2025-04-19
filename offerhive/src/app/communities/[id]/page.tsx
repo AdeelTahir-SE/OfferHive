@@ -117,51 +117,52 @@ export default function GroupPage() {
       {group ? (
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 w-full max-w-[1440px]">
           {/* Group Details */}
-          <div className="col-span-1 md:col-span-1 w-full flex justify-center">
-            <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-sm flex flex-col items-center justify-center text-center">
-              <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
-                Group Details
-              </h2>
+          <div className="col-span-1 md:col-span-1 w-full flex justify-center md:justify-center">
+  <div className="w-full max-w-sm md:max-w-xs lg:max-w-sm bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
+    <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
+      Group Details
+    </h2>
 
-              <div className="flex flex-col items-center space-y-4">
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold">Created On:</span>{" "}
-                  {new Date(group?.created_at).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
+    <div className="flex flex-col items-center space-y-4">
+      <p className="text-sm text-gray-600">
+        <span className="font-semibold">Created On:</span>{" "}
+        {new Date(group?.created_at).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })}
+      </p>
 
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold">Owner:</span> {group?.user_id}
-                </p>
+      <p className="text-sm text-gray-600">
+        <span className="font-semibold">Owner:</span> {group?.user_id}
+      </p>
 
-                {group?.GroupDetail?.[0]?.group_image && (
-                  <Image
-                    src={group.GroupDetail[0].group_image}
-                    alt="Group Image"
-                    width={250}
-                    height={250}
-                    className="rounded-lg shadow-sm object-cover"
-                  />
-                )}
+      {group?.GroupDetail?.[0]?.group_image && (
+        <Image
+          src={group.GroupDetail[0].group_image}
+          alt="Group Image"
+          width={250}
+          height={250}
+          className="rounded-lg shadow-sm object-cover"
+        />
+      )}
 
-                {group?.GroupDetail?.[0]?.group_tags?.length > 0 && (
-                  <div className="flex flex-wrap justify-center gap-2 mt-4">
-                    {group.GroupDetail[0].group_tags.map((tag, index) => (
-                      <span
-                        key={index}
-                        className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full shadow"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
+      {group?.GroupDetail?.[0]?.group_tags?.length > 0 && (
+        <div className="flex flex-wrap justify-center gap-2 mt-4">
+          {group.GroupDetail[0].group_tags.map((tag, index) => (
+            <span
+              key={index}
+              className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full shadow"
+            >
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+</div>
+F
 
           <div className="col-span-3 flex flex-wrap gap-4 justify-center items-start max-h-[80vh] overflow-y-auto px-2">
             {group?.GroupUser?.filter((shop) => shop.status !== "pending")
