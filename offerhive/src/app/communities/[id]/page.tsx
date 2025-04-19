@@ -147,9 +147,9 @@ export default function GroupPage() {
 
           {/* Shop Cards */}
           <div className="col-span-3 flex flex-wrap gap-4 justify-center items-start max-h-[80vh] overflow-y-auto px-2">
-            {group?.GroupUser?.filter((shop) => shop.status !== "pending")
+            {group?.GroupUser?.filter((shop) => shop.status == "joined")
               ?.length > 0 ? (
-              group.GroupUser.filter((shop) => shop.status !== "pending").map(
+              group.GroupUser.filter((shop) => shop.status == "joined").map(
                 (shop, index) => (
                   <OffererCard
                     key={index}
@@ -207,7 +207,7 @@ export default function GroupPage() {
                       : joinStatus === "pending"
                       ? "Approval Pending"
                       : joinStatus === "rejected"
-                      ? "Request Rejected (Click to Retry)"
+                      ? "Request Rejected "
                       : "Already Joined"}
                   </button>
                 ) : (
