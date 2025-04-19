@@ -67,6 +67,5 @@ export async function getLatestMessages(user_id:string) {
     console.log("no Message");
     return [];
   }
-  console.log(messages);
   return messages;
 }

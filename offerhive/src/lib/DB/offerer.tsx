@@ -9,7 +9,6 @@ export async function getOfferers(counter: number) {
     .from("UserShop")
     .select("*")
     .range(rangeStart, rangeEnd);
-  console.log(data);
   if (error) {
     console.error("Error fetching offers:", error);
     return null;
@@ -27,7 +26,6 @@ export async function searchOfferers(searchTerm: string, counter: number) {
     .ilike("shop_title", `%${searchTerm}%`)
     .range(rangeStart, rangeEnd);
 
-  console.log(data);
   if (error) {
     console.error("Error fetching offers:", error);
     return null;
@@ -174,7 +172,6 @@ export async function updateShop(id: string, updatedFields: Partial<any>) {
     console.log("no id provided");
     return;
   }
-  console.log(updatedFields);
   const { data, error } = await supabase
     .from("UserShop")
     .update(updatedFields)
@@ -190,14 +187,12 @@ export async function updateShop(id: string, updatedFields: Partial<any>) {
   return data;
 }
 export async function updateOffer(id: string, updatedFields: Partial<any>) {
-  console.log(updatedFields);
   const { data, error } = await supabase
     .from("Offers")
     .update(updatedFields)
     .eq("offer_id", id)
     .select("*")
     .single();
-
   if (error) {
     console.error("Error updating offer:", error);
     return null;
@@ -217,7 +212,6 @@ export async function handleDeleteOfferImage(offer_id: string, shop_id: string, 
     return false;
   }
 
-  console.log("Image deleted successfully:", filePath);
   return true;
 }
 
@@ -264,7 +258,6 @@ export async function deleteOffer(offer_id: string, shop_id: string) {
 }
 
 export async function createOffer(offer:OfferBeforeCreation) {
-  console.log("offer to be created", offer);
   const { data, error } = await supabase
     .from("Offers")
     .insert({
@@ -277,7 +270,6 @@ export async function createOffer(offer:OfferBeforeCreation) {
     })
     .select("*")
     .single();
-  console.log(data);
   if (error) {
     console.error("Error creating offer:", error);
     return null;
@@ -325,7 +317,6 @@ export async function handleDeleteShopImage(id: string, filename: string) {
     console.error("Error deleting image:", error);
     return false;
   }
-  console.log("Image deleted successfully:", filePath);
   return true;
 }
 export async function uploadImage(file: File, userId: string) {

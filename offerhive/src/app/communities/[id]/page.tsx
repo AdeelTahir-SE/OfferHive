@@ -20,12 +20,10 @@ export default function GroupPage() {
   const { id }: { id: string } = useParams();
 
   const user = useSelector((state: RootState) => state.user);
-  console.log("user", user);
 
   const fetchGroupShops = async () => {
     try {
       const data = await getGroupById(id);
-      console.log(data);
       if (data) {
         setGroup(data);
 
@@ -82,7 +80,6 @@ export default function GroupPage() {
       console.error("Error joining group:");
       return;
     }
-    console.log("Joined group successfully:", data);
     setJoinStaus("pending");
   }
 
@@ -97,7 +94,6 @@ export default function GroupPage() {
       return;
     }
     setIsSubscribed(!isSubscribed);
-    console.log("Subscribed to group successfully:", data);
   }
 
   if (isLoading)

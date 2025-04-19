@@ -14,7 +14,6 @@ import { GraphProps } from "@/lib/types";
 // ✅ Typed and fixed LineGraph component
 export default function LineGraph({ data }: { data: GraphProps }) {
   if (!data || data.length === 0) {
-    console.log(data, "linegraph");
     data = [
       {
         date: new Date().toLocaleDateString("en-CA"),

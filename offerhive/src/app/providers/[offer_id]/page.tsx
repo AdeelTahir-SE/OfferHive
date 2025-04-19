@@ -56,7 +56,6 @@ export default function OfferDetails() {
   useEffect(() => {
     const fetchShop = async () => {
       try {
-        console.log(offer_id);
         const data = await getShopById(offer_id);
         setShop(data);
       } catch (error) {

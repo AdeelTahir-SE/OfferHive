@@ -2,7 +2,6 @@ import { Provider } from "react";
 import { supabase } from "./db";
 import { RealtimeChannel } from "@supabase/supabase-js";
 export async function signUp(email: string, password: string) {
-  console.log(email, password);
 
   const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
     email,

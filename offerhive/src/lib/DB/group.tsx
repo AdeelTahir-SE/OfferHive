@@ -34,7 +34,6 @@ export async function getGroups(counter: number) {
     GroupUser: group.GroupUser?.filter((user: any) => user.status !== "pending")
   }));
   
-console.log(data)
   if (error) {
     console.error("Error fetching groups:", error);
     return null;
@@ -83,9 +82,6 @@ export async function searchGroups(searchTerm: string, counter: number) {
     return null;
   }
 
-  const filteredGroups = data?.filter((group) =>
-    group.GroupDetail?.length > 0
-  ) || [];
   
   const filteredData = data?.map(group => ({
     ...group,
@@ -97,9 +93,7 @@ export async function searchGroups(searchTerm: string, counter: number) {
 
 
 export async function subscribeGroup(user_id:string,group_id:string,isSubscribed:boolean) {
-  console.log("user_id",user_id)
-  console.log("group_id",group_id)
-  console.log("isSubscribed",isSubscribed)
+
   if(isSubscribed) {
 
     const { data, error } = await supabase
@@ -109,7 +103,6 @@ export async function subscribeGroup(user_id:string,group_id:string,isSubscribed
       .eq("group_id", group_id)
       .select();
 
-      console.log(data)
     if (error) {
       console.error("Error unsubscribing from group:", error);
       return null;
@@ -134,7 +127,6 @@ export async function joinGroup(user_id:string,group_id:string) {
     .from("GroupUser")
     .insert([{ user_id, group_id, status: "pending" }])
     .select();
-    console.log(data)
   if (error) {
     console.error("Error joining group:", error);
     return null;

@@ -14,7 +14,6 @@ import {
 // ✅ Fixed function: destructured props + return type
 export default function BarGraph({ data }: { data:GraphProps }) {
   if (!data || data.length === 0) {
-    console.log(data, "linegraph");
     data = [
       {
         date: new Date().toLocaleDateString("en-CA"),

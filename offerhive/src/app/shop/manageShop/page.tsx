@@ -52,17 +52,20 @@ export default function ManageShop() {
     field: keyof Offer,
     value: string|null
   ) => {
-    if(!value){
+    if(!value&&field!=="image"){
       return
     }
     const updatedOffers = [...offers];
     const offer = updatedOffers[index];
     if (!offer) return;
+
     const updatedOffer = { ...offer, [field]: value };
     updatedOffers[index] = updatedOffer;
     setOffers(updatedOffers);
+
     if (updatedOffer.offer_id) {
       await updateOffer(updatedOffer.offer_id, { [field]: value });
+
     }
   };
 
