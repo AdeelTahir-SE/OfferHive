@@ -184,18 +184,30 @@ export default function GroupPage() {
                 </p>
                 {user?.is_shop_owner ? (
                   <button
-                    onClick={() => handleJoinGroup(user.user_id, id)}
+                    onClick={() =>
+                      joinStatus === "unjoined" || joinStatus === "rejected"
+                        ? handleJoinGroup(user.user_id, id)
+                        : null
+                    }
                     className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
                       joinStatus === "unjoined"
                         ? "bg-yellow-500 hover:bg-yellow-600"
+                        : joinStatus === "pending"
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : joinStatus === "rejected"
+                        ? "bg-red-500 hover:bg-red-600"
                         : "bg-gray-400 cursor-not-allowed"
                     }`}
-                    disabled={joinStatus !== "unjoined"}
+                    disabled={
+                      joinStatus === "pending" || joinStatus === "joined"
+                    }
                   >
                     {joinStatus === "unjoined"
-                      ? "You are rejected"
+                      ? "Click to Join"
                       : joinStatus === "pending"
                       ? "Approval Pending"
+                      : joinStatus === "rejected"
+                      ? "Request Rejected (Click to Retry)"
                       : "Already Joined"}
                   </button>
                 ) : (
