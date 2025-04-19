@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { sendMessage } from "@/lib/DB/contact";
+import Image from "next/image";
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -27,19 +28,28 @@ export default function Contact() {
       alert("There was an error sending your message. Please try again.");
     } else {
       alert("Your message has been sent successfully!");
-
       const form = document.getElementById("contact-form") as HTMLFormElement;
-      if (form) {
-        form.reset();
-      }
+      if (form) form.reset();
     }
 
     setIsSubmitting(false);
   };
 
   return (
-    <section className="flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50">
+    <section className="relative flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50 overflow-hidden">
+      {/* Spinning Sun in Top Right */}
+      <div className="absolute top-0 right-0 m-4 w-24 h-24 animate-spin-slow">
+        <Image
+          src="/animation.gif"
+          alt="Revolving Sun"
+          width={96}
+          height={96}
+          className="rounded-full"
+        />
+      </div>
+
       <h1 className="text-3xl font-bold mb-4">Get in Touch</h1>
+
       <p className="text-gray-600 mb-4 text-center max-w-xl">
         If you notice any bugs or have suggestions or as a shop owner do you want some additional features, please let us know. We
         appreciate your feedback and are always looking to improve. Your
@@ -55,9 +65,7 @@ export default function Contact() {
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col">
-          <label htmlFor="name" className="font-medium mb-1">
-            Name
-          </label>
+          <label htmlFor="name" className="font-medium mb-1">Name</label>
           <input
             type="text"
             id="name"
@@ -68,9 +76,7 @@ export default function Contact() {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="email" className="font-medium mb-1">
-            Email
-          </label>
+          <label htmlFor="email" className="font-medium mb-1">Email</label>
           <input
             type="email"
             id="email"
@@ -81,9 +87,7 @@ export default function Contact() {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="message" className="font-medium mb-1">
-            Message
-          </label>
+          <label htmlFor="message" className="font-medium mb-1">Message</label>
           <textarea
             id="message"
             name="message"
@@ -103,16 +107,6 @@ export default function Contact() {
           {isSubmitting ? "Sending..." : "Send Message"}
         </button>
       </form>
-
-      {/* <div className="mt-10 text-sm text-gray-500 text-center">
-        Or reach us directly at{" "}
-        <a
-          href="mailto:adeeltahir6a@gmail.com"
-          className="text-yellow-600 underline"
-        >
-          contact@yourwebsite.com
-        </a>
-      </div> */}
     </section>
   );
 }
