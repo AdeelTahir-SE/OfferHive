@@ -37,7 +37,7 @@ export default function OffererCard({
 
           <div className="flex flex-wrap justify-center gap-2">
             {hasTags ? (
-              tags.map((tag, index) => (
+              tags.slice(0,5).map((tag, index) => (
                 <span
                   key={index}
                   className="bg-yellow-500 text-black rounded-full px-3 py-1 text-sm font-semibold max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"

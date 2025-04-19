@@ -173,6 +173,7 @@ export async function updateShop(id: string, updatedFields: Partial<any>) {
     console.log("no id provided");
     return;
   }
+  console.log("id", id);
   const { data, error } = await supabase
     .from("UserShop")
     .update(updatedFields)

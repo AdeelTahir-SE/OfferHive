@@ -26,7 +26,7 @@ export default function Documentation() {
 
         <div className="relative w-64 h-64">
           <Image
-            src="/offers.png"
+            src="/offers.PNG"
             alt="Descriptive alt"
             width={1600} // Increased width
             height={600} // Increased height

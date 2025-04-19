@@ -1,5 +1,6 @@
 import { supabase } from "./db";
 import { GroupUnique } from "../types";
+import { filter } from "motion/react-client";
 export async function getGroups(counter: number) {
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
@@ -50,7 +51,6 @@ export async function getGroups(counter: number) {
 export async function searchGroups(searchTerm: string, counter: number) {
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
-
   const { data, error } = await supabase
     .from('Group')
     .select(`
@@ -81,9 +81,11 @@ export async function searchGroups(searchTerm: string, counter: number) {
     console.error("Error fetching groups:", error);
     return null;
   }
+  const filteredGroups = (data ?? []).filter(group => {
+    return Array.isArray(group.GroupDetail) ? group.GroupDetail.length > 0 : !!group.GroupDetail;
+  });
 
-  
-  const filteredData = data?.map(group => ({
+  const filteredData = filteredGroups?.map(group => ({
     ...group,
     GroupUser: group.GroupUser?.filter((user: any) => user.status !== "pending")
   }));

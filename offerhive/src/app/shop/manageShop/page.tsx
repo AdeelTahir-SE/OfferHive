@@ -256,15 +256,20 @@ export default function ManageShop() {
           ))}
         </section>
         <button
-          className="mt-4 px-4 py-2 bg-yellow-500 hover:bg-yellow-300 cursor-pointer text-white rounded-md"
-          onClick={() => {
-            const updatedTags = [...shop.shop_tags, "New Tag"];
-            setShop({ ...shop, shop_tags: updatedTags });
-            updateShop(id, { shop_tags: updatedTags });
-          }}
-        >
-          Add New Tag
-        </button>
+  className={`mt-4 px-4 py-2 ${
+    shop.shop_tags.length >= 5 ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-300"
+  } text-white rounded-md`}
+  disabled={shop.shop_tags.length >= 5}
+  onClick={() => {
+    if (shop.shop_tags.length >= 5) return;
+    const updatedTags = [...shop.shop_tags, "New Tag"];
+    setShop({ ...shop, shop_tags: updatedTags });
+    updateShop(id, { shop_tags: updatedTags });
+  }}
+>
+  {shop.shop_tags.length >= 5 ? "Max 5 Tags Reached" : "Add New Tag"}
+</button>
+
       </div>
 
       {/* Address */}
@@ -324,7 +329,7 @@ export default function ManageShop() {
                     setShop({ ...shop, links: updatedLinks });
                     updateShop(id, { links: updatedLinks });
                   }}
-                  className="ml-2 text-red-500 hover:text-red-700 text-sm font-bold"
+                  className=" text-red-500 hover:text-red-700 text-sm font-bold"
                 >
                   ✖
                 </button>
