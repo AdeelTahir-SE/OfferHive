@@ -1,10 +1,9 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import OffererCard from "@/components/offererCard";
-import { getGroupById } from "@/lib/DB/group";
+import { getGroupById, subscribeGroup, joinGroup } from "@/lib/DB/group";
 import { GroupUnique } from "@/lib/types";
 import { useSelector } from "react-redux";
-import { subscribeGroup, joinGroup } from "@/lib/DB/group";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -18,7 +17,6 @@ export default function GroupPage() {
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [group, setGroup] = useState<GroupUnique | null>(null);
   const { id }: { id: string } = useParams();
-
   const user = useSelector((state: RootState) => state.user);
 
   const fetchGroupShops = async () => {
@@ -27,37 +25,22 @@ export default function GroupPage() {
       if (data) {
         setGroup(data);
 
-        if (
-          data?.GroupUser?.filter(
-            (user) => user.user_id === user.user_id && user.status === "joined"
-          )?.length > 0
-        ) {
+        const groupUser = data.GroupUser?.find(
+          (u) => u.user_id === user?.user_id
+        );
+
+        if (groupUser?.status === "joined") {
           setJoinStaus("joined");
-        }
-
-        if (
-          data?.GroupUser?.filter(
-            (user) => user.user_id === user.user_id && user.status === "pending"
-          )?.length > 0
-        ) {
+        } else if (groupUser?.status === "pending") {
           setJoinStaus("pending");
-        }
-
-        if (
-          data?.GroupUser?.filter(
-            (user) => user.user_id === user.user_id && user.status === "unjoined"
-          )?.length > 0
-        ) {
+        } else {
           setJoinStaus("unjoined");
         }
 
-        if (
-          data?.GroupSubscription?.filter(
-            (user) => user.user_id === user.user_id
-          )?.length > 0
-        ) {
-          setIsSubscribed(true);
-        }
+        const isUserSubscribed = data.GroupSubscription?.some(
+          (u) => u.user_id === user?.user_id
+        );
+        setIsSubscribed(Boolean(isUserSubscribed));
       } else {
         setError("No shops found in this group.");
       }
@@ -74,13 +57,11 @@ export default function GroupPage() {
   }, [id]);
 
   async function handleJoinGroup(user_id: string, group_id: string) {
-    if (user_id === undefined || group_id === undefined) return;
+    if (!user_id || !group_id) return;
     const data = await joinGroup(user_id, group_id);
-    if (!data) {
-      console.error("Error joining group:");
-      return;
+    if (data) {
+      setJoinStaus("pending");
     }
-    setJoinStaus("pending");
   }
 
   async function handleSubscribe(
@@ -89,21 +70,22 @@ export default function GroupPage() {
     isSubscribed: boolean
   ) {
     const data = await subscribeGroup(user_id, group_id, isSubscribed);
-    if (!data) {
-      console.error("Error subscribing to group:");
-      return;
+    if (data) {
+      setIsSubscribed(!isSubscribed);
     }
-    setIsSubscribed(!isSubscribed);
   }
 
-  if (isLoading)
+  if (isLoading) {
     return (
       <section className="flex flex-col items-center justify-center h-screen">
         <Loader size={5} />
       </section>
     );
-  if (error)
+  }
+
+  if (error) {
     return <div className="text-center text-red-500 text-xl">{error}</div>;
+  }
 
   return (
     <section className="flex flex-col items-center justify-center bg-gray-100 px-4 py-8 min-h-screen">
@@ -117,53 +99,53 @@ export default function GroupPage() {
       {group ? (
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 w-full max-w-[1440px]">
           {/* Group Details */}
-          <div className="col-span-1 md:col-span-1 w-full flex justify-center items-center md:justify-center">
-  <div className="w-full max-w-sm md:max-w-xs lg:max-w-sm bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
-    <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
-      Group Details
-    </h2>
+          <div className="col-span-1 md:col-span-1 w-full flex justify-center items-center md:justify-center mb-6 md:mb-0">
+            <div className="w-full max-w-xs sm:max-w-sm md:max-w-xs lg:max-w-sm bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
+              <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
+                Group Details
+              </h2>
 
-    <div className="flex flex-col items-center space-y-4">
-      <p className="text-sm text-gray-600">
-        <span className="font-semibold">Created On:</span>{" "}
-        {new Date(group?.created_at).toLocaleDateString("en-US", {
-          year: "numeric",
-          month: "long",
-          day: "numeric",
-        })}
-      </p>
+              <div className="flex flex-col items-center space-y-4">
+                <p className="text-sm text-gray-600">
+                  <span className="font-semibold">Created On:</span>{" "}
+                  {new Date(group?.created_at).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
 
-      <p className="text-sm text-gray-600">
-        <span className="font-semibold">Owner:</span> {group?.user_id}
-      </p>
+                <p className="text-sm text-gray-600">
+                  <span className="font-semibold">Owner:</span> {group?.user_id}
+                </p>
 
-      {group?.GroupDetail?.[0]?.group_image && (
-        <Image
-          src={group.GroupDetail[0].group_image}
-          alt="Group Image"
-          width={250}
-          height={250}
-          className="rounded-lg shadow-sm object-cover"
-        />
-      )}
+                {group?.GroupDetail?.[0]?.group_image && (
+                  <Image
+                    src={group.GroupDetail[0].group_image}
+                    alt="Group Image"
+                    width={250}
+                    height={250}
+                    className="rounded-lg shadow-sm object-cover"
+                  />
+                )}
 
-      {group?.GroupDetail?.[0]?.group_tags?.length > 0 && (
-        <div className="flex flex-wrap justify-center gap-2 mt-4">
-          {group.GroupDetail[0].group_tags.map((tag, index) => (
-            <span
-              key={index}
-              className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full shadow"
-            >
-              {tag}
-            </span>
-          ))}
-        </div>
-      )}
-    </div>
-  </div>
-</div>
+                {group?.GroupDetail?.[0]?.group_tags?.length > 0 && (
+                  <div className="flex flex-wrap justify-center gap-2 mt-4">
+                    {group.GroupDetail[0].group_tags.map((tag, index) => (
+                      <span
+                        key={index}
+                        className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full shadow"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
 
-
+          {/* Shop Cards */}
           <div className="col-span-3 flex flex-wrap gap-4 justify-center items-start max-h-[80vh] overflow-y-auto px-2">
             {group?.GroupUser?.filter((shop) => shop.status !== "pending")
               ?.length > 0 ? (
@@ -187,7 +169,7 @@ export default function GroupPage() {
             )}
           </div>
 
-          {/* Join + Subscribe */}
+          {/* Join + Subscribe Section */}
           <div className="col-span-1 flex flex-col items-center justify-start space-y-6 w-full">
             {user && (
               <div className="text-center flex flex-col space-y-2">
