@@ -122,7 +122,6 @@ export default function CreateStore() {
         setImagesInput([]);
         setLinksInput("");
         dispatch(setIsShopOwner(true));
-        console.log("Shop Created Successfully", response);
         router.push("/shop/dashboard")
       } else {
         setError("Error creating shop. Please try again.");
