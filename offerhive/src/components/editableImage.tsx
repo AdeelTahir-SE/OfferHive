@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { uploadOfferImage } from "@/lib/DB/offerer";
-
+import {handleDeleteOfferImage} from "@/lib/DB/offerer";
 export default function EditableImage({
   image,
   onChange,
@@ -19,10 +19,27 @@ export default function EditableImage({
   const [localImage, setLocalImage] = useState<string | null>(image);
   const [loading, setLoading] = useState(false);
 
-  const handleDelete = () => {
-    setLocalImage("");
-    onChange("");
+  const handleDelete = async () => {
+    if (!localImage) return;
+  
+    try {
+      const urlParts = localImage.split("/");
+      const filename = urlParts[urlParts.length - 1].split("?")[0]; // Remove any query params
+  
+      const success = await handleDeleteOfferImage(offer_id, user_id, filename);
+  
+      if (success) {
+        setLocalImage("");
+        onChange("");
+      } else {
+        alert("Failed to delete image from storage");
+      }
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      alert("An error occurred while deleting the image.");
+    }
   };
+  
 
   const handleAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

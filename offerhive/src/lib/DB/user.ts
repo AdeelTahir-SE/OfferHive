@@ -190,10 +190,35 @@ export async function removeChatListener(chatlistener: RealtimeChannel) {
 }
 
 export async function setProfileImageDB(file: File, user_id: string) {
-  console.log("user_id", user_id);
   if (!user_id) return;
-  const filepath = `profile_pics/${user_id}/${file.name}`;
 
+  const folderPath = `profile_pics/${user_id}/`;
+  const filepath = `${folderPath}${file.name}`;
+
+  // Step 1: List existing files in the user's profile_pics folder
+  const { data: existingFiles, error: listError } = await supabase.storage
+    .from("images")
+    .list(folderPath);
+
+  if (listError) {
+    console.error("Error listing profile images:", listError);
+    return null;
+  }
+
+  // Step 2: Remove all existing files (if any)
+  if (existingFiles && existingFiles.length > 0) {
+    const filesToDelete = existingFiles.map(file => `${folderPath}${file.name}`);
+    const { error: deleteError } = await supabase.storage
+      .from("images")
+      .remove(filesToDelete);
+
+    if (deleteError) {
+      console.error("Error deleting old profile images:", deleteError);
+      return null;
+    }
+  }
+
+  // Step 3: Upload new image
   const { data, error: uploadError } = await supabase.storage
     .from("images")
     .upload(filepath, file, {
@@ -206,6 +231,7 @@ export async function setProfileImageDB(file: File, user_id: string) {
     return null;
   }
 
+  // Step 4: Get public URL
   const { data: publicData } = supabase.storage
     .from("images")
     .getPublicUrl(filepath);
@@ -216,12 +242,13 @@ export async function setProfileImageDB(file: File, user_id: string) {
     return null;
   }
 
+  // Step 5: Update user's profile image in the database
   const { data: uploadImage, error: updateError } = await supabase
     .from("User")
     .update({ profile_image: publicURL })
     .eq("user_id", user_id)
     .single();
-  console.log(uploadImage);
+
   if (updateError) {
     console.error("Error updating user profile image:", updateError);
     return null;
@@ -229,6 +256,7 @@ export async function setProfileImageDB(file: File, user_id: string) {
 
   return publicURL;
 }
+
 export async function chatWithShopOwners(user_id: string) {
   const { data: chats, error: chatError } = await supabase
     .from("Chat")

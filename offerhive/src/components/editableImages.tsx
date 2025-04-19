@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { uploadImage } from "@/lib/DB/offerer";
-
+import {handleDeleteShopImage} from "@/lib/DB/offerer";
 export default function EditableImages({
   images,
   onChange,
@@ -16,13 +16,30 @@ export default function EditableImages({
   const [localImages, setLocalImages] = useState<string[]>(images);
   const [loading, setLoading] = useState(false);
 
-  const handleDelete = (index: number) => {
-    const updated = [...localImages];
-    updated.splice(index, 1);
-    setLocalImages(updated);
-    onChange(updated);  // Always send a string[] to onChange
+  const handleDelete = async (index: number) => {
+    const imageUrl = localImages[index];
+    if (!imageUrl) return;
+  
+    try {
+      const urlParts = imageUrl.split("/");
+      const filename = urlParts[urlParts.length - 1].split("?")[0];
+  
+      const success = await handleDeleteShopImage(id, filename); // Use `id` for both offer/shop if structure is same
+  
+      if (success) {
+        const updated = [...localImages];
+        updated.splice(index, 1);
+        setLocalImages(updated);
+        onChange(updated);
+      } else {
+        alert("Failed to delete image from storage");
+      }
+    } catch (error) {
+      console.error("Error deleting image:", error);
+      alert("An error occurred while deleting the image.");
+    }
   };
-
+  
   const handleAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;

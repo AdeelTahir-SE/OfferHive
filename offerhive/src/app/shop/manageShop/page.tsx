@@ -71,7 +71,7 @@ export default function ManageShop() {
     if (!offer) return;
     const updated = offers.filter((_, i) => i !== index);
     setOffers(updated);
-    await deleteOffer(offer.offer_id);
+    await deleteOffer(offer.offer_id, offer.user_id);
   };
 
   const handleCreateOffer = async () => {

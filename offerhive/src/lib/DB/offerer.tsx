@@ -205,22 +205,64 @@ export async function updateOffer(id: string, updatedFields: Partial<any>) {
 
   return data;
 }
+export async function handleDeleteOfferImage(offer_id: string, shop_id: string, filename: string) {
+  const filePath = `offer_pics/${shop_id}/${offer_id}/${filename}`;
 
-export async function deleteOffer(offer_id: string) {
+  const { error } = await supabase.storage
+    .from("images")
+    .remove([filePath]);
+
+  if (error) {
+    console.error("Error deleting image:", error);
+    return false;
+  }
+
+  console.log("Image deleted successfully:", filePath);
+  return true;
+}
+
+export async function deleteOffer(offer_id: string, shop_id: string) {
   const { data, error } = await supabase
     .from("Offers")
     .delete()
     .eq("offer_id", offer_id)
     .select();
+
   if (!data) {
-    console.log("error deleting data");
+    console.log("Error deleting offer data");
   }
+
   if (error) {
     console.error("Error deleting offer:", error);
     return null;
   }
+
+  const folderPath = `offer_pics/${shop_id}/${offer_id}/`;
+
+  const { data: fileList, error: listError } = await supabase.storage
+    .from("images")
+    .list(folderPath, { limit: 100 });
+
+  if (listError) {
+    console.error("Error listing files:", listError);
+    return data;
+  }
+
+  if (fileList && fileList.length > 0) {
+    const filePaths = fileList.map(file => `${folderPath}${file.name}`);
+
+    const { error: deleteFilesError } = await supabase.storage
+      .from("images")
+      .remove(filePaths);
+
+    if (deleteFilesError) {
+      console.error("Error deleting files from storage:", deleteFilesError);
+    }
+  }
+
   return data;
 }
+
 export async function createOffer(offer:OfferBeforeCreation) {
   console.log("offer to be created", offer);
   const { data, error } = await supabase
@@ -272,7 +314,20 @@ export async function deleteShop(id: string) {
 
   return data;
 }
+export async function handleDeleteShopImage(id: string, filename: string) {
+  const filePath = `shop_pics/${id}/${filename}`;
 
+  const { error } = await supabase.storage
+    .from("images")
+    .remove([filePath
+    ]);
+  if (error) {
+    console.error("Error deleting image:", error);
+    return false;
+  }
+  console.log("Image deleted successfully:", filePath);
+  return true;
+}
 export async function uploadImage(file: File, userId: string) {
   const filepath = `shop_pics/${userId}/${file.name}`;
   const {  error } = await supabase.storage
