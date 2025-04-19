@@ -99,7 +99,7 @@ export default function GroupPage() {
       {group ? (
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 w-full max-w-[1440px]">
           {/* Group Details */}
-          <div className="col-span-1 md:col-span-1 w-full flex justify-center items-center md:justify-center mb-6 md:mb-0">
+          <div className="col-span-1 md:col-span-1 w-full flex justify-center items-center md:justify-center mb-6 md:mb-0 mx-auto ml-8 md:ml-0">
             <div className="w-full max-w-xs sm:max-w-sm md:max-w-xs lg:max-w-sm bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
               <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
                 Group Details
@@ -170,7 +170,7 @@ export default function GroupPage() {
           </div>
 
           {/* Join + Subscribe Section */}
-          <div className="col-span-1 flex flex-col items-center justify-start space-y-6 w-full">
+          <div className="col-span-1 flex flex-col items-center justify-start space-y-6 w-full ml-4 md:ml-0">
             {user && (
               <div className="text-center flex flex-col space-y-2">
                 <p className="text-sm text-gray-600">
