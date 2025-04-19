@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { RootState } from "@/lib/redux/store";
 import Loader from "@/components/loader";
+import { join } from "path";
 
 export default function GroupPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -175,8 +176,8 @@ export default function GroupPage() {
               <div className="text-center flex flex-col space-y-2">
                 <p className="text-sm text-gray-600">
                   {user?.is_shop_owner
-                    ? joinStatus === "unjoined"
-                      ? "Join the group to get the latest updates."
+                    ? joinStatus === "rejected"
+                      ? "join request rejected"
                       : joinStatus == "pending"
                       ? "Your request is pending approval."
                       : "You are already a group member."
@@ -185,7 +186,7 @@ export default function GroupPage() {
                 {user?.is_shop_owner ? (
                   <button
                     onClick={() =>
-                      joinStatus === "unjoined" || joinStatus === "rejected"
+                      joinStatus === "rejected"
                         ? handleJoinGroup(user.user_id, id)
                         : null
                     }
@@ -199,7 +200,7 @@ export default function GroupPage() {
                         : "bg-gray-400 cursor-not-allowed"
                     }`}
                     disabled={
-                      joinStatus === "pending" || joinStatus === "joined"
+                      joinStatus === "pending" || joinStatus === "joined" ||joinStatus === "rejected"
                     }
                   >
                     {joinStatus === "unjoined"
