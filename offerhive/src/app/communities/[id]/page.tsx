@@ -118,9 +118,7 @@ export default function GroupPage() {
                   })}
                 </p>
 
-                <p className="text-sm text-gray-600">
-                  <span className="font-semibold">Owner:</span> {group?.user_id}
-                </p>
+
 
                 {group?.GroupDetail?.[0]?.group_image && (
                   <Image
