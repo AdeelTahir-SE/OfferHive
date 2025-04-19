@@ -162,7 +162,7 @@ export default function GroupPage() {
     </div>
   </div>
 </div>
-F
+
 
           <div className="col-span-3 flex flex-wrap gap-4 justify-center items-start max-h-[80vh] overflow-y-auto px-2">
             {group?.GroupUser?.filter((shop) => shop.status !== "pending")
