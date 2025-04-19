@@ -193,7 +193,7 @@ export default function GroupPage() {
                     disabled={joinStatus !== "unjoined"}
                   >
                     {joinStatus === "unjoined"
-                      ? "Click to Join"
+                      ? "You are rejected"
                       : joinStatus === "pending"
                       ? "Approval Pending"
                       : "Already Joined"}
