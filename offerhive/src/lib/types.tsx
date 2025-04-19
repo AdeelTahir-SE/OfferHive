@@ -80,7 +80,7 @@ export interface GroupSubscriptionUnique {
 
 export interface GroupUserUnique {
   user_id: string;
-  status: 'joined' | 'unjoined'|'pending'; // Assuming status can be 'joined' or 'subscribed'
+  status: 'joined' | 'rejected'|'pending'|'unjoined'; // Assuming status can be 'joined' or 'subscribed'
   User: UserUnique; // Assuming you have a User type defined elsewhere
 }
 

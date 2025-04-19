@@ -34,6 +34,8 @@ export default function GroupPage() {
           setJoinStaus("joined");
         } else if (groupUser?.status === "pending") {
           setJoinStaus("pending");
+        } else if (groupUser?.status == "rejected") {
+          setJoinStaus("rejected");
         } else {
           setJoinStaus("unjoined");
         }
@@ -180,16 +182,16 @@ export default function GroupPage() {
                       ? "join request rejected"
                       : joinStatus == "pending"
                       ? "Your request is pending approval."
-                      : "You are already a group member."
+                      : joinStatus === "joined"
+                      ? "You are already a group member."
+                      : joinStatus == "unjoined"
+                      ? "Request to join the group."
+                      : "Sign in to join the group."
                     : "Sign in to join the group."}
                 </p>
                 {user?.is_shop_owner ? (
                   <button
-                    onClick={() =>
-                      joinStatus === "rejected"
-                        ? handleJoinGroup(user.user_id, id)
-                        : null
-                    }
+                    onClick={() => handleJoinGroup(user.user_id, id)}
                     className={`px-6 py-2 rounded-lg text-white transition duration-300 ${
                       joinStatus === "unjoined"
                         ? "bg-yellow-500 hover:bg-yellow-600"
@@ -197,10 +199,12 @@ export default function GroupPage() {
                         ? "bg-gray-400 cursor-not-allowed"
                         : joinStatus === "rejected"
                         ? "bg-red-500 hover:bg-red-600"
-                        : "bg-gray-400 cursor-not-allowed"
+                        : "bg-yellow-600 cursor-not-allowed"
                     }`}
                     disabled={
-                      joinStatus === "pending" || joinStatus === "joined" ||joinStatus === "rejected"
+                      joinStatus === "pending" ||
+                      joinStatus === "joined" ||
+                      joinStatus === "rejected"
                     }
                   >
                     {joinStatus === "unjoined"
