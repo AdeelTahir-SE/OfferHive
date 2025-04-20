@@ -22,7 +22,7 @@ export default function EditableText({
   };
 
   return editing ? (
-    <input
+    <textarea
       value={value}
       autoFocus
       onChange={(e) => setValue(e.target.value)}
