@@ -10,6 +10,11 @@ import {
 
 export function ImagesSlider(props:{images:string[]}) {
     const {images}=props;
+    if(!images || images.length === 0) {
+      return(
+        <></>
+      )
+    }
   return (
 <Carousel className="w-full max-w-4xl mx-auto relative">
   <CarouselContent>
