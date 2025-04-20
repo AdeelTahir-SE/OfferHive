@@ -99,7 +99,7 @@ export default function ManageShop() {
   }
   if (!shop) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen bg-gray-100">
+      <div className="flex flex-col items-center justify-center h-screen bg-gray-100 ">
         <h2 className="text-3xl text-red-500 font-bold mb-4">Shop Not Found</h2>
         <p className="text-gray-600 mb-6">
           The shop you&apos;re looking for doesn&apos;t exist or has been
@@ -114,7 +114,7 @@ export default function ManageShop() {
     );
   }
   return (
-    <section className="flex flex-col items-center justify-center p-6 max-w-6xl mx-auto">
+    <section className="flex flex-col items-center justify-center p-4 md:max-w-6xl mx-auto max-w-screen">
       <h1 className="text-5xl text-center font-extrabold text-gray-800 mb-4">
         <EditableText
           text={shop.shop_title}
