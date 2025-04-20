@@ -18,7 +18,7 @@ export default function OfferDetails() {
   const [loading, setLoading] = useState(true);
   const { offer_id }: { offer_id: string } = useParams();
   const user = useSelector((state: RootState) => state.user);
-  async function clicksHandler(offer_id:string) {
+  async function clicksHandler(offer_id: string) {
     const { clicks }: { clicks: Click[] } = await getClicks(offer_id);
     const today = new Date().toISOString().split("T")[0];
     if (clicks?.length == 0) {
@@ -67,9 +67,13 @@ export default function OfferDetails() {
     clicksHandler(offer_id);
     fetchShop();
   }, [offer_id]);
-   if(loading){
-    return <section className="h-screen w-screen bg-white flex items-center justify-center"><Loader size={12} /></section>
-   }
+  if (loading) {
+    return (
+      <section className="h-screen w-screen bg-white flex items-center justify-center">
+        <Loader size={12} />
+      </section>
+    );
+  }
 
   if (!shop) {
     return (
@@ -82,52 +86,53 @@ export default function OfferDetails() {
       <h1 className="text-5xl text-center font-extrabold text-gray-800 mb-4">
         {shop.shop_title}
       </h1>
-      <p className="text-xl text-gray-600 text-center max-w-2xl mb-6">
+      <p className="text-xl text-gray-600 text-center max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mb-6">
         {shop.shop_desc}
       </p>
 
       <ImagesSlider images={shop.shop_images} />
 
       <div className="w-full mt-10">
-  <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
-    Available Offers
-  </h2>
-  {shop?.offers.length === 0 ? (
-    <p className="text-center text-gray-600">Sorry, currently no offers available.</p>
-  ) : (
-    <div className="flex flex-wrap justify-center gap-6">
-      {shop?.offers.map((offer, index) => (
-        <div
-          key={index}
-          className="bg-white rounded-xl shadow-md overflow-hidden w-80 border border-gray-200"
-        >
-          <div className="relative w-full h-72">
-            <Image
-              src={offer?.image || "/placeholder_deals.png"}
-              alt={offer?.offer_title}
-              layout="fill"
-              objectFit="cover"
-              className="rounded-lg"
-              priority
-            />
+        <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+          Available Offers
+        </h2>
+        {shop?.offers.length === 0 ? (
+          <p className="text-center text-gray-600">
+            Sorry, currently no offers available.
+          </p>
+        ) : (
+          <div className="flex flex-wrap justify-center gap-6">
+            {shop?.offers.map((offer, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-md overflow-hidden w-80 border border-gray-200"
+              >
+                <div className="relative w-full h-72">
+                  <Image
+                    src={offer?.image || "/placeholder_deals.png"}
+                    alt={offer?.offer_title}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                    priority
+                  />
+                </div>
+                <div className="p-4">
+                  <h3 className="text-xl font-semibold text-wrap text-gray-800 mb-2">
+                    {offer.offer_title}
+                  </h3>
+                  <p className="text-gray-600 mb-2 break-words max-h-20 overflow-hidden">
+                    {offer.offer_desc}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Valid: {offer.starts_at} - {offer.valid_uptill}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
-          <div className="p-4">
-            <h3 className="text-xl font-semibold text-wrap text-gray-800 mb-2">
-              {offer.offer_title}
-            </h3>
-            <p className="text-gray-600 mb-2 break-words max-h-20 overflow-hidden">
-              {offer.offer_desc}
-            </p>
-            <p className="text-sm text-gray-500">
-              Valid: {offer.starts_at} - {offer.valid_uptill}
-            </p>
-          </div>
-        </div>
-      ))}
-    </div>
-  )}
-</div>
-
+        )}
+      </div>
 
       {/* Shop tags */}
       <div className="flex flex-col items-center justify-center mt-10">
@@ -155,7 +160,7 @@ export default function OfferDetails() {
         <p className="text-lg font-bold text-gray-700 mb-1">
           Phone: {shop.contact_info}
         </p>
-        
+
         {shop.links?.map((link, index) => (
           <a
             key={index}
@@ -167,10 +172,13 @@ export default function OfferDetails() {
             {link}
           </a>
         ))}
-        {user&&!user?.is_shop_owner  && (
-          <Link href={user?.email?`/people/${shop?.user_id}`:`/logIn`} className="">
+        {user && !user?.is_shop_owner && (
+          <Link
+            href={user?.email ? `/people/${shop?.user_id}` : `/logIn`}
+            className=""
+          >
             <button className="rounded-xl bg-yellow-500 mt-4 hover:bg-yellow-400 cursor-pointer p-4 text-xl">
-             {user?.email?  "Chat with Seller" : "Login to chat with Seller"}
+              {user?.email ? "Chat with Seller" : "Login to chat with Seller"}
             </button>
           </Link>
         )}
