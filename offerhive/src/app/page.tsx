@@ -27,7 +27,7 @@ export default function Home() {
 
         </button>
 
-      <WhatOurSaysSection />
+      {/* <WhatOurSaysSection /> */}
     </section>
   );
 }
