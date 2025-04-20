@@ -10,10 +10,11 @@ export default function Footer() {
           {/* <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
             <Image src="/facebook.svg" alt="Facebook" width={28} height={28} className="hover:scale-110 transition-transform" />
           </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+          */}
+          <a href="https://www.instagram.com/offer__hive?utm_source=qr&igsh=Nml0dzV4ZHBqcTZn" target="_blank" rel="noopener noreferrer">
             <Image src="/instagram.svg" alt="Instagram" width={28} height={28} className="hover:scale-110 transition-transform" />
           </a>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+         {/* <a href="https://github.com" target="_blank" rel="noopener noreferrer">
             <Image src="/github.svg" alt="GitHub" width={28} height={28} className="hover:scale-110 transition-transform" />
           </a> */}
         </div>
