@@ -43,7 +43,7 @@ export default function Header() {
 
   return (
     <nav
-      className={`bg-yellow-500 text-black p-4 flex justify-between items-center mb-0 relative ${
+      className={`bg-yellow-500 text-black p-4  min-w-screen flex justify-between items-center mb-0 relative ${
         menuOpen ? "z-40" : "z-10"
       }`}
     >
