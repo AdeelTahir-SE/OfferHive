@@ -170,7 +170,7 @@ export default function CreateStore() {
         >
           <section className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-4xl mx-auto">
             {/* Shop Title */}
-            <div className="flex flex-col">
+            <div className="flex flex-col col-span-2">
               <label
                 htmlFor="shop_title"
                 className="text-base font-semibold text-gray-700"
@@ -188,7 +188,7 @@ export default function CreateStore() {
               />
             </div>
 
-            <div className="flex flex-col">
+            <div className="flex flex-col col-span-2">
               <label
                 htmlFor="shop_address"
                 className="text-base font-semibold text-gray-700"
