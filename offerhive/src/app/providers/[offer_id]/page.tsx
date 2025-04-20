@@ -151,27 +151,32 @@ export default function OfferDetails() {
 
       {/* Contact Info */}
       <div className="flex flex-col items-center justify-center mt-10 w-full bg-gray-100 p-6 rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">
+        <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
           Contact the Seller
         </h2>
-        <p className="text-lg font-bold text-gray-700 mb-1">
+
+        <p className="text-lg font-bold text-gray-700 mb-1 break-words text-center">
           {shop.shop_address}
         </p>
-        <p className="text-lg font-bold text-gray-700 mb-1">
+
+        <p className="text-lg font-bold text-gray-700 mb-1 break-words text-center">
           Phone: {shop.contact_info}
         </p>
 
-        {shop.links?.map((link, index) => (
-          <a
-            key={index}
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 underline text-lg"
-          >
-            {link}
-          </a>
-        ))}
+        <div className="flex flex-col items-center space-y-2 w-full break-words">
+          {shop.links?.map((link, index) => (
+            <a
+              key={index}
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-blue-500 underline text-lg break-words text-center w-full max-w-full"
+            >
+              {link}
+            </a>
+          ))}
+        </div>
+
         {user && !user?.is_shop_owner && (
           <Link
             href={user?.email ? `/people/${shop?.user_id}` : `/logIn`}
