@@ -86,7 +86,7 @@ export default function OfferDetails() {
       <h1 className="text-5xl text-center font-extrabold text-gray-800 mb-4">
         {shop.shop_title}
       </h1>
-      <p className="text-xl text-gray-600 text-center max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mb-6">
+      <p className="text-xl text-gray-600 text-center text-wrap max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mb-6">
         {shop.shop_desc}
       </p>
 
