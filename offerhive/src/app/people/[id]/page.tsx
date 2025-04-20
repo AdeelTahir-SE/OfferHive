@@ -176,7 +176,7 @@ export default function PersonChat() {
                   <div className="flex flex-col max-w-[75%] sm:max-w-md">
                     <div
                       className={`p-3 rounded-lg break-words ${
-                        isSender ? "bg-yellow-200" : "bg-yellow-300"
+                        isSender ? "bg-yellow-400" : "bg-yellow-200"
                       }`}
                     >
                       <p className="text-sm sm:text-base">{message.message}</p>
