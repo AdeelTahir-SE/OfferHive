@@ -10,7 +10,7 @@ export default function Documentation() {
       router.push("/terms&policy");
     };
   return (
-    <section className="flex flex-col items-center justify-center">
+    <section className="flex flex-col items-center justify-center w-screen md:w-full">
       <HowItWorksSection />
       <h2 className="text-2xl text-center font-bold mt-12">Creating offer</h2>
 
