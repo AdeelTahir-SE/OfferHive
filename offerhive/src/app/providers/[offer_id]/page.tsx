@@ -118,10 +118,10 @@ export default function OfferDetails() {
                   />
                 </div>
                 <div className="p-4">
-                  <h3 className="text-xl font-semibold text-wrap text-gray-800 mb-2">
+                  <h3 className="text-xl font-semibold break-words text-gray-800 mb-2">
                     {offer.offer_title}
                   </h3>
-                  <p className="text-gray-600 mb-2 break-words max-h-20 overflow-hidden">
+                  <p className="text-gray-600 mb-2 break-words whitespace-pre-wrap">
                     {offer.offer_desc}
                   </p>
                   <p className="text-sm text-gray-500">
