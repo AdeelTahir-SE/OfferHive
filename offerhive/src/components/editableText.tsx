@@ -28,18 +28,18 @@ export default function EditableText({
       onChange={(e) => setValue(e.target.value)}
       onBlur={handleSave}
       onKeyDown={(e) => e.key === "Enter" && handleSave()}
-      className={`border p-1 rounded min-w-full ${className}`}
+      className={`border p-1 rounded min-w-full max-w-screen ${className}`}
     />
   ) : (
-    <span className={`flex items-center gap-2 overflow-ellipsis  ${className}`}>
-      <p className=" h-auto overflow-hidden text-ellipsis  ">
+    <div className={`relative ${className}`}>
+      <p className="h-auto overflow-hidden text-ellipsis pr-8">
         {text}
       </p>
       <Pencil
-        size={24}
-        className="cursor-pointer text-gray-500 min-w-24  hover:text-gray-800  hover:scale-110"
+        size={20}
+        className="absolute top-1 right-1 cursor-pointer text-gray-500 hover:text-gray-800 hover:scale-110 transition-transform"
         onClick={() => setEditing(true)}
       />
-    </span>
+    </div>
   );
 }
