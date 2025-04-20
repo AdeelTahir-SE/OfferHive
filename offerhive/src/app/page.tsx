@@ -19,7 +19,7 @@ export default function Home() {
       <HowItWorksSection />
 
           <button
-          className="px-6 py-3 mt-2 flex flex-row items-center gap-2 sm:mt-8 z-10 cursor-pointer rounded-2xl bg-yellow-500 hover:bg-yellow-400 text-black font-semibold transition duration-200"
+          className="px-6 py-3 mt-2 flex flex-row mb-4 items-center gap-2 sm:mt-8 z-10 cursor-pointer rounded-2xl bg-yellow-500 hover:bg-yellow-400 text-black font-semibold transition duration-200"
           onClick={handleRedirectClick}
         >
           <p>See Documentation</p>
