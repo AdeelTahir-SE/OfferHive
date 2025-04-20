@@ -1,8 +1,8 @@
 import Image from "next/image";
 export default function HowItWorksSection() {
   return (
-    <section className="flex flex-col items-center justify-center w-full max-w-screen">
-      {/* Decorative Wave SVG */}
+<section className="flex flex-col items-center justify-center w-screen overflow-x-hidden">
+{/* Decorative Wave SVG */}
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
         <path
           fill="#efb100"
