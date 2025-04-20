@@ -152,7 +152,7 @@ export default function PersonChat() {
         Chat with {user?.email}
       </p>
 
-      <div className="bg-white shadow rounded-lg w-full max-w-4xl h-full mb-4 p-4 sm:p-6 overflow-hidden">
+      {chat?.length>0&&<div className="bg-white shadow rounded-lg w-full max-w-4xl h-full mb-4 p-4 sm:p-6 overflow-hidden">
         <div className="flex flex-col space-y-4 max-h-[75vh] overflow-y-auto pr-2">
           {chat?.length > 0 &&
             chat.map((message, index) => {
@@ -190,6 +190,7 @@ export default function PersonChat() {
             })}
         </div>
       </div>
+}
 
       <div className="flex w-full max-w-4xl flex-col sm:flex-row gap-3">
         <input
