@@ -104,7 +104,7 @@ export default function Header() {
                 onClick={toggleNotifications}
                 className="relative p-2 rounded-full hover:bg-yellow-300 transition-colors"
               >
-                <Bell className="w-5 h-5" />
+                <Bell className="w-5 h-5 cursor-pointer" />
                 {notifications && notifications?.length > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full">
                     {notifications?.length}
@@ -174,7 +174,7 @@ export default function Header() {
               onClick={toggleNotifications}
               className="relative p-2 rounded-full hover:bg-yellow-300 transition-colors"
             >
-              <Bell className="w-5 h-5" />
+              <Bell className="w-5 h-5 cursor-pointer" />
               {notifications && notifications?.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full">
                   {notifications?.length}
