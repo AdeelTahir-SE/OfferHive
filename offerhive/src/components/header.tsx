@@ -9,7 +9,7 @@ import { getNotifications, deleteNotifications } from "@/lib/DB/user";
 type Notification = {
   user_id: string;
   description: string;
-  created_at: string; 
+  created_at: string;
 };
 export default function Header() {
   const user = useSelector((state: RootState) => state.user);
@@ -29,17 +29,15 @@ export default function Header() {
 
   async function removeNotifications() {
     if (user?.user_id) {
-      await deleteNotifications(user.user_id);  
-      setNotifications([]);  // Clear the notifications from state
+      await deleteNotifications(user.user_id);
+      setNotifications([]); // Clear the notifications from state
     }
   }
 
   async function getAndSetNotifications() {
     if (user?.user_id) {
       const notifications = await getNotifications(user.user_id);
-      setNotifications(
-        notifications 
-      );
+      setNotifications(notifications);
     }
   }
 
@@ -93,7 +91,9 @@ export default function Header() {
 
   return (
     <nav
-      className={`bg-yellow-500 text-black p-4 flex justify-between items-center mb-0 relative ${menuOpen ? "z-40" : "z-10"}`}
+      className={`bg-yellow-500 text-black p-4 flex justify-between items-center mb-0 relative ${
+        menuOpen||showNotifications ? "z-40" : "z-10"
+      }`}
     >
       <div className="flex items-center justify-between w-full md:w-auto z-30 md:z-0">
         <Image src="/hive.svg" alt="logo" width={60} height={60} />
@@ -113,7 +113,7 @@ export default function Header() {
               </button>
 
               {showNotifications && (
-                <div className="absolute right-0 top-10 w-72 bg-white shadow-lg rounded-md overflow-hidden z-50">
+                <div className="fixed top-20 right-4 w-72 bg-white shadow-lg rounded-md overflow-hidden z-[9999]">
                   <div className="p-3 font-semibold border-b border-gray-200">
                     Notifications
                   </div>
@@ -138,7 +138,11 @@ export default function Header() {
             onClick={toggleMenu}
             className="md:hidden ml-auto focus:outline-none"
           >
-            {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            {menuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
       </div>
@@ -179,7 +183,7 @@ export default function Header() {
             </button>
 
             {showNotifications && (
-              <div className="absolute right-0 top-10 w-72 bg-white shadow-lg rounded-md overflow-hidden z-50">
+              <div className="fixed top-20 right-4 w-72 bg-white shadow-lg rounded-md overflow-hidden z-[9999]">
                 <div className="p-3 font-semibold border-b border-gray-200">
                   Notifications
                 </div>
