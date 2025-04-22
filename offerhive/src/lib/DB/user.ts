@@ -285,3 +285,32 @@ export async function chatWithShopOwners(user_id: string) {
 
   return shopOwners;
 }
+
+export async function getNotifications(user_id: string){
+  const { data, error } = await supabase
+    .from("Notification")
+    .select("*")
+    .eq("user_id", user_id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching notifications:", error);
+    return null;
+  }
+console.log("notifications", data);
+  return data;
+}
+export async function deleteNotifications(user_id:string){
+  const { data, error } = await supabase
+    .from("Notification")
+    .delete()
+    .eq("user_id", user_id)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    console.error("Error deleting notifications:", error);
+    return null;
+  }
+
+  return data;
+}
