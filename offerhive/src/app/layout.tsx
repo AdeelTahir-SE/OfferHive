@@ -45,7 +45,7 @@ export const metadata: Metadata = {
   },
 
   icons: {
-    icon: "/hive.svg",
+    icon: "/hive.png",
   },
 };
 

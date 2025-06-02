@@ -1,0 +1,21 @@
+-- Function to notify all users when a new shop is created
+create or replace function public.notify_user_new_shop()
+returns trigger
+language plpgsql
+as $$
+declare
+  r record;
+begin
+  for r in select id from users loop
+    insert into notifications (user_id, description)
+    values (r.id, '🎉 A new shop has been created!');
+  end loop;
+  return new;
+end;
+$$;
+
+-- Trigger to run the above function after inserting a new shop
+create trigger trigger_notify_users_on_new_shop
+after insert on "UserShop"
+for each row
+execute function public.notify_user_new_shop();
