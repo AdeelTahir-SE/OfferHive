@@ -1,37 +1,52 @@
 "use client";
 import { Eye, EyeClosed } from "lucide-react";
-import {useState } from "react";
+import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import OAuthSection from "@/components/oAuthsSection";
-import { signIn } from "@/lib/DB/user"; // Make sure you have this function in your lib
-import { useDispatch } from "react-redux"; 
+
+import { useDispatch } from "react-redux";
 import { setUser } from "@/lib/redux/user/userSlice";
 import Link from "next/link";
 import WavySvg from "@/components/wavySvg";
+import { fetchRequest } from "@/lib/utils/fetch";
 export default function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [error, setError] = useState("");
-  const[loading,setLoading]=useState(false)
+  const [error, setError] = useState<string | null>();
+  const [loading, setLoading] = useState(false);
+  const [response, setResponse] = useState<any>();
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
   const router = useRouter();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   async function handleLogin(e: React.FormEvent) {
-    setLoading(true)
+    setLoading(true);
     e.preventDefault();
-    const email = (document.getElementById("email") as HTMLInputElement).value;
-    const password = (document.getElementById("password") as HTMLInputElement).value;
-
-    const { userData,findingError,signInError} = await signIn(email, password);
-    if (signInError || findingError) {
-      setError(signInError?.message || findingError?.message || "An error occurred");
-      console.log("Error signing in:", signInError?.message || findingError?.message);
-    } else {
-      dispatch(setUser(userData)); 
-      console.log("User signed in:", userData);
-      router.push("/");
-    }
-    setLoading(false)
+    await fetchRequest(
+      "/api/logIn",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "Application/json",
+        },
+        body: JSON.stringify(form),
+      },
+      setLoading,
+      setError,
+      setResponse
+    );
+ 
+    setLoading(false);
   }
+
+  useEffect(() => {
+  if (response?.user) {
+    dispatch(setUser(response.user));
+    router.push("/");
+  }
+}, [response]);
 
   return (
     <section className="flex flex-col items-center justify-center h-screen bg-white font-sans">
@@ -42,18 +57,28 @@ export default function Login() {
 
         <form onSubmit={handleLogin} className="w-full">
           <section className="flex flex-col gap-5 w-full max-w-xs mx-auto">
-            <label htmlFor="email" className="text-base font-semibold text-gray-700">
+            <label
+              htmlFor="email"
+              className="text-base font-semibold text-gray-700"
+            >
               Email
             </label>
             <input
               id="email"
               type="email"
+              value={form?.email}
+              onChange={(e) => {
+                setForm({ ...form, email: e.target.value });
+              }}
               placeholder="Enter your email"
               className="px-4 py-3 border text-base rounded-md focus:outline-none"
               required
             />
 
-            <label htmlFor="password" className="text-base font-semibold text-gray-700">
+            <label
+              htmlFor="password"
+              className="text-base font-semibold text-gray-700"
+            >
               Password
             </label>
             <section className="flex items-center justify-between gap-4">
@@ -61,6 +86,10 @@ export default function Login() {
                 id="password"
                 type={isPasswordVisible ? "text" : "password"}
                 placeholder="Enter your password"
+                value={form?.password}
+                onChange={(e) => {
+                  setForm({ ...form, password: e.target.value });
+                }}
                 className="flex-1 px-4 py-3 border text-base rounded-md focus:outline-none"
                 required
               />
@@ -84,16 +113,18 @@ export default function Login() {
               disabled={loading}
               className="w-full py-3 cursor-pointer text-base font-semibold bg-yellow-500 hover:bg-yellow-400 text-white rounded-md transition"
             >
-             {loading?"Logging in...":"Sign In"} 
-             </button>
+              {loading ? "Logging in..." : "Sign In"}
+            </button>
           </section>
 
           {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-          {/* <OAuthSection /> */}
           <p className="text-center text-gray-600 mt-4">
             Don&apos;t have an account?
-            <Link href="/signUp" className="text-yellow-500 font-semibold hover:underline">
+            <Link
+              href="/signUp"
+              className="text-yellow-500 font-semibold hover:underline"
+            >
               Sign Up
             </Link>
           </p>

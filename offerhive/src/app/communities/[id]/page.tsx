@@ -9,7 +9,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { RootState } from "@/lib/redux/store";
 import Loader from "@/components/loader";
-import { join } from "path";
+import { fetchRequest } from "@/lib/utils/fetch";
 
 export default function GroupPage() {
   const [isLoading, setIsLoading] = useState(true);
@@ -22,31 +22,41 @@ export default function GroupPage() {
 
   const fetchGroupShops = async () => {
     try {
-      const data = await getGroupById(id);
-      if (data) {
-        setGroup(data);
+      await fetchRequest(
+        `/api/communities/${id}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+        setIsLoading,
+        setError,
+        (data) => {
+          if (data) {
+            setGroup(data);
+            const groupUser = data?.GroupUser?.find((u:any) => {
+              return u.User?.user_id === user?.user_id;
+            });
+            if (groupUser?.status === "joined") {
+              setJoinStaus("joined");
+            } else if (groupUser?.status === "pending") {
+              setJoinStaus("pending");
+            } else if (groupUser?.status == "rejected") {
+              setJoinStaus("rejected");
+            } else {
+              setJoinStaus("unjoined");
+            }
 
-        const groupUser = data.GroupUser?.find(
-          (u) => u.user_id === user?.user_id
-        );
-
-        if (groupUser?.status === "joined") {
-          setJoinStaus("joined");
-        } else if (groupUser?.status === "pending") {
-          setJoinStaus("pending");
-        } else if (groupUser?.status == "rejected") {
-          setJoinStaus("rejected");
-        } else {
-          setJoinStaus("unjoined");
+            const isUserSubscribed = data?.GroupSubscription?.some(
+              (u:any) => u.user_id === user?.user_id
+            );
+            setIsSubscribed(Boolean(isUserSubscribed));
+          } else {
+            setError("No shops found in this group.");
+          }
         }
-
-        const isUserSubscribed = data.GroupSubscription?.some(
-          (u) => u.user_id === user?.user_id
-        );
-        setIsSubscribed(Boolean(isUserSubscribed));
-      } else {
-        setError("No shops found in this group.");
-      }
+      );
     } catch (err) {
       setError("Error fetching group shops. Please try again later.");
       console.log(err);
@@ -61,10 +71,23 @@ export default function GroupPage() {
 
   async function handleJoinGroup(user_id: string, group_id: string) {
     if (!user_id || !group_id) return;
-    const data = await joinGroup(user_id, group_id);
-    if (data) {
-      setJoinStaus("pending");
-    }
+    fetchRequest(
+      `/api/communities/join`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id, group_id }),
+      },
+      () => {},
+      () => {},
+      (data) => {
+        if (data) {
+          setJoinStaus("pending");
+        }
+      }
+    );
   }
 
   async function handleSubscribe(
@@ -72,10 +95,23 @@ export default function GroupPage() {
     group_id: string,
     isSubscribed: boolean
   ) {
-    const data = await subscribeGroup(user_id, group_id, isSubscribed);
-    if (data) {
-      setIsSubscribed(!isSubscribed);
-    }
+    fetchRequest(
+      `/api/communities/subscribe`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id, group_id, isSubscribed }),
+      },
+      () => {},
+      () => {},
+      (data) => {
+        if (data) {
+          setIsSubscribed(!isSubscribed);
+        }
+      }
+    );
   }
 
   if (isLoading) {
@@ -101,7 +137,6 @@ export default function GroupPage() {
 
       {group ? (
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 w-full max-w-[1440px]">
-          {/* Group Details */}
           <div className="col-span-1 md:col-span-1 w-full flex justify-center items-center md:justify-center mb-6 md:mb-0 mx-auto ml-8 md:ml-0">
             <div className="w-full max-w-xs sm:max-w-sm md:max-w-xs lg:max-w-sm bg-white p-6 rounded-xl shadow-md flex flex-col items-center justify-center text-center">
               <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
@@ -117,8 +152,6 @@ export default function GroupPage() {
                     day: "numeric",
                   })}
                 </p>
-
-
 
                 {group?.GroupDetail?.[0]?.group_image && (
                   <Image

@@ -125,6 +125,15 @@ export async function subscribeGroup(user_id:string,group_id:string,isSubscribed
 }
 
 export async function joinGroup(user_id:string,group_id:string) {
+  const { data: existingGroupUser, error: existingError } = await supabase
+    .from("GroupUser")
+    .select("*")
+    .eq("user_id", user_id)
+    .eq("group_id", group_id)
+    .single();
+  if (existingGroupUser) {
+    return existingGroupUser;
+  }
   const { data, error } = await supabase
     .from("GroupUser")
     .insert([{ user_id, group_id, status: "pending" }])

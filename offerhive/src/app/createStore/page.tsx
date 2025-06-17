@@ -1,41 +1,39 @@
 "use client";
 import { useState } from "react";
-import { createShop } from "@/lib/DB/offerer";
 import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link";
 import { setIsShopOwner } from "@/lib/redux/user/userSlice";
 import { ArrowRight } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { RootState } from "@/lib/redux/store";
+import { fetchRequest } from "@/lib/utils/fetch";
 
 export interface Shop {
   shop_desc: string;
   shop_title: string;
   contact_info: string;
   links: string[];
-  shop_images: string[];
   shop_tags: string[];
   shop_address: string;
-  
 }
 
 export default function CreateStore() {
   const [shop, setShop] = useState<Shop>({
-    shop_desc: "",
-    shop_title: "",
-    contact_info: "",
-    links: [],
-    shop_images: [],
-    shop_tags: [],
-    shop_address: "",
+    shop_desc: "as",
+    shop_title: "ds",
+    contact_info: "asd",
+    links: ["as", "asd"],
+    shop_tags: ["asd", "dsdas"],
+    shop_address: "dasdsad",
   });
+  const [response, setResponse] = useState<any>(null);
   const [tagsInput, setTagsInput] = useState("");
   const [imagesInput, setImagesInput] = useState<File[]>([]);
   const [linksInput, setLinksInput] = useState("");
-  const [loading, setLoading] = useState(false); // Loading state
-  const [error, setError] = useState(""); // Error state
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const dispatch = useDispatch();
-  const router=useRouter()
+  const router = useRouter();
   const user = useSelector((state: RootState) => state.user);
 
   const handleChange = (
@@ -51,11 +49,10 @@ export default function CreateStore() {
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files = Array.from(e.target.files);
-      setImagesInput((prevFiles) => [...prevFiles, ...files]); // Add new files to the existing ones
+      setImagesInput((prevFiles) => [...prevFiles, ...files]);
     }
   };
 
-  // Handle tag input
   const handleAddTag = () => {
     if (tagsInput) {
       setShop((prevState) => ({
@@ -66,7 +63,6 @@ export default function CreateStore() {
     }
   };
 
-  // Remove tag
   const handleRemoveTag = (index: number) => {
     setShop((prevState) => ({
       ...prevState,
@@ -74,7 +70,6 @@ export default function CreateStore() {
     }));
   };
 
-  // Handle link input
   const handleAddLink = () => {
     if (linksInput) {
       setShop((prevState) => ({
@@ -85,7 +80,6 @@ export default function CreateStore() {
     }
   };
 
-  // Remove link
   const handleRemoveLink = (index: number) => {
     setShop((prevState) => ({
       ...prevState,
@@ -93,28 +87,53 @@ export default function CreateStore() {
     }));
   };
 
-  // Remove image
   const handleRemoveImage = (index: number) => {
     setImagesInput((prevFiles) => prevFiles.filter((_, idx) => idx !== index));
   };
 
-  // Handle form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    setLoading(true); // Set loading to true when starting the submission
+    setLoading(true);
     setError("");
 
     try {
-      const response = await createShop(user.user_id, shop, imagesInput);
+      const formData = new FormData();
+      formData.append("shop_owner_id", user?.user_id);
+      formData.append("shop_title", shop?.shop_title);
+      formData.append("shop_desc", shop?.shop_desc);
+      formData.append("shop_address", shop?.shop_address);
+      formData.append("shop_contact_info", shop?.contact_info);
 
-      if (response?.data) {
+      imagesInput?.forEach((img: File) => {
+        formData.append("shop_images", img);
+      });
+
+      shop?.shop_tags?.forEach((tag: string) => {
+        formData.append("shop_tags", tag);
+      });
+
+      shop?.links?.forEach((link: string) => {
+        formData.append("shop_links", link);
+      });
+
+      await fetchRequest(
+        "/api/createStore",
+        {
+          method: "POST",
+          body: formData,
+        },
+        setLoading,
+        setError,
+        setResponse
+      );
+
+      if (response) {
         setShop({
           shop_desc: "",
           shop_title: "",
           contact_info: "",
           links: [],
-          shop_images: [],
           shop_tags: [],
           shop_address: "",
         });
@@ -122,9 +141,9 @@ export default function CreateStore() {
         setImagesInput([]);
         setLinksInput("");
         dispatch(setIsShopOwner(true));
-        router.push("/shop/dashboard")
+        router.push("/shop/dashboard");
+        setResponse(null);
       } else {
-        setError("Error creating shop. Please try again.");
       }
     } catch (error) {
       setError("An error occurred while creating the shop. Please try again.");

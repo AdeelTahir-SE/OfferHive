@@ -2,10 +2,9 @@
 import { useState, useEffect, useCallback } from "react";
 import SearchBar from "@/components/searchBar";
 import GroupCard from "@/components/groupCard";
-import { getGroups, searchGroups } from "@/lib/DB/group";
 import SearchIcon from "@/components/searchIcon";
 import Loader from "@/components/loader";
-
+import { fetchRequest } from "@/lib/utils/fetch";
 export default function Groups() {
   const [groups, setGroups] = useState<any[]>([]);
   const [counter, setCounter] = useState(0);
@@ -17,23 +16,27 @@ export default function Groups() {
   const fetchGroups = useCallback(async () => {
     if (!hasMore) return;
     if (searchTerm.trim() === "" && counter !== 0) return;
+    await fetchRequest(
+      `/api/communities?searchQuery=${encodeURIComponent(
+        searchTerm
+      )}&counter=${counter}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      setIsFetching,
+      setError,
+      setGroups
+    );
+    console.log(
+      `Fetching groups with searchTerm: ${searchTerm}, counter: ${counter}`
+    );
+    console.log("Groups fetched:", groups);
 
-    setIsFetching(true);
-    try {
-      const data = searchTerm.trim()
-        ? await searchGroups(searchTerm, counter)
-        : await getGroups(counter);
-
-      if (data && data.length > 0) {
-        setGroups((prev) => [...prev, ...data]);
-      } else {
-        setHasMore(false);
-      }
-    } catch (err) {
-      setError("Error fetching groups. Please try again later.");
-      console.log(err);
-    } finally {
-      setIsFetching(false);
+    if (!groups || groups.length <= 0) {
+      setHasMore(false);
     }
   }, [searchTerm, counter, hasMore]);
 
@@ -45,7 +48,8 @@ export default function Groups() {
     if (groups.length === 0 || isFetching || !hasMore) return;
 
     if (
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 100
     ) {
       setCounter((prev) => prev + 1);
     }
@@ -60,7 +64,7 @@ export default function Groups() {
     setGroups([]);
     setCounter(0);
     setSearchTerm(term.trim());
-    setHasMore(true); 
+    setHasMore(true);
   };
 
   return (

@@ -1,30 +1,41 @@
 "use client";
 import { useState } from "react";
-import { sendMessage } from "@/lib/DB/contact";
 import Image from "next/image";
+import { fetchRequest } from "@/lib/utils/fetch";
 
 export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    fetchRequest(
+      "/api/contact",
+      {
+        method: "POST",
 
-    const formData = new FormData(event.currentTarget);
-    const name = formData.get("name") as string;
-    const email = formData.get("email") as string;
-    const message = formData.get("message") as string;
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-    if (!name || !email || !message) {
-      setErrorMessage("Please fill out all fields.");
-      return;
-    }
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message,
+        }),
+      },
+      setIsSubmitting,
+      setErrorMessage,
+      () => {}
+    );
 
-    setIsSubmitting(true);
-    const { error } = await sendMessage(name, email, message);
 
-    if (error) {
-      console.error("Error sending message:", error);
+    if (errorMessage) {
+      console.error("Error sending message:");
       alert("There was an error sending your message. Please try again.");
     } else {
       alert("Your message has been sent successfully!");
@@ -50,10 +61,11 @@ export default function Contact() {
       <h1 className="text-3xl font-bold mb-4">Get in Touch</h1>
 
       <p className="text-gray-600 mb-4 text-center max-w-xl">
-        If you notice any bugs or have suggestions or as a shop owner do you want some additional features, please let us know. We
-        appreciate your feedback and are always looking to improve. Your
-        opinions matter a lot to us — feel free to provide feedback or ideas on
-        how we can make things better.
+        If you notice any bugs or have suggestions or as a shop owner do you
+        want some additional features, please let us know. We appreciate your
+        feedback and are always looking to improve. Your opinions matter a lot
+        to us — feel free to provide feedback or ideas on how we can make things
+        better.
       </p>
 
       {errorMessage && <div className="text-red-500 mb-4">{errorMessage}</div>}
@@ -64,21 +76,29 @@ export default function Contact() {
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col">
-          <label htmlFor="name" className="font-medium mb-1">Name</label>
+          <label htmlFor="name" className="font-medium mb-1">
+            Name
+          </label>
           <input
             type="text"
             id="name"
             name="name"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
             className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
             placeholder="Your Name"
           />
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="email" className="font-medium mb-1">Email</label>
+          <label htmlFor="email" className="font-medium mb-1">
+            Email
+          </label>
           <input
             type="email"
             id="email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
             name="email"
             className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
             placeholder="you@example.com"
@@ -86,11 +106,15 @@ export default function Contact() {
         </div>
 
         <div className="flex flex-col">
-          <label htmlFor="message" className="font-medium mb-1">Message</label>
+          <label htmlFor="message" className="font-medium mb-1">
+            Message
+          </label>
           <textarea
             id="message"
             name="message"
             rows={5}
+            value={form.message}
+            onChange={(e) => setForm({ ...form, message: e.target.value })}
             className="border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-yellow-300"
             placeholder="Write your message..."
           ></textarea>

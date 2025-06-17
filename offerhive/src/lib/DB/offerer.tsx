@@ -79,31 +79,37 @@ export async function getShopById(id: string) {
 
   return shop;
 }
-export async function createShop(userid: string, shop: any, images: File[]) {
-  if(!shop.shop_desc || !shop.shop_title || !shop.contact_info||!userid){
-    return ;
+export async function createShop(
+  userid: string | null,
+  shop: any,
+  images: File[]
+) {
+  if (!userid) {
   }
-  console.log(userid)
+  if (!shop.shop_desc || !shop.shop_title || !shop.contact_info || !userid) {
+    return { data: null, error: new Error("missing required fields") };
+  }
+  console.log(userid);
   const { error: chatDeleteError } = await supabase
     .from("Chat")
     .delete()
     .eq("user_id", userid);
 
-    const {  error: UserUpdateError } = await supabase
+  const { error: UserUpdateError } = await supabase
     .from("User")
     .update({ is_shop_owner: true })
     .eq("user_id", userid);
-   if(UserUpdateError){
-    console.log("User update error",UserUpdateError)
-    return null
-   }
+  if (UserUpdateError) {
+    console.log("User update error", UserUpdateError);
+    return { data: null, error: UserUpdateError };
+  }
 
   const imageurls: string[] = [];
 
   for (let i = 0; i < images.length; i++) {
     const filepath = `shop_pics/${userid}/${images[i].name}`;
 
-    const {  error } = await supabase.storage
+    const { error } = await supabase.storage
       .from("images")
       .upload(filepath, images[i], {
         cacheControl: "3600",
@@ -202,12 +208,14 @@ export async function updateOffer(id: string, updatedFields: Partial<any>) {
 
   return data;
 }
-export async function handleDeleteOfferImage(offer_id: string, shop_id: string, filename: string) {
+export async function handleDeleteOfferImage(
+  offer_id: string,
+  shop_id: string,
+  filename: string
+) {
   const filePath = `offer_pics/${shop_id}/${offer_id}/${filename}`;
 
-  const { error } = await supabase.storage
-    .from("images")
-    .remove([filePath]);
+  const { error } = await supabase.storage.from("images").remove([filePath]);
 
   if (error) {
     console.error("Error deleting image:", error);
@@ -245,7 +253,7 @@ export async function deleteOffer(offer_id: string, shop_id: string) {
   }
 
   if (fileList && fileList.length > 0) {
-    const filePaths = fileList.map(file => `${folderPath}${file.name}`);
+    const filePaths = fileList.map((file) => `${folderPath}${file.name}`);
 
     const { error: deleteFilesError } = await supabase.storage
       .from("images")
@@ -259,7 +267,7 @@ export async function deleteOffer(offer_id: string, shop_id: string) {
   return data;
 }
 
-export async function createOffer(offer:OfferBeforeCreation) {
+export async function createOffer(offer: OfferBeforeCreation) {
   const { data, error } = await supabase
     .from("Offers")
     .insert({
@@ -311,10 +319,7 @@ export async function deleteShop(id: string) {
 export async function handleDeleteShopImage(id: string, filename: string) {
   const filePath = `shop_pics/${id}/${filename}`;
 
-  const { error } = await supabase.storage
-    .from("images")
-    .remove([filePath
-    ]);
+  const { error } = await supabase.storage.from("images").remove([filePath]);
   if (error) {
     console.error("Error deleting image:", error);
     return false;
@@ -323,7 +328,7 @@ export async function handleDeleteShopImage(id: string, filename: string) {
 }
 export async function uploadImage(file: File, userId: string) {
   const filepath = `shop_pics/${userId}/${file.name}`;
-  const {  error } = await supabase.storage
+  const { error } = await supabase.storage
     .from("images")
     .upload(filepath, file, {
       cacheControl: "3600",
@@ -352,7 +357,7 @@ export async function uploadOfferImage(
   offerId: string
 ) {
   const filepath = `offer_pics/${userId}/${offerId}/${file.name}`;
-  const {  error } = await supabase.storage
+  const { error } = await supabase.storage
     .from("images")
     .upload(filepath, file, {
       cacheControl: "3600",
