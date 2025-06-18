@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
-import { getUserwithId, getChat, setChatDB } from "@/lib/DB/user";
-import { supabase } from "@/lib/DB/db";
+import { getUserwithId, getChat, setChatDB } from "@/lib/Db/user";
+import { supabase } from "@/lib/Db/db";
 import { useSelector } from "react-redux";
 import { useParams } from "next/navigation";
 import Image from "next/image";

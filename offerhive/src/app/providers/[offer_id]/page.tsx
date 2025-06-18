@@ -1,13 +1,13 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ImagesSlider } from "@/components/offerPageImages";
-import { getShopById } from "@/lib/DB/offerer";
+import { getShopById } from "@/lib/Db/offerer";
 import { Shop } from "@/lib/types";
 import React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
-import { setClicks, getClicks } from "@/lib/DB/shop";
+import { setClicks, getClicks } from "@/lib/Db/shop";
 import { Click } from "@/lib/types";
 import Loader from "@/components/loader";
 import Image from "next/image";

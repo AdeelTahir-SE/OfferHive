@@ -7,7 +7,7 @@ import {
   createOffer,
   getOffersById,
   deleteOffer,
-} from "@/lib/DB/offerer";
+} from "@/lib/Db/offerer";
 import { Shop, Offer } from "@/lib/types";
 import EditableText from "@/components/editableText";
 import { useSelector } from "react-redux";

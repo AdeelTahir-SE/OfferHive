@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { subscribeGroup } from "@/lib/DB/group";
+import { subscribeGroup } from "@/lib/Db/group";
 
 export async function POST(req: NextRequest) {
   const { user_id, group_id, isSubscribed } = await req.json();

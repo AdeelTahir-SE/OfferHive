@@ -2,8 +2,8 @@
 import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
-import { uploadImage } from "@/lib/DB/offerer";
-import {handleDeleteShopImage} from "@/lib/DB/offerer";
+import { uploadImage } from "@/lib/Db/offerer";
+import {handleDeleteShopImage} from "@/lib/Db/offerer";
 export default function EditableImages({
   images,
   onChange,

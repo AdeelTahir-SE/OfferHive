@@ -1,5 +1,5 @@
 import { Offer, OfferBeforeCreation } from "../types";
-import { supabase } from "./db";
+import { supabase } from "../Db/db";
 
 export async function getOfferers(counter: number) {
   const rangeStart = counter * 10;

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getGroupById } from "@/lib/DB/group";
+import { getGroupById } from "@/lib/Db/group";
 
 export async function GET(
   req: NextRequest,

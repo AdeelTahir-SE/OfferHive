@@ -2,10 +2,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { chatWithShopOwners } from "@/lib/DB/user";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { RootState } from "@/lib/redux/store";
+import { fetchRequest } from "@/lib/utils/fetch";
+
 export default function People() {
   interface ChatMessage {
     user_id: string;
@@ -18,9 +19,25 @@ export default function People() {
   const router = useRouter();
   const user = useSelector((state: RootState) => state?.user);
 
+
+
   const fetchChat = async (user_id: string) => {
-    const chats = await chatWithShopOwners(user_id);
-    setChat(chats);
+    fetchRequest(
+      `/api/people?user_id=${user_id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      () => {},
+      (error) => {
+        console.error("Error fetching chat:", error);
+      },
+      (data) => {
+        setChat(data);
+      }
+    );
   };
 
   useEffect(() => {

@@ -1,43 +1,7 @@
-import { Provider } from "react";
-import { supabase } from "./db";
+import { supabase } from "../Db/db";
 import { RealtimeChannel } from "@supabase/supabase-js";
-export async function signUp(email: string, password: string) {
 
-  const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: 'https://offer-hive.vercel.app/logIn'
-    }
-  },
-);
 
-  if (signUpError || !signUpData.user) {
-    return {
-      userData: null,
-      signUpError,
-      insertError: "User signup failed or user is null",
-    };
-  }
-
-  const { data: userData, error: insertError } = await supabase
-    .from("User")
-    .insert([
-      {
-        email,
-        user_id: signUpData?.user?.id,
-        profile_image: "",
-        is_shop_owner: false,
-      },
-    ])
-    .select();
-
-  return {
-    userData,
-    signUpError,
-    insertError,
-  };
-}
 export async function signIn(email: string, password: string) {
   const { data, error: signInError } = await supabase.auth.signInWithPassword({
     email: email,
@@ -49,7 +13,7 @@ export async function signIn(email: string, password: string) {
     .select("*")
     .eq("user_id", data.user?.id)
     .single();
-    
+
   return { userData, signInError, findingError };
 }
 export async function signOut() {
@@ -188,13 +152,15 @@ export async function removeChatListener(chatlistener: RealtimeChannel) {
   }
 }
 
-export async function setProfileImageDB(file: File, user_id: string) {
-  if (!user_id) return;
+export async function setProfileImageDB(
+  file: File | null,
+  user_id: string | null
+) {
+  if (!user_id || !file) return;
 
   const folderPath = `profile_pics/${user_id}/`;
   const filepath = `${folderPath}${file.name}`;
 
-  // Step 1: List existing files in the user's profile_pics folder
   const { data: existingFiles, error: listError } = await supabase.storage
     .from("images")
     .list(folderPath);
@@ -206,7 +172,9 @@ export async function setProfileImageDB(file: File, user_id: string) {
 
   // Step 2: Remove all existing files (if any)
   if (existingFiles && existingFiles.length > 0) {
-    const filesToDelete = existingFiles.map(file => `${folderPath}${file.name}`);
+    const filesToDelete = existingFiles.map(
+      (file) => `${folderPath}${file.name}`
+    );
     const { error: deleteError } = await supabase.storage
       .from("images")
       .remove(filesToDelete);
@@ -256,7 +224,10 @@ export async function setProfileImageDB(file: File, user_id: string) {
   return publicURL;
 }
 
-export async function chatWithShopOwners(user_id: string) {
+export async function chatWithShopOwners(user_id: string | null) {
+  if (!user_id) {
+    return [];
+  }
   const { data: chats, error: chatError } = await supabase
     .from("Chat")
     .select("shop_user_id")
@@ -267,7 +238,7 @@ export async function chatWithShopOwners(user_id: string) {
     return [];
   }
 
-  const shopUserIds = chats?.map(chat => chat.shop_user_id) || [];
+  const shopUserIds = chats?.map((chat) => chat.shop_user_id) || [];
 
   if (shopUserIds.length === 0) {
     return [];
@@ -286,7 +257,7 @@ export async function chatWithShopOwners(user_id: string) {
   return shopOwners;
 }
 
-export async function getNotifications(user_id: string){
+export async function getNotifications(user_id: string) {
   const { data, error } = await supabase
     .from("Notification")
     .select("*")
@@ -297,10 +268,10 @@ export async function getNotifications(user_id: string){
     console.error("Error fetching notifications:", error);
     return null;
   }
-console.log("notifications", data);
+  console.log("notifications", data);
   return data;
 }
-export async function deleteNotifications(user_id:string){
+export async function deleteNotifications(user_id: string) {
   const { data, error } = await supabase
     .from("Notification")
     .delete()

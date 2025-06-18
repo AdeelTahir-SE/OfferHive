@@ -1,18 +1,21 @@
 "use client";
 import Image from "next/image";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import { setProfileImageDB } from "@/lib/DB/user";
+import { useEffect, useState } from "react";
+import { setProfileImageDB } from "@/lib/Db/user";
 import { setProfileImage } from "@/lib/redux/user/userSlice";
 import { useDispatch } from "react-redux";
-import { signOut } from "@/lib/DB/user";
+import { signOut } from "@/lib/Db/user";
 import { setUser } from "@/lib/redux/user/userSlice";
 import { useRouter } from "next/navigation";
 import { RootState } from "@/lib/redux/store";
+import { fetchRequest } from "@/lib/utils/fetch";
 
 export default function Profile() {
   const User = useSelector((state: RootState) => state?.user);
-  const [preview, setPreview] = useState(User?.profile_image || "/profile_placeholder.png"); // Set default preview image
+  const [preview, setPreview] = useState<any>(
+    User?.profile_image || "/profile_placeholder.png"
+  );
   const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,7 +29,16 @@ export default function Profile() {
     try {
       setLoading(true);
       await signOut();
-      dispatch(setUser({ user_id: "", email: "", profile_image: "/profile_placeholder.png", is_shop_owner: false, joined_groups: [], subscribed_groups: [] })); // Reset user state
+      dispatch(
+        setUser({
+          user_id: "",
+          email: "",
+          profile_image: "/profile_placeholder.png",
+          is_shop_owner: false,
+          joined_groups: [],
+          subscribed_groups: [],
+        })
+      );
       setMessage("Successfully logged out.");
       setTimeout(() => {
         router.push("/logIn");
@@ -41,47 +53,63 @@ export default function Profile() {
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file || !User?.user_id) return;
+    const formData = new FormData();
+    formData.append("image", file);
+    formData.append("user_id", User?.user_id);
+    await fetchRequest(
+      "/api/profile/imageChange",
+      {
+        method: "PATCH",
 
-    setUploading(true);
-    const publicUrl = await setProfileImageDB(file, User?.user_id);
-    dispatch(setProfileImage(publicUrl??""));
-
-    if (publicUrl) {
-      setPreview(publicUrl); // update preview
-    }
-    setUploading(false);
+        body: formData,
+      },
+      setUploading,
+      () => {},
+      setPreview
+    );
   };
-  if(User&&!User?.email){
-    return(
-      <section className="h-screen flex flex-col items-center justify-center ">
-      <div className="text-center mt-10 max-w-lg mx-auto">
-        <h1 className="text-4xl font-bold text-gray-800">
-          Oops! You can not manage the profile without logging in😅
-        </h1>
 
-        <button
-          onClick={() => router.push("/logIn")}
-          className="mt-8 bg-yellow-400 cursor-pointer text-black py-3 px-8 rounded-full hover:bg-yellow-500 text-lg font-semibold transition duration-300 shadow-lg"
-        >
-          Login
-        </button>
-      </div>
-    </section>
-    )
+  useEffect(() => {
+    if (preview?.imageurl) {
+      console.log("Setting profile image:", preview.imageurl);
+      dispatch(setProfileImage(preview?.imageurl));
+    }
+  }, [preview?.imageurl]);
+
+  if (User && !User?.email) {
+    return (
+      <section className="h-screen flex flex-col items-center justify-center ">
+        <div className="text-center mt-10 max-w-lg mx-auto">
+          <h1 className="text-4xl font-bold text-gray-800">
+            Oops! You can not manage the profile without logging in😅
+          </h1>
+
+          <button
+            onClick={() => router.push("/logIn")}
+            className="mt-8 bg-yellow-400 cursor-pointer text-black py-3 px-8 rounded-full hover:bg-yellow-500 text-lg font-semibold transition duration-300 shadow-lg"
+          >
+            Login
+          </button>
+        </div>
+      </section>
+    );
   }
 
   return (
     <section className="flex flex-col items-center justify-center min-h-screen p-8 bg-gray-100">
       <div className="w-32 h-32 relative mb-6">
         <Image
-          src={preview || "/profile_placeholder.png"} // Fallback to placeholder if preview is not available
+          src={
+            typeof preview === "string"
+              ? preview
+              : preview?.imageurl || "/profile_placeholder.png"
+          }
           alt={`${User?.email}'s Profile Picture`}
           className="rounded-full object-cover"
           fill
         />
       </div>
 
-      {/* Upload Button */}
       <label className="cursor-pointer bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600 mb-6">
         {uploading ? "Uploading..." : "Change Profile Picture"}
         <input
@@ -106,14 +134,20 @@ export default function Profile() {
             onClick={handleLogout}
             disabled={loading}
             className={`px-4 py-2 text-white rounded-md transition-all cursor-pointer ${
-              loading ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-600"
+              loading
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-yellow-500 hover:bg-yellow-600"
             }`}
           >
             {loading ? "Logging out..." : "Logout"}
           </button>
 
           {message && (
-            <p className={`text-sm ${message.includes("failed") ? "text-red-500" : "text-yellow-600"}`}>
+            <p
+              className={`text-sm ${
+                message.includes("failed") ? "text-red-500" : "text-yellow-600"
+              }`}
+            >
               {message}
             </p>
           )}

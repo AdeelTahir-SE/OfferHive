@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import OffererCard from "@/components/offererCard";
-import { getGroupById, subscribeGroup, joinGroup } from "@/lib/DB/group";
+import { getGroupById, subscribeGroup, joinGroup } from "@/lib/Db/group";
 import { GroupUnique } from "@/lib/types";
 import { useSelector } from "react-redux";
 import Image from "next/image";

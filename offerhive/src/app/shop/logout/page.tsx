@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { signOut } from "@/lib/DB/user"
+import { signOut } from "@/lib/Db/user"
 import { useDispatch } from "react-redux"
 import { setUser } from "@/lib/redux/user/userSlice"
 export default function Logout() {

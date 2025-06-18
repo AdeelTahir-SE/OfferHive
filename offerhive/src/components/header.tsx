@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X, Bell } from "lucide-react";
-import { getNotifications, deleteNotifications } from "@/lib/DB/user";
+import { getNotifications, deleteNotifications } from "@/lib/Db/user";
 type Notification = {
   user_id: string;
   description: string;

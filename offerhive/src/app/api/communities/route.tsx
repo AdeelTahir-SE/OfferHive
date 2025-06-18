@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getGroups, searchGroups } from "@/lib/DB/group";
+import { getGroups, searchGroups } from "@/lib/Db/group";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;

@@ -2,7 +2,7 @@
 import MessageSection from "@/components/messageSection";
 import LineGraph from "@/components/lineGraph";
 import BarChart from "@/components/barChart";
-import { getClicks, getLatestMessages } from "@/lib/DB/shop";
+import { getClicks, getLatestMessages } from "@/lib/Db/shop";
 import { useSelector } from "react-redux";
 import { useState, useEffect } from "react";
 import { Message } from "@/lib/types";

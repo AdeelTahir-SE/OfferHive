@@ -2,9 +2,10 @@
 import { useState, useEffect, useCallback } from "react";
 import SearchBar from "@/components/searchBar";
 import OffererCard from "@/components/offererCard";
-import { searchOfferers, getOfferers } from "@/lib/DB/offerer";
+import { searchOfferers, getOfferers } from "@/lib/Db/offerer";
 import SearchIcon from "@/components/searchIcon";
 import Loader from "@/components/loader";
+import { fetchRequest } from "@/lib/utils/fetch";
 
 export default function Offers() {
   const [offers, setOffers] = useState<any[]>([]);
@@ -16,21 +17,26 @@ export default function Offers() {
 
   const fetchOffers = useCallback(async () => {
     if (!hasMore) return;
-    setIsFetching(true);
-    try {
-      const data = searchTerm
-        ? await searchOfferers(searchTerm, counter)
-        : await getOfferers(counter);
 
-      if (data&&data?.length > 0) {
-        setOffers((prev) => [...prev, ...data]);
-      } else {
-        setHasMore(false); // Stop fetching if no data
-      }
-    } catch (err) {
-      setError("Error fetching offers. Please try again later.");
-    } finally {
-      setIsFetching(false);
+    fetchRequest(
+      `/api/providers?searchQuery=${encodeURIComponent(
+        searchTerm
+      )}&counter=${counter}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      setIsFetching,
+      setError,
+      setOffers
+    );
+    console.log(
+      `Fetching offers with searchTerm: ${searchTerm}, counter: ${counter}`
+    );
+    if (!offers || offers.length <= 0) {
+      setHasMore(false);
     }
   }, [searchTerm, counter, hasMore]);
 
@@ -42,7 +48,8 @@ export default function Offers() {
     if (offers.length === 0 || isFetching || !hasMore) return;
 
     if (
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
+      window.innerHeight + window.scrollY >=
+      document.body.offsetHeight - 100
     ) {
       setCounter((prev) => prev + 1);
     }
@@ -63,7 +70,9 @@ export default function Offers() {
   return (
     <section className="flex flex-col items-center justify-center rounded-xl py-6 w-full">
       <h1 className="text-3xl font-bold mb-4">Providers</h1>
-      <p className="text-lg px-4">Check out amazing offers by different Providers!</p>
+      <p className="text-lg px-4">
+        Check out amazing offers by different Providers!
+      </p>
 
       <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
 

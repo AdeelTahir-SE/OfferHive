@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { joinGroup } from "@/lib/DB/group";
+import { joinGroup } from "@/lib/Db/group";
 
 export async function POST(req: NextRequest) {
   const { user_id, group_id } = await req.json();

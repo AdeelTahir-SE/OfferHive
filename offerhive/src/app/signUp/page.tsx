@@ -1,40 +1,50 @@
 "use client";
 import { Eye, EyeClosed } from "lucide-react";
-import { useState } from "react";
-import OAuthSection from "@/components/oAuthsSection";
-import { signUp } from "@/lib/DB/user";
-import { useDispatch } from "react-redux"; 
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { setUser } from "@/lib/redux/user/userSlice";
 import Link from "next/link";
 import WavySvg from "@/components/wavySvg";
-
+import { fetchRequest } from "@/lib/utils/fetch";
 export default function SignUp() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [error, setError] = useState("");
-  const [loading,setLoading]=useState(false)
+  const [error, setError] = useState<string | null>();
+  const [loading, setLoading] = useState(false);
+  const [dbUser, setDbUser] = useState<any>();
   const [successMessage, setSuccessMessage] = useState("");
+  const [form, setForm] = useState({
+    email: "",
+    password: "",
+  });
   const dispatch = useDispatch();
 
   async function handleSignUp(e: React.FormEvent) {
     setLoading(true);
     e.preventDefault();
-    setError("");
-    setSuccessMessage("");
 
-    const email = (document.getElementById("email") as HTMLInputElement).value;
-    const password = (document.getElementById("password") as HTMLInputElement).value;
-
-    const { userData, signUpError, insertError } = await signUp(email, password);
-
-    if (signUpError || insertError) {
-      setError(signUpError?.message || "An error occurred");
-      console.log("Error signing up:", signUpError?.message);
-    } else {
-      dispatch(setUser(userData as any));
-      setSuccessMessage("Account created! Please verify your email. Once verified, you can log in.");
-    }
-    setLoading(false);
+    await fetchRequest(
+      "/api/signUp",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      },
+      setLoading,
+      setError,
+      setDbUser
+    );
   }
+
+  useEffect(() => {
+    if (dbUser) {
+      dispatch(setUser(dbUser as any));
+      setSuccessMessage(
+        "Account created! Please verify your email. Once verified, you can log in."
+      );
+    }
+  },[dbUser]);
 
   return (
     <section className="flex flex-col items-center justify-center h-screen bg-white font-sans">
@@ -44,18 +54,28 @@ export default function SignUp() {
 
         <form onSubmit={handleSignUp} className="w-full">
           <section className="flex flex-col gap-5 w-full max-w-xs mx-auto">
-            <label htmlFor="email" className="text-base font-semibold text-gray-700">
+            <label
+              htmlFor="email"
+              className="text-base font-semibold text-gray-700"
+            >
               Email
             </label>
             <input
               id="email"
               type="email"
+              value={form.email}
+              onChange={(e) => {
+                setForm({ ...form, email: e.target.value });
+              }}
               placeholder="Enter your email"
               className="px-4 py-3 border text-base rounded-md focus:outline-none"
               required
             />
 
-            <label htmlFor="password" className="text-base font-semibold text-gray-700">
+            <label
+              htmlFor="password"
+              className="text-base font-semibold text-gray-700"
+            >
               Password
             </label>
             <section className="flex items-center justify-between gap-4">
@@ -63,6 +83,10 @@ export default function SignUp() {
                 id="password"
                 type={isPasswordVisible ? "text" : "password"}
                 placeholder="Enter your password"
+                value={form.password}
+                onChange={(e) => {
+                  setForm({ ...form, password: e.target.value });
+                }}
                 className="flex-1 px-4 py-3 border text-base rounded-md focus:outline-none"
                 required
               />
@@ -86,7 +110,7 @@ export default function SignUp() {
               disabled={loading}
               className="w-full py-3 cursor-pointer text-base font-semibold bg-yellow-500 hover:bg-yellow-400 text-white rounded-md transition"
             >
-             {loading?"Signin up...":"Sign Up"} 
+              {loading ? "Signin up..." : "Sign Up"}
             </button>
           </section>
 
@@ -102,7 +126,10 @@ export default function SignUp() {
           {!successMessage && (
             <p className="text-sm text-center text-gray-500 mt-4">
               Already have an account?{" "}
-              <Link href="/logIn" className="text-yellow-500 font-semibold hover:underline">
+              <Link
+                href="/logIn"
+                className="text-yellow-500 font-semibold hover:underline"
+              >
                 Log in
               </Link>
             </p>
