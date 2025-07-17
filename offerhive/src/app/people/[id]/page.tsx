@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, use } from "react";
-import { getUserwithId, getChat, setChatDB } from "@/lib/Db/user";
+import {  setChatDB } from "@/lib/Db/user";
 import { fetchRequest } from "@/lib/utils/fetch";
 import { supabase } from "@/lib/Db/db";
 import { useSelector } from "react-redux";
