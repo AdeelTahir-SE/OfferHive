@@ -1,5 +1,5 @@
 import { Click } from "../types";
-import { supabase } from "../Db/db";
+import { supabase } from "./db";
 
 export async function getClicks(user_id: string) {
   const { data, error } = await supabase

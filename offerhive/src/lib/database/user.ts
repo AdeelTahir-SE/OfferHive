@@ -1,4 +1,4 @@
-import { supabase } from "../Db/db";
+import { supabase } from "./db";
 import { RealtimeChannel } from "@supabase/supabase-js";
 
 

@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import { sendMessage } from "@/lib/Db/contact";
+import { sendMessage } from "@/lib/database/contact";
 export async function POST(request: NextRequest) {
   const { name, email, message } = await request.json();
   if (!name || !email || !message) {

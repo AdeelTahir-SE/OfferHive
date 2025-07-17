@@ -1,4 +1,4 @@
-import { getUserwithId } from "@/lib/Db/user";
+import { getUserwithId } from "@/lib/database/user";
 import { NextRequest,NextResponse } from "next/server";
 export async function GET(rqeuest:NextRequest){
     const id= rqeuest.nextUrl.pathname.split("/")[3];

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getShopById, getOffersById } from "@/lib/Db/offerer";
+import { getShopById, getOffersById } from "@/lib/database/offerer";
 export async function GET(request: NextRequest) {
   const id = request.headers.get("shop_id");
   const shop = await getShopById(id);

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getChat } from "@/lib/Db/user";
+import { getChat } from "@/lib/database/user";
 export async function GET(req: NextRequest) {
   const senderId = req.headers.get('sender-id');
   const receiverId = req.headers.get('receiver-id');

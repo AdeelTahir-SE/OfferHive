@@ -1,4 +1,4 @@
-import { getGroupShopById } from "@/lib/Db/groupShop";
+import { getGroupShopById } from "@/lib/database/groupShop";
 import { NextRequest,NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const groupShopId = req.nextUrl.pathname.split("/")[4];

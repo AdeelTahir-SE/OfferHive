@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { signOut } from "@/lib/Db/user";
+import { signOut } from "@/lib/database/user";
 export async function POST(request: NextRequest) {
   const result = await signOut();
   if (result) {

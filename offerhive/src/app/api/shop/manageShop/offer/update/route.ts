@@ -1,5 +1,5 @@
 import { NextRequest,NextResponse } from "next/server";
-import { updateOffer } from "@/lib/Db/offerer";
+import { updateOffer } from "@/lib/database/offerer";
 export async function PUT(request:NextRequest){
 const body = await request.json();
 const { offer_id, ...offerData } = body;

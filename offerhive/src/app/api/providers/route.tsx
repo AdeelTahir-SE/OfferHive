@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { searchOfferers, getOfferers } from "@/lib/Db/offerer";
+import { searchOfferers, getOfferers } from "@/lib/database/offerer";
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const counter = parseInt(searchParams.get("counter") || "0", 10);

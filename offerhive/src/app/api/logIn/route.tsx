@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { signIn } from "@/lib/Db/user";
+import { signIn } from "@/lib/database/user";
 
 export async function POST(request: NextRequest) {
   try {

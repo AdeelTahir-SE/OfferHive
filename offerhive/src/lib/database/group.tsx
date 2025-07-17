@@ -1,4 +1,4 @@
-import { supabase } from "../Db/db";
+import { supabase } from "./db";
 import { GroupUnique } from "../types";
 import { filter } from "motion/react-client";
 export async function getGroups(counter: number) {

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import {
   updateShop,
 
-} from "@/lib/Db/offerer";
+} from "@/lib/database/offerer";
 import { Shop, Offer } from "@/lib/types";
 import EditableText from "@/components/editableText";
 import { useSelector } from "react-redux";

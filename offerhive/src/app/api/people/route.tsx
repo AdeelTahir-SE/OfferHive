@@ -1,4 +1,4 @@
-import { chatWithShopOwners } from "@/lib/Db/user";
+import { chatWithShopOwners } from "@/lib/database/user";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   try {

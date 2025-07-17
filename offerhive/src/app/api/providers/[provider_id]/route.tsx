@@ -1,5 +1,5 @@
 import { NextRequest } from "next/server";
-import { getShopById } from "@/lib/Db/offerer";
+import { getShopById } from "@/lib/database/offerer";
 export async function GET(request:NextRequest){
 
     const shop=await getShopById(request.nextUrl.pathname.split("/")[3]);

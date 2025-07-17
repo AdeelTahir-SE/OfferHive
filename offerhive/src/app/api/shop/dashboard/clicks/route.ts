@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getClicks } from "@/lib/Db/shop";
+import { getClicks } from "@/lib/database/shop";
 export async function GET(request: NextRequest) {
   const id = request.headers.get("user_id");
   if (!id) {

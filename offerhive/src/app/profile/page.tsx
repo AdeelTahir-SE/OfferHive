@@ -2,10 +2,10 @@
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { setProfileImageDB } from "@/lib/Db/user";
+import { setProfileImageDB } from "@/lib/database/user";
 import { setProfileImage } from "@/lib/redux/user/userSlice";
 import { useDispatch } from "react-redux";
-import { signOut } from "@/lib/Db/user";
+import { signOut } from "@/lib/database/user";
 import { setUser } from "@/lib/redux/user/userSlice";
 import { useRouter } from "next/navigation";
 import { RootState } from "@/lib/redux/store";

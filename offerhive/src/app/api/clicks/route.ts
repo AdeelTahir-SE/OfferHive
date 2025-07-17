@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getClicks, setClicks } from "@/lib/Db/shop"; // Your database functions
+import { getClicks, setClicks } from "@/lib/database/shop"; // Your database functions
 import { Click } from "@/lib/types";
 export async function GET(req: NextRequest) {
   try {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { setProfileImageDB } from "@/lib/Db/user";
+import { setProfileImageDB } from "@/lib/database/user";
 
 export async function PATCH(request: NextRequest) {
   try {

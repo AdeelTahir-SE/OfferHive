@@ -1,4 +1,4 @@
-import { deleteOffer } from "@/lib/Db/offerer";
+import { deleteOffer } from "@/lib/database/offerer";
 import { NextRequest,NextResponse } from "next/server";
 export async function DELETE(request:NextRequest){
 const {offer_id, user_id} = await request.json();

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getCommunityProviders } from "@/lib/Db/group";
+import { getCommunityProviders } from "@/lib/database/group";
 export async function GET(request: NextRequest) {
   const id = request.nextUrl.pathname.split("/")[3];
   const searchParams = request.nextUrl.searchParams;

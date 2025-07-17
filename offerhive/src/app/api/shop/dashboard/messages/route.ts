@@ -1,4 +1,4 @@
-import { getLatestMessages } from "@/lib/Db/shop";
+import { getLatestMessages } from "@/lib/database/shop";
 import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const id = request.headers.get("user_id");

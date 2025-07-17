@@ -1,8 +1,8 @@
 "use client";
 import { useState, useEffect, use } from "react";
-import {  setChatDB } from "@/lib/Db/user";
+import {  setChatDB } from "@/lib/database/user";
 import { fetchRequest } from "@/lib/utils/fetch";
-import { supabase } from "@/lib/Db/db";
+import { supabase } from "@/lib/database/db";
 import { useSelector } from "react-redux";
 import { useParams } from "next/navigation";
 import Image from "next/image";

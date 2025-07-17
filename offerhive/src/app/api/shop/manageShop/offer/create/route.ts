@@ -1,5 +1,5 @@
 import { NextRequest,NextResponse } from "next/server";
-import { createOffer } from "@/lib/Db/offerer";
+import { createOffer } from "@/lib/database/offerer";
 export async function POST(request:NextRequest){
 
     const {id} = await request.json();
