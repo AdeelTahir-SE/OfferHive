@@ -10,7 +10,7 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
-  ...compat.extends(),
+  ...compat.extends(Next),
 ];
 
 export default eslintConfig;
