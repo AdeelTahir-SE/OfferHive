@@ -139,3 +139,20 @@ export interface ClickData {
 
 export type GraphProps = ClickData[];
 
+export interface OpenShopOffer {
+  id: string;
+  description: string;
+  image_url: string;
+  created_at: string;
+  group_shop_id: string;
+}
+
+export interface GroupShopData {
+  id: string;
+  group_shop_name: string;
+  group_shop_description: string;
+  image_url: string;
+  GroupShopOffer: OpenShopOffer[];
+  created_at: string;
+  group_id: string;
+}

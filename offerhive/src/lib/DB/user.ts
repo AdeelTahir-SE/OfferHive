@@ -1,4 +1,3 @@
-import { data } from "motion/react-client";
 import { supabase } from "../Db/db";
 import { RealtimeChannel } from "@supabase/supabase-js";
 

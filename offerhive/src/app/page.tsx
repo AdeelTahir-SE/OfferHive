@@ -5,7 +5,7 @@ import HeroSection from "@/components/heroSection";
 import HowItWorksSection from "@/components/howItWorksSection";
 import WhatOurSaysSection from "@/components/whatOurUsersSaySection";
 import RedirectIcon from "@/components/redirectComponent";
-
+import OurUsers from "@/components/our-users";
 export default function Home() {
   const router = useRouter();
 
@@ -18,6 +18,7 @@ export default function Home() {
   return (
     <section className="flex flex-col items-center justify-center  max-w-screen">
       <HeroSection />
+{/* <OurUsers/> */}
       <HowItWorksSection />
 
       <button

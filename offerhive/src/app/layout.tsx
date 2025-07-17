@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "OfferHive",
     images: [
       {
-        url: "/hive.png", // Image path, should be in /public
+        url: "/hive.png", 
         width: 1200,
         height: 630,
         alt: "OfferHive - Explore trending deals",
@@ -57,9 +57,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
+      {/* <head>
       <meta name="google-site-verification" content="MQZOMrHjT4vuDeii8jZcMN48drxQ7sGqvgh4RNXkG_g" />
-      </head>
+      </head> */}
       <body
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

@@ -8,9 +8,9 @@ import { fetchRequest } from "@/lib/utils/fetch";
 import { useParams } from "next/navigation";
 export default function Page() {
   const [communityProviders, setCommunityProviders] = useState<any[]>([]);
-  const [counter, setCounter] = useState(0);
   const [isFetching, setIsFetching] = useState(false);
   const [error, setError] = useState<string | null>(null);
+    const [counter, setCounter] = useState(0);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [hasMore, setHasMore] = useState(true);
   const { id }: { id: string } = useParams();
@@ -31,9 +31,7 @@ export default function Page() {
       setError,
       setCommunityProviders
     );
-    console.log(
-      `Fetching communityProviders with searchTerm: ${searchTerm}, counter: ${counter}`
-    );
+
     if (!communityProviders || communityProviders.length <= 0) {
       setHasMore(false);
     }

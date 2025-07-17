@@ -1,5 +1,4 @@
 
-import "server-only";
 import { Offer, OfferBeforeCreation } from "../types";
 import { supabase } from "../Db/db";
 

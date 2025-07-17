@@ -16,6 +16,7 @@ export async function fetchRequest(
       setError(data?.error || "Something went wrong");
     } else {
       setData(data); 
+      console.log(data)
     }
 
   } catch (err: any) {
