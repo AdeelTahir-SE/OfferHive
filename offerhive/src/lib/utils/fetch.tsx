@@ -18,7 +18,6 @@ export async function fetchRequest(
       setData(data); 
     }
 
-    console.log(data);
   } catch (err: any) {
     setError(err.message || "Something went wrong");
     throw err;

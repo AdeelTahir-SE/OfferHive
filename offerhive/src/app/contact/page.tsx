@@ -47,7 +47,7 @@ export default function Contact() {
   };
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-screen p-6 bg-gray-50 overflow-hidden">
+    <section className="relative flex flex-col items-center justify-center min-h-screen gap-[30px]  p-6 bg-white overflow-hidden">
       <div className="absolute top-0 right-0 m-4 w-18 h-18 md:w-24 md:h-24 ">
         <Image
           src="/animation.gif"
@@ -58,9 +58,9 @@ export default function Contact() {
         />
       </div>
 
-      <h1 className="text-3xl font-bold mb-4">Get in Touch</h1>
+      <h1 className="heading-1">Get in Touch</h1>
 
-      <p className="text-gray-600 mb-4 text-center max-w-xl">
+      <p className="description max-w-xl">
         If you notice any bugs or have suggestions or as a shop owner do you
         want some additional features, please let us know. We appreciate your
         feedback and are always looking to improve. Your opinions matter a lot
@@ -72,7 +72,7 @@ export default function Contact() {
 
       <form
         id="contact-form"
-        className="w-full max-w-xl bg-white shadow-md rounded-xl p-6 space-y-4"
+        className="w-full max-w-xl bg-white  rounded-xl p-6 space-y-4"
         onSubmit={handleSubmit}
       >
         <div className="flex flex-col">

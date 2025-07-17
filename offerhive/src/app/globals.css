@@ -51,9 +51,9 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --primary: oklch(0.795 0.184 86.047);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
+  --secondary: oklch(0.905 0.182 98.111);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
   --muted-foreground: oklch(0.556 0 0);
@@ -119,4 +119,30 @@
   body {
     @apply bg-background text-foreground;
   }
+
+ /* styles.css or global.css */
+
+.heading-1 {
+  @apply text-4xl sm:text-5xl font-bold text-gray-900;
+}
+
+.hero-heading {
+  @apply text-5xl sm:text-6xl font-extrabold  ;
+}
+
+.heading-2 {
+  @apply text-3xl sm:text-4xl font-semibold text-gray-800;
+}
+
+.heading-3 {
+  @apply text-2xl sm:text-3xl font-medium text-gray-700;
+}
+
+.heading-4 {
+  @apply text-xl sm:text-2xl font-medium text-gray-600;
+}
+
+.description{
+  @apply text-lg xl:text-xl  text-gray-500 font-normal;
+}
 }

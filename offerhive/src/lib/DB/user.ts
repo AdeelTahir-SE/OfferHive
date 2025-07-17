@@ -1,3 +1,4 @@
+import { data } from "motion/react-client";
 import { supabase } from "../Db/db";
 import { RealtimeChannel } from "@supabase/supabase-js";
 
@@ -53,7 +54,10 @@ export async function getUserwithId(user_id: string) {
   return data;
 }
 
-export async function getChat(user_id: string, shop_user_id: string) {
+export async function getChat(user_id: string|null, shop_user_id: string|null) {
+  if(!user_id || !shop_user_id) {
+    return [];
+  }
   const { data, error } = await supabase
     .from("Chat")
     .select("chat")
@@ -232,7 +236,6 @@ export async function chatWithShopOwners(user_id: string | null) {
     .from("Chat")
     .select("shop_user_id")
     .eq("user_id", user_id);
-
   if (chatError) {
     console.error("Error fetching chats:", chatError);
     return [];

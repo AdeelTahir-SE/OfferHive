@@ -1,12 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import {
-  getShopById,
   updateShop,
-  updateOffer,
-  createOffer,
-  getOffersById,
-  deleteOffer,
+
 } from "@/lib/Db/offerer";
 import { Shop, Offer } from "@/lib/types";
 import EditableText from "@/components/editableText";
@@ -16,26 +12,41 @@ import EditableImage from "@/components/editableImage";
 import Loader from "@/components/loader";
 import Link from "next/link";
 import { RootState } from "@/lib/redux/store";
+import { fetchRequest } from "@/lib/utils/fetch";
+
 export default function ManageShop() {
   const id = useSelector((state: RootState) => state.user.user_id);
   const [shop, setShop] = useState<Shop | null>(null);
   const [loading, setLoading] = useState(true);
   const [offers, setOffers] = useState<Offer[]>([]);
+  const [editingOffers, setEditingOffers] = useState<Set<string> | null>(
+    new Set()
+  );
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const [shopData, offersData] = await Promise.all([
-          getShopById(id),
-          getOffersById(id),
-        ]);
-        setShop(shopData);
-        setOffers(offersData ?? []);
-      } catch (error) {
-        console.error("Failed to fetch data:", error);
-      } finally {
-        setLoading(false);
-      }
+      fetchRequest(
+        `/api/shop/manageShop`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            shop_id: id || "",
+          },
+        },
+        setLoading,
+        (error) => {
+          console.error("Failed to fetch shop data:", error);
+        },
+        (data) => {
+          if (data) {
+            setShop(data?.shop);
+            setOffers(data?.offers || []);
+          } else {
+            console.error("No shop data found for id:", id);
+          }
+        }
+      );
     };
     if (id) fetchData();
   }, [id]);
@@ -62,34 +73,103 @@ export default function ManageShop() {
     const updatedOffer = { ...offer, [field]: value };
     updatedOffers[index] = updatedOffer;
     setOffers(updatedOffers);
-
-    if (updatedOffer.offer_id) {
-      await updateOffer(updatedOffer.offer_id, { [field]: value });
-    }
   };
+
+  async function handlechangeOffer(offer_id: string) {
+    const offer = offers.find((o) => o.offer_id === offer_id);
+    if (!offer) return;
+
+    const newEditingOffers = new Set(editingOffers);
+    if (editingOffers?.has(offer_id)) {
+      await fetchRequest(
+        `/api/shop/manageShop/offer/update`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            offer_id,
+            user_id: id,
+            offer_title: offer.offer_title,
+            offer_desc: offer.offer_desc,
+            image: offer.image,
+            starts_at: offer.starts_at,
+            valid_uptill: offer.valid_uptill,
+          }),
+        },
+        () => {
+          console.log("Offer updated successfully");
+        },
+        (error) => {
+          console.error("Failed to update offer:", error);
+        },
+        () => {}
+      );
+
+      newEditingOffers.delete(offer_id);
+    } else {
+      newEditingOffers.add(offer_id);
+    }
+
+    setEditingOffers(newEditingOffers);
+  }
 
   const handleDeleteOffer = async (index: number) => {
     const offer = offers[index];
     if (!offer) return;
     const updated = offers.filter((_, i) => i !== index);
     setOffers(updated);
-    await deleteOffer(offer.offer_id, offer.user_id);
+
+    await fetchRequest(
+      `/api/shop/manageShop/offer/delete`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          offer_id: offer.offer_id,
+          user_id: id,
+        }),
+      },
+      () => {
+        console.log("Offer deleted successfully");
+      },
+      (error) => {
+        console.error("Failed to delete offer:", error);
+      },
+      () => {}
+    );
   };
 
   const handleCreateOffer = async () => {
-    const newOffer = {
-      user_id: id,
-      offer_title: "New Offer",
-      offer_desc: "Description",
-      image: "",
-      starts_at: new Date().toISOString(),
-      valid_uptill: new Date(
-        Date.now() + 30 * 24 * 60 * 60 * 1000
-      ).toISOString(),
-    };
-    const created = await createOffer(newOffer);
-    setOffers([...offers, created]);
+   if(!id){
+      console.error("User ID is not available");
+      return;
+    }
+    await fetchRequest(
+      `/api/shop/manageShop/offer/create`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({id}),
+      },
+      () => {
+        console.log("Offer created successfully");
+      },
+      (error) => {
+        console.error("Failed to create offer:", error);
+      },
+      (offerCreated) => {
+        setOffers([...offers, offerCreated]);
+      }
+    );
+
   };
+
   if (loading) {
     return (
       <section className="h-screen max-w-screen w-screen bg-white flex items-center justify-center">
@@ -119,6 +199,7 @@ export default function ManageShop() {
         <EditableText
           text={shop.shop_title}
           onSave={(val) => handleShopUpdate("shop_title", val)}
+          isEditing={true}
         />
       </h1>
 
@@ -126,6 +207,7 @@ export default function ManageShop() {
         <EditableText
           text={shop.shop_desc}
           onSave={(val) => handleShopUpdate("shop_desc", val)}
+          isEditing={true}
         />
       </p>
 
@@ -145,81 +227,100 @@ export default function ManageShop() {
         }}
       />
 
-      <div className="w-full mt-10">
+      <div className="w-full mt-10 flex flex-col items-center justify-center">
         <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
           Available Offers
         </h2>
 
         <div className="flex flex-wrap justify-center gap-6">
-          {offers.map((offer, index) => (
-            <div
-              key={index}
-              className="bg-white rounded-xl shadow-md flex flex-col w-80 border border-gray-200 overflow-hidden"
-            >
-              {/* Image should fill full width of container */}
-              <EditableImage
-                image={offer.image ?? "/placeholder_deals.png"}
-                user_id={id}
-                offer_id={offer.offer_id}
-                onChange={(image) => handleOfferUpdate(index, "image", image)}
-              />
+          {offers.map((offer, index) => {
+            const isEditing = editingOffers?.has(offer.offer_id);
 
-              <div className="p-4 flex flex-col gap-2">
-                <h3 className="text-xl font-semibold text-gray-800">
-                  <EditableText
-                    text={offer.offer_title}
-                    onSave={(val) =>
-                      handleOfferUpdate(index, "offer_title", val)
-                    }
-                  />
-                </h3>
+            return (
+              <div
+                key={index}
+                className="bg-white rounded-xl shadow-md flex flex-col w-80 border border-gray-200 overflow-hidden"
+              >
+                <EditableImage
+                  image={offer.image ?? "/placeholder_deals.png"}
+                  user_id={id}
+                  isEditing={isEditing}
+                  offer_id={offer.offer_id}
+                  onChange={(image) => handleOfferUpdate(index, "image", image)}
+                />
 
-                <p className="text-gray-600 text-sm">
-                  <EditableText
-                    text={offer.offer_desc}
-                    onSave={(val) =>
-                      handleOfferUpdate(index, "offer_desc", val)
-                    }
-                  />
-                </p>
-
-                <div className="text-gray-500 text-sm space-y-1">
-                  <p>
-                    <span className="font-medium">Valid From:</span>{" "}
+                <div className="p-4 flex flex-col gap-2">
+                  <h3 className="text-xl font-semibold text-gray-800">
                     <EditableText
-                      text={offer.starts_at}
+                      text={offer.offer_title}
+                      isEditing={isEditing}
                       onSave={(val) =>
-                        handleOfferUpdate(index, "starts_at", val)
+                        handleOfferUpdate(index, "offer_title", val)
+                      }
+                    />
+                  </h3>
+
+                  <p className="text-gray-600 text-sm">
+                    <EditableText
+                      text={offer.offer_desc}
+                      isEditing={isEditing}
+                      onSave={(val) =>
+                        handleOfferUpdate(index, "offer_desc", val)
                       }
                     />
                   </p>
-                  <p>
-                    <span className="font-medium">Valid Until:</span>{" "}
-                    <EditableText
-                      text={offer.valid_uptill}
-                      onSave={(val) =>
-                        handleOfferUpdate(index, "valid_uptill", val)
-                      }
-                    />
-                  </p>
+
+                  <div className="text-gray-500 text-sm space-y-1">
+                    <p>
+                      <span className="font-medium">Valid From:</span>{" "}
+                      <EditableText
+                        text={offer.starts_at}
+                        isEditing={isEditing}
+                        onSave={(val) =>
+                          handleOfferUpdate(index, "starts_at", val)
+                        }
+                      />
+                    </p>
+                    <p>
+                      <span className="font-medium">Valid Until:</span>{" "}
+                      <EditableText
+                        text={offer.valid_uptill}
+                        isEditing={isEditing}
+                        onSave={(val) =>
+                          handleOfferUpdate(index, "valid_uptill", val)
+                        }
+                      />
+                    </p>
+                  </div>
+                  <div className="flex flex-row items-center justify-between *:text-lg *:font-semibold *:hover:cursor-pointer ">
+                    <button
+                      className="mt-3 text-red-500 hover:underline  self-start"
+                      onClick={() => handleDeleteOffer(index)}
+                    >
+                      Delete Offer
+                    </button>
+                    <button
+                      className={`mt-3 ${
+                        !isEditing ? "text-yellow-500" : "text-green-500"
+                      }  hover:underline self-start`}
+                      onClick={() => {
+                        handlechangeOffer(offer?.offer_id);
+                      }}
+                    >
+                      {!isEditing ? "Change Offer" : "update"}
+                    </button>
+                  </div>
                 </div>
-
-                <button
-                  className="mt-3 text-red-500 hover:underline text-sm self-start"
-                  onClick={() => handleDeleteOffer(index)}
-                >
-                  Delete Offer
-                </button>
               </div>
-            </div>
-          ))}
-          <button
-            className="mt-6 px-4 py-2 bg-yellow-500 text-white rounded-md"
-            onClick={handleCreateOffer}
-          >
-            Create New Offer
-          </button>
+            );
+          })}
         </div>
+        <button
+          className="mt-6 px-4 py-2 bg-yellow-500 text-white rounded-md hover:cursor-pointer"
+          onClick={handleCreateOffer}
+        >
+          Create New Offer
+        </button>
       </div>
 
       {/* Tags */}
@@ -256,20 +357,21 @@ export default function ManageShop() {
           ))}
         </section>
         <button
-  className={`mt-4 px-4 py-2 ${
-    shop.shop_tags.length >= 5 ? "bg-gray-400 cursor-not-allowed" : "bg-yellow-500 hover:bg-yellow-300"
-  } text-white rounded-md`}
-  disabled={shop.shop_tags.length >= 5}
-  onClick={() => {
-    if (shop.shop_tags.length >= 5) return;
-    const updatedTags = [...shop.shop_tags, "New Tag"];
-    setShop({ ...shop, shop_tags: updatedTags });
-    updateShop(id, { shop_tags: updatedTags });
-  }}
->
-  {shop.shop_tags.length >= 5 ? "Max 5 Tags Reached" : "Add New Tag"}
-</button>
-
+          className={`mt-4 px-4 py-2 ${
+            shop.shop_tags.length >= 5
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-yellow-500 hover:bg-yellow-300"
+          } text-white rounded-md`}
+          disabled={shop.shop_tags.length >= 5}
+          onClick={() => {
+            if (shop.shop_tags.length >= 5) return;
+            const updatedTags = [...shop.shop_tags, "New Tag"];
+            setShop({ ...shop, shop_tags: updatedTags });
+            updateShop(id, { shop_tags: updatedTags });
+          }}
+        >
+          {shop.shop_tags.length >= 5 ? "Max 5 Tags Reached" : "Add New Tag"}
+        </button>
       </div>
 
       {/* Address */}

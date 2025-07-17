@@ -1,3 +1,5 @@
+
+import "server-only";
 import { Offer, OfferBeforeCreation } from "../types";
 import { supabase } from "../Db/db";
 
@@ -33,7 +35,11 @@ export async function searchOfferers(searchTerm: string, counter: number) {
   return data;
 }
 
-export async function getShopById(id: string) {
+export async function getShopById(id: string | null) {
+  if (!id) {
+    console.log("No ID provided");
+    return null;
+  }
   const { data, error } = await supabase
     .from("UserShop")
     .select(
@@ -194,13 +200,16 @@ export async function updateShop(id: string, updatedFields: Partial<any>) {
 
   return data;
 }
-export async function updateOffer(id: string, updatedFields: Partial<any>) {
+export async function updateOffer(offer: Offer) {
+  const { offer_id, ...rest } = offer;
+
   const { data, error } = await supabase
     .from("Offers")
-    .update(updatedFields)
-    .eq("offer_id", id)
+    .update(rest)
+    .eq("offer_id", offer_id)
     .select("*")
     .single();
+
   if (error) {
     console.error("Error updating offer:", error);
     return null;
@@ -208,6 +217,7 @@ export async function updateOffer(id: string, updatedFields: Partial<any>) {
 
   return data;
 }
+
 export async function handleDeleteOfferImage(
   offer_id: string,
   shop_id: string,
@@ -288,7 +298,11 @@ export async function createOffer(offer: OfferBeforeCreation) {
   return data;
 }
 
-export async function getOffersById(user_id: string) {
+export async function getOffersById(user_id: string | null) {
+  if (!user_id) {
+    console.log("No user ID provided");
+    return null;
+  }
   const { data, error } = await supabase
     .from("Offers")
     .select("*")

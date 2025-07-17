@@ -14,11 +14,11 @@ export default function SearchBar({
     };
   
     return (
-      <div className="flex items-center justify-center rounded-xl py-6 w-full">
+      <div className="flex items-center justify-center rounded-xl  py-6 w-full">
         <input
           type="text"
           placeholder="Search for offers..."
-          className="border border-gray-300 rounded-lg p-2 w-1/2"
+          className="border border-gray-300 rounded-lg p-2 w-full"
           value={localTerm}
           onChange={(e) => setLocalTerm(e.target.value)}
           onKeyDown={(e) => {

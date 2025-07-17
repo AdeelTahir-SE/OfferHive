@@ -47,7 +47,6 @@ export default function Header() {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      // Close the menu if clicked outside
       if (
         menuRef.current &&
         !menuRef.current.contains(event.target as Node) &&
@@ -57,15 +56,14 @@ export default function Header() {
         setMenuOpen(false);
       }
 
-      // Close notifications if clicked outside
       if (
         notificationRef.current &&
         !notificationRef.current.contains(event.target as Node)
       ) {
         if (showNotifications && user?.user_id) {
-          removeNotifications(); // Delete notifications when closing
+          removeNotifications();
         }
-        setShowNotifications(false); // Close notifications dropdown
+        setShowNotifications(false);
       }
     };
 
@@ -73,7 +71,7 @@ export default function Header() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [showNotifications, user?.user_id]); // Added dependencies to ensure proper update
+  }, [showNotifications, user?.user_id]); 
 
   const MenuLink = ({
     href,
@@ -91,18 +89,18 @@ export default function Header() {
 
   return (
     <nav
-      className={`bg-yellow-500 text-black p-4 flex justify-between items-center mb-0 relative ${
+      className={`bg-primary text-black  h-20 px-8  flex justify-between items-center mb-0 relative ${
         menuOpen||showNotifications ? "z-40" : "z-10"
       }`}
     >
       <div className="flex items-center justify-between w-full md:w-auto z-30 md:z-0">
-        <Image src="/hive.svg" alt="logo" width={60} height={60} />
+        <Link href={"/"}><Image src="/hive.svg" alt="logo" width={60} height={60} /></Link>
         <div className="flex items-center gap-4 md:hidden">
           {user?.email && (
             <div className="relative" ref={notificationRef}>
               <button
                 onClick={toggleNotifications}
-                className="relative p-2 rounded-full hover:bg-yellow-300 transition-colors"
+                className="relative p-2 rounded-full hover:bg-secondary transition-colors"
               >
                 <Bell className="w-5 h-5 cursor-pointer" />
                 {notifications && notifications?.length > 0 && (
@@ -117,7 +115,7 @@ export default function Header() {
                   <div className="p-3 font-semibold border-b border-gray-200">
                     Notifications
                   </div>
-                  <ul className="max-h-60 overflow-y-auto">
+                  <ul className="max-h-60 overflow-y-auto ">
                     {notifications &&
                       notifications?.map((note, index) => (
                         <li
@@ -152,7 +150,7 @@ export default function Header() {
         ref={menuRef}
         className={`${
           menuOpen ? "block" : "hidden"
-        } absolute top-full left-0 w-full bg-yellow-500 flex flex-col items-start p-4 gap-4 font-semibold md:static md:flex md:flex-row md:items-center md:space-x-6 md:p-0 md:gap-0 md:w-auto z-50`}
+        } absolute top-full left-0 w-full bg-primary *:hover:scale-110 *:transition *:duration-100 flex flex-col items-start p-4 gap-4 font-semibold md:static md:flex md:flex-row md:items-center md:space-x-6 md:p-0 md:gap-0 md:w-auto z-50`}
       >
         {user?.email && !user?.is_shop_owner && (
           <MenuLink href="/people">People</MenuLink>
@@ -172,9 +170,9 @@ export default function Header() {
           <div className="relative hidden md:block" ref={notificationRef}>
             <button
               onClick={toggleNotifications}
-              className="relative p-2 rounded-full hover:bg-yellow-300 transition-colors"
+              className="relative p-2 rounded-full hover:bg-secondary transition-colors cursor-pointer"
             >
-              <Bell className="w-5 h-5 cursor-pointer" />
+              <Bell className="w-5 h-5 " />
               {notifications && notifications?.length > 0 && (
                 <span className="absolute -top-1 -right-1 bg-red-600 text-white text-[10px] px-1.5 py-0.5 rounded-full">
                   {notifications?.length}
@@ -204,7 +202,7 @@ export default function Header() {
         )}
 
         {user?.email ? (
-          <li className="hover:text-yellow-400 transition-colors rounded-full p-2 bg-gray-200 border-yellow-700 m-1">
+          <li className="hover:scale-110 transition duration-300 rounded-full p-2 bg-gray-200 border-secondary-700 m-1">
             <Link href="/profile" onClick={closeMenu}>
               {user.email}
             </Link>

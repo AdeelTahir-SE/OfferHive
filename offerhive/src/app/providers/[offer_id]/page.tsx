@@ -1,72 +1,68 @@
 "use client";
 import { useEffect, useState } from "react";
 import { ImagesSlider } from "@/components/offerPageImages";
-import { getShopById } from "@/lib/Db/offerer";
 import { Shop } from "@/lib/types";
 import React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
-import { setClicks, getClicks } from "@/lib/Db/shop";
-import { Click } from "@/lib/types";
 import Loader from "@/components/loader";
 import Image from "next/image";
 import { RootState } from "@/lib/redux/store";
+import { fetchRequest } from "@/lib/utils/fetch";
 
 export default function OfferDetails() {
   const [shop, setShop] = useState<Shop | null>(null);
   const [loading, setLoading] = useState(true);
   const { offer_id }: { offer_id: string } = useParams();
   const user = useSelector((state: RootState) => state.user);
+
   async function clicksHandler(offer_id: string) {
-    const { clicks }: { clicks: Click[] } = await getClicks(offer_id);
-    const today = new Date().toISOString().split("T")[0];
-    if (clicks?.length == 0) {
-      const newClick = {
-        clicks: 1,
-        date: today,
-      };
-      setClicks(offer_id, [newClick]);
-      return;
+    try {
+      await fetchRequest(
+        `/api/clicks?offer_id=${offer_id}`,
+        { method: "GET" },
+        () => {},
+        (err) => console.log("Failed to update clicks:", err),
+        (data) => console.log("Clicks updated:", data)
+      );
+    } catch (error) {
+      console.error("Click handler failed:", error);
     }
-
-    let matched = false;
-    let updatedClicks: Click[] = [];
-
-    const validClicks = clicks ?? [];
-
-    updatedClicks = validClicks.map((click: Click) => {
-      if (click.date === today) {
-        matched = true;
-        click.clicks += 1;
-      }
-      return { ...click };
-    });
-
-    if (!matched) {
-      updatedClicks.push({
-        date: today,
-        clicks: 1,
-      });
-    }
-
-    setClicks(offer_id, updatedClicks);
   }
 
-  useEffect(() => {
-    const fetchShop = async () => {
-      try {
-        const data = await getShopById(offer_id);
-        setShop(data);
-      } catch (error) {
-        console.error("Failed to fetch shop:", error);
-      } finally {
-        setLoading(false);
+  const fetchShop = async () => {
+    await fetchRequest(
+      `/api/providers/${offer_id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      setLoading,
+      (error) => {
+        console.log("Failed to fetch shop:", error);
+      },
+      (data) => {
+        if (data) {
+          console.log("Shop data fetched:", data);
+          setShop(data);
+        } else {
+          console.error("No shop data found for offer_id:", offer_id);
+        }
       }
-    };
+    );
+  };
+
+  useEffect(
+    () => {
     clicksHandler(offer_id);
     fetchShop();
-  }, [offer_id]);
+  },
+   [offer_id]);
+
+
   if (loading) {
     return (
       <section className="h-screen w-screen bg-white flex items-center justify-center">

@@ -16,10 +16,7 @@ export const BackgroundLines = ({
 }) => {
   return (
     <div
-      className={cn(
-        "h-[20rem] md:h-screen w-full bg-white dark:bg-black   ",
-        className
-      )}
+      className={cn(" md:h-screen w-full bg-white dark:bg-black   ", className)}
     >
       <SVG svgOptions={svgOptions} />
       {children}
@@ -92,14 +89,13 @@ const SVG = ({
   ];
   return (
     <motion.svg
-
       viewBox="0 0 1440 900"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
-      className="absolute max-h-8"
+      className="absolute left-1/2  mt-44 transform -translate-x-1/2 -translate-y-1/2 h-[500px] max-h-[500px] max-w-full "
     >
       {paths.map((path, idx) => (
         <motion.path

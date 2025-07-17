@@ -9,12 +9,14 @@ export default function EditableImage({
   onChange,
   user_id,
   offer_id,
+  isEditing = false,
 }: {
   image: string;
   onChange: (updatedImage: string) => void;
 
   user_id: string;
   offer_id: string;
+  isEditing?: boolean;
 }) {
   const [localImage, setLocalImage] = useState<string | null>(image);
   const [loading, setLoading] = useState(false);

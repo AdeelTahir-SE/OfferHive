@@ -1,7 +1,9 @@
 "use client";
 
+import Button from "./button";
 import { BackgroundLines } from "./backgroundLines";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function HeroSection() {
   const router = useRouter();
@@ -10,21 +12,28 @@ export default function HeroSection() {
     router.push("/providers");
   };
 
+  useEffect(() => {
+    router.prefetch("/providers");
+  }, []);
+
+  
   return (
-    <BackgroundLines className="mb-18 md:mb-0  max-h-[700px]">
-      <section className="flex flex-col items-center justify-center  text-center relative z-0 px-4 py-20 sm:py-24 md:py-32  ">
-        <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold max-w-2xl sm:max-w-3xl mb-6 leading-tight z-10 relative">
-          Discover the Best Deals in Universities and Beyond
+    <BackgroundLines className=" pb-[30px] py-[60px] lg:py-[100px]  px-[40px] md:px-[100px] xl:px-[200px] xxl-[450px]  max-h-fit  ">
+      <section className="flex flex-col items-center gap-[30px] justify-center   text-center">
+        <h1 className="hero-heading text-center z-10 relative max-w-4xl tracking-wide">
+          Discover the Best <span className="text-primary">Deals</span> in{" "}
+          <span className="text-primary">Universities</span> and Beyond
         </h1>
-        <p className="text-xl text-gray-600  relative z-10">
-          Explore exclusive deals, events, and communities especially for students.
+
+        <p className="description z-10">
+          Explore exclusive deals, events, and communities especially for
+          students.
         </p>
-        <button
-          className="px-6 py-3 mt-2 sm:mt-8 z-10 cursor-pointer rounded-2xl bg-yellow-500 hover:bg-yellow-400 text-black font-semibold transition duration-200"
+        <Button
+          text="Browse Offers"
           onClick={handleButtonClick}
-        >
-          Browse Offers
-        </button>
+          className="z-10"
+        />
       </section>
     </BackgroundLines>
   );

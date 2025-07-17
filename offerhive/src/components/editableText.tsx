@@ -6,10 +6,12 @@ export default function EditableText({
   text,
   onSave,
   className,
+  isEditing = false,
 }: {
   text: string;
   onSave: (newValue: string) => void;
   className?: string;
+  isEditing?: boolean;
 }) {
   const [editing, setEditing] = useState(false);
   const [value, setValue] = useState(text);
@@ -32,14 +34,14 @@ export default function EditableText({
     />
   ) : (
     <div className={`relative ${className}`}>
-      <p className="h-auto overflow-hidden text-ellipsis pr-8">
-        {text}
-      </p>
-      <Pencil
-        size={20}
-        className="absolute top-1 right-1 cursor-pointer text-gray-500 hover:text-gray-800 hover:scale-110 transition-transform"
-        onClick={() => setEditing(true)}
-      />
+      <p className="h-auto overflow-hidden text-ellipsis pr-8">{text}</p>
+      {isEditing && (
+        <Pencil
+          size={20}
+          className="absolute top-1 right-1 cursor-pointer text-gray-500 hover:text-gray-800 hover:scale-110 transition-transform"
+          onClick={() => setEditing(true)}
+        />
+      )}
     </div>
   );
 }

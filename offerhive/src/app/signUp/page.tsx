@@ -121,7 +121,6 @@ export default function SignUp() {
             </section>
           )}
 
-          {/* {!successMessage && <OAuthSection />} */}
 
           {!successMessage && (
             <p className="text-sm text-center text-gray-500 mt-4">

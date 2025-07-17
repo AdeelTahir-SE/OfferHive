@@ -46,7 +46,39 @@ export async function getGroups(counter: number) {
   return filteredData ;
 }
 
+export async function getCommunityProviders(community_id:string,searchTrem:string,counter:number){
+  const rangeStart = counter * 10;
+  const rangeEnd = rangeStart + 9;
 
+  const { data, error } = await supabase
+    .from('GroupUser')
+    .select(`
+      *,
+      User (
+        user_id,
+        UserShop!UserShop_user_id_fkey (
+          user_id,
+          shop_title,
+          shop_images,
+          shop_address,
+          shop_tags
+          
+        )
+      )
+    `)
+    .eq('group_id', community_id)
+    .ilike('User.UserShop.shop_title', `%${searchTrem}%`)
+    .range(rangeStart, rangeEnd);
+  if (error) {
+    console.error("Error fetching community providers:", error);
+    return null;
+  }
+
+
+  const filteredData = data?.filter(group => {return group.status !== "pending";});
+
+  return filteredData;
+}
 
 export async function searchGroups(searchTerm: string, counter: number) {
   const rangeStart = counter * 10;
@@ -164,23 +196,6 @@ export async function getGroupById(id: string): Promise<GroupUnique | null> {
         user_id,
         User (
           user_id
-        )
-      ),
-      GroupUser (
-        user_id,
-        status,
-        User (
-          user_id,
-          UserShop!UserShop_user_id_fkey (
-            user_id,
-            shop_title,
-            shop_desc,
-            contact_info,
-            links,
-            shop_images,
-            shop_tags,
-            shop_address
-          )
         )
       )
     `)

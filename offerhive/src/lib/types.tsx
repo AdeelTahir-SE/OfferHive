@@ -8,6 +8,7 @@ export interface Offer {
   offer_id: string;
   
 }
+
 export interface OfferBeforeCreation{
   user_id: string;
   starts_at: string;

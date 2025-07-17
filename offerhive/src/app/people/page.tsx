@@ -12,7 +12,6 @@ export default function People() {
     user_id: string;
     profile_image: string | null;
     email: string;
-    message: string;
   }
 
   const [chat, setChat] = useState<ChatMessage[]>([]);
@@ -35,6 +34,7 @@ export default function People() {
         console.error("Error fetching chat:", error);
       },
       (data) => {
+        console.log("Chat data fetched:", data);
         setChat(data);
       }
     );
@@ -107,7 +107,6 @@ export default function People() {
                 />
                 <div className="flex flex-col items-start justify-center">
                   <span className="text-sm font-semibold">{message.email}</span>
-                  <span className="text-sm text-gray-700 mt-1">{message?.message}</span>
                 </div>
               </div>
             </Link>

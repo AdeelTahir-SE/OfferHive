@@ -21,7 +21,7 @@ export default function OffererCard({
   const hasTags = tags && tags.length > 0;
 
   return (
-    <Link href={`/providers/${id}`} className="w-full max-w-[320px]">
+    <Link href={`/providers/${id}`} className="w-full max-w-[320px] " prefetch={false}>
       <section className="flex flex-col w-full h-[370px] justify-start rounded-xl border hover:shadow-md hover:bg-gray-50 transition-all p-4">
         <div className="w-full h-[180px] relative mb-4">
           <Image

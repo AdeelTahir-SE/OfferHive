@@ -1,6 +1,7 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { getUserwithId, getChat, setChatDB } from "@/lib/Db/user";
+import { fetchRequest } from "@/lib/utils/fetch";
 import { supabase } from "@/lib/Db/db";
 import { useSelector } from "react-redux";
 import { useParams } from "next/navigation";
@@ -22,8 +23,29 @@ interface ReduxUser {
 
 function getFormattedTimestamp() {
   const now = new Date();
-  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const daysOfWeek = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
   const day = now.getDate();
   const month = months[now.getMonth()];
   const year = now.getFullYear();
@@ -41,31 +63,68 @@ export default function PersonChat() {
   const [newMessage, setNewMessage] = useState("");
   const [user, setUser] = useState<User | null>(null);
   const { id }: { id: string } = useParams();
-  const router=useRouter()
-  const loggedInUser = useSelector((state: RootState) => state.user) as ReduxUser;
-
+  const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const loggedInUser = useSelector(
+    (state: RootState) => state.user
+  ) as ReduxUser;
+  const fetchUser = async () => {
+    await fetchRequest(
+      `/api/people/${id}/user`,
+      {
+        method: "GET",
+      },
+      setLoading,
+      (error) => {},
+      (data) => {
+        if (data) {
+          setUser(data);
+        }
+      }
+    );
+  };
   useEffect(() => {
-    const fetchUser = async () => {
-      const userData = await getUserwithId(id);
-      setUser(userData);
-    };
-    fetchUser();
+    if (id) {
+      fetchUser();
+    }
   }, [id]);
 
   useEffect(() => {
     if (id && loggedInUser?.user_id) {
       const fetchChat = async () => {
-        let chatData;
+        try {
+          //sender will always not be shop owner and receiver will always be shop owner
+          const senderId = loggedInUser.is_shop_owner
+            ? id
+            : loggedInUser.user_id;
+          const receiverId = loggedInUser.is_shop_owner
+            ? loggedInUser.user_id
+            : id;
 
-        if (!loggedInUser?.is_shop_owner) {
-          chatData = await getChat(loggedInUser?.user_id, id);
-        } else {
-          chatData = await getChat(id, loggedInUser?.user_id);
-        }
-
-        if (chatData && 'chat' in chatData && Array.isArray(chatData.chat)) {
-          setChat(chatData.chat);
-        } else {
+          await fetchRequest(
+            "/api/people/chat",
+            {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+                "sender-id": senderId,
+                "receiver-id": receiverId,
+              },
+            },
+            setLoading,
+            () => {},
+            (data) => {
+              if (data && Array.isArray(data.chat)) {
+                console.log(data);
+                setChat(data.chat);
+                console.log("this is a chat", chat);
+              } else {
+                setChat([]);
+              }
+            }
+          );
+        } catch (error) {
+          console.error("Error fetching chat:", error);
           setChat([]);
         }
       };
@@ -127,70 +186,82 @@ export default function PersonChat() {
 
     setNewMessage("");
   };
-  if(!loggedInUser?.email){
-    return(
+  if (!loggedInUser?.email) {
+    return (
       <section className="h-screen flex flex-col items-center justify-center ">
-      <div className="text-center mt-10 max-w-lg mx-auto">
-        <h1 className="text-4xl font-bold text-gray-800">
-          Oops! You can not chat without logging in😅
-        </h1>
+        <div className="text-center mt-10 max-w-lg mx-auto">
+          <h1 className="text-4xl font-bold text-gray-800">
+            Oops! You can not chat without logging in😅
+          </h1>
 
-        <button
-          onClick={() => router.push("/logIn")}
-          className="mt-8 bg-yellow-400 cursor-pointer text-black py-3 px-8 rounded-full hover:bg-yellow-500 text-lg font-semibold transition duration-300 shadow-lg"
-        >
-          Login
-        </button>
-      </div>
-    </section>
-
-    )
+          <button
+            onClick={() => router.push("/logIn")}
+            className="mt-8 bg-yellow-400 cursor-pointer text-black py-3 px-8 rounded-full hover:bg-yellow-500 text-lg font-semibold transition duration-300 shadow-lg"
+          >
+            Login
+          </button>
+        </div>
+      </section>
+    );
   }
   return (
     <section className="flex flex-col items-center justify-center bg-gray-100 min-h-screen p-4 sm:p-6">
-      <p className="text-2xl sm:text-3xl mb-4 text-center">
-        Chat with {user?.email}
-      </p>
+      {loading ? (
+        <p className="text-2xl sm:text-3xl mb-4 text-center">Loading chat...</p>
+      ) : (
+        <>
+          <p className="text-2xl sm:text-3xl mb-4 text-center">
+            Chat with {user?.email || "User"}
+          </p>
+        </>
+      )}
 
-      {chat?.length>0&&<div className="bg-white shadow rounded-lg w-full max-w-4xl h-full mb-4 p-4 sm:p-6 overflow-hidden">
-        <div className="flex flex-col space-y-4 max-h-[75vh] overflow-y-auto pr-2">
-          {chat?.length > 0 &&
-            chat.map((message, index) => {
-              const isSender = message.sender === loggedInUser?.user_id;
-              const profileImage = isSender ? loggedInUser?.profile_image : user?.profile_image;
+      {chat?.length > 0 && (
+        <div className="bg-white shadow rounded-lg w-full max-w-4xl h-full mb-4 p-4 sm:p-6 overflow-hidden">
+          <div className="flex flex-col space-y-4 max-h-[75vh] overflow-y-auto pr-2">
+            {chat?.length > 0 &&
+              chat.map((message, index) => {
+                const isSender = message.sender === loggedInUser?.user_id;
+                const profileImage = isSender
+                  ? loggedInUser?.profile_image
+                  : user?.profile_image;
 
-              return (
-                <div
-                  key={index}
-                  className={`flex items-start ${isSender ? "flex-row-reverse" : "flex-row"} gap-3`}
-                >
-                  <div className="min-w-[2.5rem] min-h-[2.5rem] w-10 h-10">
-                    <Image
-                      src={profileImage || "/profile_placeholder.png"}
-                      alt={isSender ? "You" : user?.email as string}
-                      width={40}
-                      height={40}
-                      className="rounded-full object-cover"
-                    />
-                  </div>
-                  <div className="flex flex-col max-w-[75%] sm:max-w-md">
-                    <div
-                      className={`p-3 rounded-lg break-words ${
-                        isSender ? "bg-yellow-400" : "bg-yellow-200"
-                      }`}
-                    >
-                      <p className="text-sm sm:text-base">{message.message}</p>
+                return (
+                  <div
+                    key={index}
+                    className={`flex items-start ${
+                      isSender ? "flex-row-reverse" : "flex-row"
+                    } gap-3`}
+                  >
+                    <div className="min-w-[2.5rem] min-h-[2.5rem] w-10 h-10">
+                      <Image
+                        src={profileImage || "/profile_placeholder.png"}
+                        alt={isSender ? "You" : (user?.email as string)}
+                        width={40}
+                        height={40}
+                        className="rounded-full object-cover"
+                      />
                     </div>
-                    <span className="text-xs text-gray-500 mt-1">
-                      {message.timestamp}
-                    </span>
+                    <div className="flex flex-col max-w-[75%] sm:max-w-md">
+                      <div
+                        className={`p-3 rounded-lg break-words ${
+                          isSender ? "bg-yellow-400" : "bg-yellow-200"
+                        }`}
+                      >
+                        <p className="text-sm sm:text-base">
+                          {message.message}
+                        </p>
+                      </div>
+                      <span className="text-xs text-gray-500 mt-1">
+                        {message.timestamp}
+                      </span>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+          </div>
         </div>
-      </div>
-}
+      )}
 
       <div className="flex w-full max-w-4xl flex-col sm:flex-row gap-3">
         <input

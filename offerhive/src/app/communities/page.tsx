@@ -68,14 +68,14 @@ export default function Groups() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center gap-6 p-4 w-full">
-      <h1 className="text-3xl font-bold mb-4">Community</h1>
-      <p className="text-lg text-center">
+    <section className="flex flex-col items-center justify-center gap-[30px] p-4 w-full">
+      <h1 className="heading-1">Community</h1>
+      <p className="description">
         Find Community that match your interests and receive relevant offers.
       </p>
-
-      <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
-
+      <div className="md:max-w-2/3 min-w-[300px] md:w-full">
+        <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
+      </div>
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
       {groups.length === 0 && !isFetching && (
@@ -90,9 +90,9 @@ export default function Groups() {
           <GroupCard
             key={index}
             id={group.group_id}
-            image={group.GroupDetail[0]?.group_image}
-            title={group.GroupDetail[0]?.group_title}
-            desc={group.GroupDetail[0]?.group_desc}
+            image={group.GroupDetail?.group_image}
+            title={group.GroupDetail?.group_title}
+            desc={group.GroupDetail?.group_desc}
             members={group?.GroupUser?.map(
               (groupUser: any) => groupUser?.User?.UserShop?.shop_title
             )}

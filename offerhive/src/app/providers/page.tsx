@@ -2,7 +2,6 @@
 import { useState, useEffect, useCallback } from "react";
 import SearchBar from "@/components/searchBar";
 import OffererCard from "@/components/offererCard";
-import { searchOfferers, getOfferers } from "@/lib/Db/offerer";
 import SearchIcon from "@/components/searchIcon";
 import Loader from "@/components/loader";
 import { fetchRequest } from "@/lib/utils/fetch";
@@ -68,16 +67,16 @@ export default function Offers() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center rounded-xl py-6 w-full">
-      <h1 className="text-3xl font-bold mb-4">Providers</h1>
-      <p className="text-lg px-4">
+    <section className="flex flex-col items-center justify-center gap-[30px] rounded-xl py-6 px-[40px] sm:px-0 w-full  md:px-[100px] xl:px-px[200px] xxl:px-[450px]">
+      <h1 className="heading-1">Providers</h1>
+      <p className="description">
         Check out amazing offers by different Providers!
       </p>
-
-      <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
-
+      <div className="md:max-w-2/3 min-w-[300px] md:w-full">
+        <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
+      </div>
       {offers.length === 0 && !isFetching && (
-        <section className="flex flex-col items-center justify-center text-yellow-400">
+        <section className="flex flex-col items-center justify-center text-primary">
           <SearchIcon />
           <h2 className="text-2xl font-bold mt-4">No Offerers Found</h2>
         </section>
