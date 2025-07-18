@@ -48,7 +48,7 @@ export default function SignUp() {
 
   return (
     <section className="flex flex-col items-center justify-center h-screen bg-white font-sans">
-      <section className="flex flex-col items-center justify-center gap-6 px-8 py-10 border rounded-2xl shadow-lg bg-gray-50 w-[400px]">
+      <section className="flex flex-col items-center Z-50 relative justify-center gap-6 px-8 py-10 border rounded-2xl shadow-lg bg-gray-50 w-[400px]">
         <WavySvg />
         <h1 className="text-3xl font-bold text-gray-800">Sign Up</h1>
 

@@ -19,8 +19,8 @@ export default function OurUsers() {
   ];
 
   return (
-    <section className="py-16 lg:px-[150px]  bg-white">
-      <div className="max-w-7xl mx-auto flex flex-col justify-center  lg:flex-row items-center gap-8 md:gap-32 lg:gap-16  ">
+    <section className="pb-40 lg:pb-20   bg-white">
+      <div className=" mx-auto flex flex-col justify-center  lg:flex-row items-center gap-8 md:gap-32 lg:gap-16  ">
 
         <div className="lg:w-1/2 text-center lg:text-left flex-wrap max-w-screen px-4 lg:px-0 ">
           <h2 className="text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight mb-4">

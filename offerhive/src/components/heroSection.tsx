@@ -1,7 +1,6 @@
 "use client";
 
 import Button from "./button";
-import { BackgroundLines } from "./backgroundLines";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -18,8 +17,7 @@ export default function HeroSection() {
 
   
   return (
-    <BackgroundLines className=" pb-[30px] py-[60px] lg:py-[100px]  px-[40px] md:px-[100px] xl:px-[200px] xxl-[450px]  max-h-fit  ">
-      <section className="flex flex-col items-center gap-[30px] justify-center   text-center">
+      <section className="flex flex-col items-center gap-[30px] justify-center  py-32 md:py-0 md:h-screen text-center">
         <h1 className="hero-heading text-center z-10 relative max-w-4xl tracking-wide">
           Discover the Best <span className="text-primary">Deals</span> in{" "}
           <span className="text-primary">Universities</span> and Beyond
@@ -35,6 +33,5 @@ export default function HeroSection() {
           className="z-10"
         />
       </section>
-    </BackgroundLines>
   );
 }
