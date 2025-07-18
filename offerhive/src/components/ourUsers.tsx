@@ -19,10 +19,10 @@ export default function OurUsers() {
   ];
 
   return (
-    <section className="py-16 lg:px-[200px] bg-white">
-      <div className="max-w-7xl mx-auto flex flex-col justify-center lg:flex-row items-center gap-32 lg:gap-16  ">
+    <section className="py-16 lg:px-[150px]  bg-white">
+      <div className="max-w-7xl mx-auto flex flex-col justify-center  lg:flex-row items-center gap-8 md:gap-32 lg:gap-16  ">
 
-        <div className="lg:w-1/2 text-center lg:text-left px-4 lg:px-0 ">
+        <div className="lg:w-1/2 text-center lg:text-left flex-wrap max-w-screen px-4 lg:px-0 ">
           <h2 className="text-5xl sm:text-6xl font-extrabold text-gray-900 leading-tight mb-4">
             Trusted by Leading Student Communities
           </h2>
@@ -33,11 +33,12 @@ export default function OurUsers() {
         </div>
 
         {/* Card Carousel */}
-        <div className="lg:w-1/2 h-[600px]  ">
+        <div className="lg:w-1/2  max-w-fit lg:h-[600px]  ">
           <CardSwap
             cardDistance={40}
             verticalDistance={50}
             delay={5000}
+            
             pauseOnHover={false}
           >
             {ourUsers.map((user) => (
