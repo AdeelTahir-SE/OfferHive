@@ -5,7 +5,8 @@ import HeroSection from "@/components/heroSection";
 import HowItWorksSection from "@/components/howItWorksSection";
 import WhatOurSaysSection from "@/components/whatOurUsersSaySection";
 import RedirectIcon from "@/components/redirectComponent";
-import OurUsers from "@/components/our-users";
+import WhatWeOffer from "@/components/whatWeOffer";
+import OurUsers from "@/components/ourUsers";
 export default function Home() {
   const router = useRouter();
 
@@ -18,8 +19,9 @@ export default function Home() {
   return (
     <section className="flex flex-col items-center justify-center  max-w-screen">
       <HeroSection />
-{/* <OurUsers/> */}
+      <OurUsers />
       <HowItWorksSection />
+      <WhatWeOffer />
 
       <button
         className="px-6 py-3 mt-2 flex flex-row mb-4 items-center gap-2 sm:mt-8 z-10 cursor-pointer rounded-2xl bg-yellow-500 hover:bg-yellow-400 text-black font-semibold transition duration-200"
