@@ -137,8 +137,8 @@ export default function ServicesPage() {
         {
           from_name: formData.name,
           from_email: formData.email,
-          email:formData?.email,
-          title:selectedService,
+          email: formData?.email,
+          title: selectedService,
           message: `${formData.message}\n\nRequested Service: ${selectedService}`,
           to_email: "adeeltahir6a@gmail.com",
         },
@@ -150,14 +150,16 @@ export default function ServicesPage() {
           setStatus("Sent successfully!");
 
           setFormData({ name: "", email: "", message: "" });
+          alert("Request sent successfully!");
 
           setTimeout(() => {
             setSelectedService(null);
-            setStatus("")
+            setStatus("");
           }, 2000);
         },
         () => {
           setStatus("Something went wrong.");
+          alert("Error Sending Request!");
         }
       );
   };
@@ -169,9 +171,8 @@ export default function ServicesPage() {
         className="absolute top-0 left-0 w-full h-full z-0"
       />
 
-      <div className="relative z-10 px-6 py-12 text-white w-full">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-2">Our Services</h1>
+          <h1 className="text-4xl font-bold mb-2 text-white">Our Services</h1>
           <p className="text-gray-300 max-w-xl mx-auto">
             We deliver cutting-edge web solutions using the latest tech stacks.
           </p>
@@ -197,7 +198,7 @@ export default function ServicesPage() {
                 {service.description}
               </p>
               <button
-                className="mt-auto px-4 py-2 text-sm rounded-lg bg-yellow-500 text-black hover:bg-yellow-400"
+                className="mt-auto px-4 py-2 text-sm rounded-lg bg-yellow-500 cursor-pointer text-black hover:bg-yellow-400"
                 onClick={() => setSelectedService(service.title)}
               >
                 Request This Service
@@ -205,7 +206,6 @@ export default function ServicesPage() {
             </motion.div>
           ))}
         </div>
-      </div>
 
       {/* Modal */}
       {selectedService && (
@@ -253,7 +253,7 @@ export default function ServicesPage() {
                 type="submit"
                 className="w-full bg-yellow-500 py-2 rounded-lg font-semibold hover:bg-yellow-400"
               >
-                {loading?"sending...":"Send Request"}
+                {loading ? "sending..." : "Send Request"}
               </button>
             </form>
             {status && <p className="text-sm text-green-600 mt-2">{status}</p>}

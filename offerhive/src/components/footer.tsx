@@ -73,7 +73,7 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className="flex flex-col items-center gap-4 md:items-end text-sm">
+        <div className="flex flex-col items-center justify-center  gap-4  text-sm">
           <div className="flex flex-col items-center justify-center">
             <p className="mb-2">Need help? Email us at</p>
             <p className="text-yellow-400 hover:underline">
