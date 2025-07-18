@@ -28,7 +28,6 @@ export default function Dashboard() {
       },
       () => {},
       (error) => {
-        console.error("Error fetching dashboard data:", error);
       },
       (data) => {
         if (data) {
@@ -51,7 +50,6 @@ export default function Dashboard() {
       },
       () => {},
       (error) => {
-        console.error("Error fetching latest messages:", error);
       },
       (data) => {
         if (data) {

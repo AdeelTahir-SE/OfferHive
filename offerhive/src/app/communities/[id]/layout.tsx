@@ -20,13 +20,13 @@ function OptionsBar({id}:{id:string}) {
     <section className="relative z-30 md:z-20 flex items-center justify-center w-full bg-gray-100 py-4 overflow-visible">
       <ul className="flex flex-row items-center justify-center space-x-6 rounded-full bg-gray-300 px-6 py-2 shadow-md">
         <TooltipItem href={`/communities/${id}`} label="About Community">
-          <Image src="/about_icon.svg" alt="" width={40} height={40} />
+          <Image src="/about_icon.svg" alt="" width={40} height={40} className="w-6 h-6"/>
         </TooltipItem>
         <TooltipItem href={`/communities/${id}/communityProviders`} label="community shops">
-          <Image src="/shop_icon.svg" alt="" width={40} height={40} />
+          <Image src="/shop_icon.svg" alt="" width={40} height={40} className="w-6 h-6" />
         </TooltipItem>
         <TooltipItem href={`/communities/${id}/openShops`} label="open trading">
-          <Image src="/trade_icon.svg" alt="" width={40} height={40} />
+          <Image src="/trade_icon.svg" alt="" width={40} height={40} className="w-6 h-6"/>
         </TooltipItem>
       </ul>
     </section>

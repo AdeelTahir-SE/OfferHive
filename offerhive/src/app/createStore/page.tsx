@@ -19,12 +19,12 @@ export interface Shop {
 
 export default function CreateStore() {
   const [shop, setShop] = useState<Shop>({
-    shop_desc: "as",
-    shop_title: "ds",
-    contact_info: "asd",
-    links: ["as", "asd"],
-    shop_tags: ["asd", "dsdas"],
-    shop_address: "dasdsad",
+    shop_desc: "",
+    shop_title: "",
+    contact_info: "",
+    links: ["", ""],
+    shop_tags: ["", ""],
+    shop_address: "",
   });
   const [response, setResponse] = useState<any>(null);
   const [tagsInput, setTagsInput] = useState("");
