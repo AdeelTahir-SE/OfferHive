@@ -27,7 +27,7 @@ export default function OurUsers() {
             Trusted by Leading Student Communities
           </h2>
           <p className="text-xl sm:text-2xl text-yellow-500 mb-6">
-            Over 5,000 students across top universities rely on our platform.
+            Over 5,000 students across top universities will rely on our platform.
           </p>
           <div className="w-24 h-1 bg-gradient-to-r from-yellow-400 to-yellow-600 rounded mx-auto lg:mx-0" />
         </div>

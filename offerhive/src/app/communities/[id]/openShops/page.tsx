@@ -2,11 +2,11 @@
 import { fetchRequest } from "@/lib/utils/fetch";
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SearchBar from "@/components/searchBar";
 import SearchIcon from "@/components/searchIcon";
 import Loader from "@/components/loader";
+import Link from "next/link";
 export default function openShops() {
   const [shops, setShops] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -99,6 +99,7 @@ export default function openShops() {
               id={shop.id}
               groupId={id}
               image_url={shop.image_url}
+              group_shop_tags={shop?.group_shop_tags}
               group_shop_name={shop.group_shop_name}
               group_shop_description={shop.group_shop_description}
             />
@@ -126,6 +127,7 @@ interface GroupShopCardProps {
   image_url: string;
   group_shop_name: string;
   group_shop_description: string;
+  group_shop_tags: string[] | undefined;
 }
 
 function GroupShopCard({
@@ -134,30 +136,53 @@ function GroupShopCard({
   image_url,
   group_shop_name,
   group_shop_description,
+  group_shop_tags,
 }: GroupShopCardProps) {
-  const router = useRouter();
+  const placeholderImage = "/placeholder_deals.png";
+  const displayTitle = group_shop_name?.trim() || "No title provided";
+  const hasTags = group_shop_tags && group_shop_tags.length > 0;
+
   return (
-    <div
-      onClick={() => {
-        router.push(`/communities/${groupId}/openShops/${id}`);
-      }}
-      className="relative p-[2px] rounded-xl rainbow-beam-wrapper max-w-xs w-full transition-transform hover:scale-[1.02]"
+    <Link
+      href={`/communities/${groupId}/openShops/${id}`}
+      className="w-full max-w-[320px] "
+      prefetch={false}
     >
-      <div className="relative z-10 bg-white dark:bg-zinc-900 rounded-xl p-5 shadow-md flex flex-col items-center text-center space-y-3">
-        <Image
-          src={image_url}
-          alt={group_shop_name}
-          width={96}
-          height={96}
-          className="rounded-md object-cover"
-        />
-        <h2 className="text-xl font-bold text-gray-900 dark:text-white">
-          {group_shop_name}
-        </h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-3">
-          {group_shop_description}
-        </p>
-      </div>
-    </div>
+      <section className="flex flex-col w-full h-[370px] justify-start rounded-xl border hover:shadow-md hover:bg-gray-50 transition-all p-4">
+        <div className="w-full h-[180px] relative mb-4">
+          <Image
+            src={image_url?.trim() || placeholderImage}
+            alt={group_shop_name || "offer image"}
+            fill
+            className="object-cover rounded-lg"
+          />
+        </div>
+
+        <div className="flex flex-col flex-grow justify-start text-center space-y-2">
+          <span className="text-lg font-bold line-clamp-2">
+            {displayTitle}
+          </span>
+          <span className="text-sm font-semibold  text-black rounded-2xl px-1 py-1">
+            {group_shop_description?.substring(0, 35)}...
+          </span>
+          <div className="flex flex-wrap justify-center gap-2">
+            {hasTags ? (
+              group_shop_tags?.slice(0, 5).map((tag, index) => (
+                <span
+                  key={index}
+                  className="bg-yellow-500 text-black rounded-full px-3 py-1 text-sm font-semibold max-w-[120px] overflow-hidden text-ellipsis whitespace-nowrap"
+                >
+                  {tag}
+                </span>
+              ))
+            ) : (
+              <span className="bg-gray-300 text-gray-600 rounded-full px-3 py-1 text-sm font-medium">
+                No tags
+              </span>
+            )}
+          </div>
+        </div>
+      </section>
+    </Link>
   );
 }
