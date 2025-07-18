@@ -22,8 +22,8 @@ export default function CreateStore() {
     shop_desc: "",
     shop_title: "",
     contact_info: "",
-    links: ["", ""],
-    shop_tags: ["", ""],
+    links: [],
+    shop_tags: [],
     shop_address: "",
   });
   const [response, setResponse] = useState<any>(null);
@@ -154,7 +154,7 @@ export default function CreateStore() {
   if (user?.email == "") {
     return (
       <section className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-yellow-50 to-white p-6">
-        <div className="bg-white shadow-xl rounded-2xl p-10 max-w-3xl w-full text-center border border-yellow-200">
+        <div className="bg-white shadow-xl rounded-2xl p-10  w-full text-center border border-yellow-200">
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
             Create Shop and Offers
           </h1>
@@ -174,7 +174,7 @@ export default function CreateStore() {
     );
   } else if (user.is_shop_owner === false) {
     return (
-      <section className="flex flex-col items-center justify-center p-6 max-w-6xl mx-auto">
+      <section className="flex flex-col items-center justify-center p-6 border-2 mx-auto">
         <h1 className="text-5xl text-center font-extrabold text-gray-800 mb-4">
           Create Shop and Offers
         </h1>
@@ -187,9 +187,9 @@ export default function CreateStore() {
             }
           }}
         >
-          <section className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-4xl mx-auto">
+          <section className="grid grid-cols-1 md:grid-cols-2 gap-5 min-w-full  mx-auto">
             {/* Shop Title */}
-            <div className="flex flex-col col-span-2">
+            <div className="flex flex-col col-span-3">
               <label
                 htmlFor="shop_title"
                 className="text-base font-semibold text-gray-700"
@@ -207,7 +207,7 @@ export default function CreateStore() {
               />
             </div>
 
-            <div className="flex flex-col col-span-2">
+            <div className="flex flex-col col-span-3">
               <label
                 htmlFor="shop_address"
                 className="text-base font-semibold text-gray-700"
@@ -225,7 +225,7 @@ export default function CreateStore() {
             </div>
 
             {/* Shop Description */}
-            <div className="flex flex-col col-span-2">
+            <div className="flex flex-col col-span-3">
               <label
                 htmlFor="shop_desc"
                 className="text-base font-semibold text-gray-700"
@@ -243,7 +243,7 @@ export default function CreateStore() {
             </div>
 
             {/* Contact Info */}
-            <div className="flex flex-col col-span-2 w-full">
+            <div className="flex flex-col col-span-3 w-full">
               <label
                 htmlFor="contact_info"
                 className="text-base font-semibold text-gray-700"
@@ -262,7 +262,7 @@ export default function CreateStore() {
             </div>
 
             {/* Tags */}
-            <div className="flex flex-col col-span-2">
+            <div className="flex flex-col col-span-3">
               <label
                 htmlFor="tags"
                 className="text-base font-semibold text-gray-700"
@@ -306,7 +306,7 @@ export default function CreateStore() {
             </div>
 
             {/* Image Upload */}
-            <div className="flex flex-col col-span-2">
+            <div className="flex flex-col col-span-3">
               <label
                 htmlFor="images"
                 className="text-base font-semibold text-gray-700"
@@ -350,7 +350,7 @@ export default function CreateStore() {
             </div>
 
             {/* Links */}
-            <div className="flex flex-col col-span-2">
+            <div className="flex flex-col col-span-3">
               <label
                 htmlFor="links"
                 className="text-base font-semibold text-gray-700"
