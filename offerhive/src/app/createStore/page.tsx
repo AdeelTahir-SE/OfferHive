@@ -175,7 +175,7 @@ export default function CreateStore() {
   } else if (user.is_shop_owner === false) {
     return (
       <section className="flex flex-col items-center justify-center p-6 border-2 mx-auto">
-        <h1 className="text-5xl text-center font-extrabold text-gray-800 mb-4">
+        <h1 className="heading-1 mb-[30px]">
           Create Shop and Offers
         </h1>
 
