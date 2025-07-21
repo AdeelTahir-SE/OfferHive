@@ -156,3 +156,13 @@ export interface GroupShopData {
   created_at: string;
   group_id: string;
 }
+
+export interface GroupShopOffer{
+     id: string;
+    image_url: string;
+    description: string;
+    group_shop_offer_title: string;
+    contact: string;
+    price: string;
+    created_at:string
+}
