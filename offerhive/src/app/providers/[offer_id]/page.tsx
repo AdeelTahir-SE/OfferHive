@@ -78,18 +78,19 @@ export default function OfferDetails() {
   }
 
   return (
-    <section className="flex flex-col items-center justify-center p-6 max-w-6xl mx-auto">
-      <h1 className="text-5xl text-center font-extrabold text-gray-800 mb-4">
+    <section className="flex flex-col items-center justify-center gap-[30px] ">
+            <ImagesSlider images={shop.shop_images} />
+
+      <h1 className="heading-1 lg:px-[200px] text-center px-4 py-7 ">
         {shop.shop_title}
       </h1>
-      <p className="text-xl text-gray-600 text-center break-words max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mb-6">
+      <p className="description text-center px-4 lg:px-[200px]">
         {shop.shop_desc}
       </p>
 
-      <ImagesSlider images={shop.shop_images} />
 
-      <div className="w-full mt-10">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4 text-center">
+      <div className="w-full flex flex-col items-center justify-center gap-[30px]">
+        <h2 className="text-3xl font-bold text-gray-800 text-center">
           Available Offers
         </h2>
         {shop?.offers.length === 0 ? (

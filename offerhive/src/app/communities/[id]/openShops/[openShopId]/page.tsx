@@ -103,7 +103,7 @@ export default function OpenShopOffers() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center gap-[30px] rounded-xl py-6 px-[40px] sm:px-0 w-full  md:px-[100px] xl:px-px[200px] xxl:px-[450px]">
+    <section className="flex flex-col text-center items-center justify-center gap-[30px] rounded-xl py-6 px-[40px] sm:px-0 w-full  md:px-[100px] xl:px-px[200px] xxl:px-[450px]">
       <h1 className="heading-1">{shop?.group_shop_name}</h1>
       <p className="description">{shop?.group_shop_description}</p>
       {/* {shop?.image_url && (
@@ -118,12 +118,12 @@ export default function OpenShopOffers() {
 
       {error && <p className="text-red-500 text-center mt-4">{error}</p>}
 
-      <h2 className="heading-1">{shop?.group_shop_name} Offers</h2>
+      <h2 className="heading-1">Community Shop Offers</h2>
       <div className="md:max-w-2/3 min-w-[300px] md:w-full">
         <SearchBar searchTerm={searchTerm} onSearch={handleSearch} />
       </div>
 
-      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 w-full max-w-4xl place-items-center">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 w-full max-w-4xl place-items-start">
         <CreateOffer id={id} openShopId={openShopId} />
         {offers?.length === 0 && !isFetching && (
           <section className="flex flex-col items-center justify-center text-primary">
@@ -176,23 +176,26 @@ function GroupShopOfferCard({
   createdAt,
 }: OfferCardProps) {
   return (
-    <section className="max-w-sm w-full bg-white shadow-md rounded-xl min-h-96 p-4 flex flex-col items-center text-center space-y-3">
-      <div className="w-full h-48 relative">
+    <section className="max-w-sm w-full  bg-white shadow-md  rounded-xl min-h-96  flex flex-col items-center text-center space-y-3">
+      <div className="w-full h-60 relative">
         <Image
           src={imageurl}
           alt={title || ""}
           layout="fill"
-          objectFit="cover"
+          objectFit="contain"
           className="rounded-md border-1"
         />
       </div>
+      <section className="p-4 flex flex-col items-center justify-center max-w-sm w-full gap-[10px]">
       <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
       <p className="text-gray-600 whitespace-normal break-words max-w-full">
         {description}
       </p>
-      <p className="text-gray-400">{createdAt}</p>
-      <p className="text-sm text-gray-500">📞{contact}</p>
-      <p className="text-md font-bold text-green-600">Rs. {price}</p>
+      <p className="text-sm text-gray-500">📞:{contact}</p>
+      <p className="text-md font-bold text-green-600">Rs.{price}</p>
+            <p className="text-gray-400">Created on: {createdAt}</p>
+
+    </section>
     </section>
   );
 }
@@ -213,7 +216,7 @@ function CreateOffer({ id, openShopId }: { id: string; openShopId: string }) {
       <h3 className="text-lg font-semibold text-gray-800">Create your Offer</h3>
 
       <button
-        className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-md"
+        className="px-4 py-2 bg-yellow-500 cursor-pointer hover:bg-yellow-600 text-white font-semibold rounded-md"
         onClick={() => {
           router?.push(link);
         }}

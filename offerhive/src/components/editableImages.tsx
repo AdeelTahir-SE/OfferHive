@@ -3,7 +3,8 @@ import Image from "next/image";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
 import { uploadImage } from "@/lib/database/offerer";
-import {handleDeleteShopImage} from "@/lib/database/offerer";
+import { handleDeleteShopImage } from "@/lib/database/offerer";
+import { checkAspectRatio } from "@/lib/utils/image";
 export default function EditableImages({
   images,
   onChange,
@@ -19,13 +20,13 @@ export default function EditableImages({
   const handleDelete = async (index: number) => {
     const imageUrl = localImages[index];
     if (!imageUrl) return;
-  
+
     try {
       const urlParts = imageUrl.split("/");
       const filename = urlParts[urlParts.length - 1].split("?")[0];
-  
+
       const success = await handleDeleteShopImage(id, filename); // Use `id` for both offer/shop if structure is same
-  
+
       if (success) {
         const updated = [...localImages];
         updated.splice(index, 1);
@@ -39,18 +40,21 @@ export default function EditableImages({
       alert("An error occurred while deleting the image.");
     }
   };
-  
+
   const handleAddImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-
+    // const isValid=await checkAspectRatio(file)
+    // if(!isValid){
+    //   return;
+    // }
     setLoading(true);
 
     try {
       const url = await uploadImage(file, id);
       const updated = [...localImages, url] as string[];
       setLocalImages(updated);
-      onChange(updated);  // Ensure only string[] is passed to onChange
+      onChange(updated); // Ensure only string[] is passed to onChange
     } catch (error) {
       console.error("Image upload failed", error);
     } finally {
@@ -70,7 +74,7 @@ export default function EditableImages({
             onClick={() => handleDelete(index)}
           />
           <Image
-            src={image || "/placeholder_deals.png"}  // Ensure image is a valid string
+            src={image || "/placeholder_deals.png"} // Ensure image is a valid string
             alt={`Image ${index + 1}`}
             layout="fill"
             objectFit="cover"
@@ -83,7 +87,12 @@ export default function EditableImages({
           {loading ? (
             <span className="text-gray-500 animate-pulse">Uploading...</span>
           ) : (
-            <span className="text-gray-500">Add Image</span>
+            <div className="flex flex-col items-center justify-center gap-[10px]">
+              <span className="text-gray-700 font-semibold">
+                Add Image 
+              </span>
+              {/* <span className="text-gray-500">e.g. 1280x720 or 1920x1080 </span> */}
+            </div>
           )}
           <input
             type="file"
