@@ -68,7 +68,7 @@ export default function Groups() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center gap-[30px] p-4 w-full">
+    <section className="flex flex-col items-center text-center justify-center gap-[30px] p-4 w-full">
       <h1 className="heading-1">Community</h1>
       <p className="description">
         Find Community that match your interests and receive relevant offers.
