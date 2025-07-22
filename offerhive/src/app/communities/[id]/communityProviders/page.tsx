@@ -66,7 +66,7 @@ export default function Page() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center gap-[30px] rounded-xl py-6 px-[40px] sm:px-0 w-full  md:px-[100px] xl:px-px[200px] xxl:px-[450px]">
+    <section className="flex flex-col items-center text-center justify-center gap-[30px] rounded-xl py-6 px-[40px] sm:px-0 w-full  md:px-[100px] xl:px-px[200px] xxl:px-[450px]">
       <h1 className="heading-1">Community Providers</h1>
       <p className="description">
         Check out amazing communityProviders by different Providers of this Community!

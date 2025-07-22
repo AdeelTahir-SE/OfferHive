@@ -165,7 +165,7 @@ export default function ServicesPage() {
   };
 
   return (
-    <section className="relative min-h-screen flex flex-col items-center justify-center bg-gray-900 overflow-hidden">
+    <section className="relative min-h-screen p-4 flex flex-col items-center justify-center bg-gray-900 overflow-hidden">
       <canvas
         ref={canvasRef}
         className="absolute top-0 left-0 w-full h-full z-0"

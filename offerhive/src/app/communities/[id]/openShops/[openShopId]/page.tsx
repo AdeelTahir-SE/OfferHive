@@ -126,9 +126,9 @@ export default function OpenShopOffers() {
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-6 w-full max-w-4xl place-items-start">
         <CreateOffer id={id} openShopId={openShopId} />
         {offers?.length === 0 && !isFetching && (
-          <section className="flex flex-col items-center justify-center text-primary">
+          <section className="flex flex-col items-center justify-center w-full text-primary">
             <SearchIcon />
-            <h2 className="text-2xl font-bold mt-4">No Offerers Found</h2>
+            <h2 className="text-2xl font-bold mt-4">No Offers Found</h2>
           </section>
         )}
         {offers?.map((offer:GroupShopOffer) => (
@@ -151,7 +151,7 @@ export default function OpenShopOffers() {
 
       {!hasMore && offers?.length > 0 && (
         <p className="text-gray-500 mt-4">
-          No more communityProviders to show.
+          No more Offers to show.
         </p>
       )}
     </section>

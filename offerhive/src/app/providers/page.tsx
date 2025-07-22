@@ -67,7 +67,7 @@ export default function Offers() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center gap-[30px] rounded-xl py-6 px-[40px] sm:px-0 w-full  md:px-[100px] xl:px-px[200px] xxl:px-[450px]">
+    <section className="flex flex-col items-center text-center justify-center gap-[30px] rounded-xl py-6 px-[40px] sm:px-0 w-full  md:px-[100px] xl:px-px[200px] xxl:px-[450px]">
       <h1 className="heading-1">Providers</h1>
       <p className="description">
         Check out amazing offers by different Providers!
@@ -105,7 +105,7 @@ export default function Offers() {
       )}
 
       {!hasMore && offers.length > 0 && (
-        <p className="text-gray-500 mt-4">No more offers to show.</p>
+        <p className="text-gray-500 mt-4">No more Providers to show.</p>
       )}
     </section>
   );
