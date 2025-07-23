@@ -154,34 +154,6 @@ export default function PersonChat() {
 
           if (isMatch && Array.isArray(updated.chat)) {
             setChat(updated.chat);
-            const last = updated.chat[updated.chat.length - 1];
-            const secondLast = updated.chat[updated.chat.length - 2];
-            const lastTime = new Date(last.timestamp).getTime();
-            const secondLastTime = new Date(secondLast.timestamp).getTime();
-            const timeDiff = lastTime - secondLastTime;
-
-            // console.log(last,secondLast,timeDiff)
-            //                   console.log(`${user?.email} has sent you a message`)
-
-            if (last.sender != loggedInUser?.user_id && timeDiff > 1000 * 60*1) {
-              await fetchRequest(
-                "/api/notifications",
-                {
-                  method: "POST",
-                  headers: {
-                    user_id: loggedInUser?.user_id,
-                  },
-
-                  body: JSON.stringify({
-                    user_id: loggedInUser?.user_id,
-                    description: `${user?.email} has sent you a message`,
-                  }),
-                },
-                () => {},
-                () => {},
-                (data) => {}
-              );
-            }
           }
         }
       )
@@ -209,7 +181,38 @@ export default function PersonChat() {
     } else {
       await setChatDB(loggedInUser?.user_id, id, updatedChat);
     }
+    const last = updatedChat[updatedChat.length - 1];
 
+    if (last.sender != loggedInUser?.user_id) {
+      const secondLast = updatedChat[updatedChat.length - 2];
+
+      const lastTime = new Date(last.timestamp).getTime();
+      const secondLastTime = new Date(secondLast.timestamp).getTime();
+      const timeDiff = lastTime - secondLastTime;
+
+      // console.log(last,secondLast,timeDiff)
+      //                   console.log(`${user?.email} has sent you a message`)
+
+      if (last.sender != loggedInUser?.user_id && timeDiff > 1000 * 60 * 1) {
+        await fetchRequest(
+          "/api/notifications",
+          {
+            method: "POST",
+            headers: {
+              user_id: loggedInUser?.user_id,
+            },
+
+            body: JSON.stringify({
+              user_id: loggedInUser?.user_id,
+              description: `${user?.email} has sent you a message`,
+            }),
+          },
+          () => {},
+          () => {},
+          (data) => {}
+        );
+      }
+    }
     setNewMessage("");
   };
   if (!loggedInUser?.email) {
