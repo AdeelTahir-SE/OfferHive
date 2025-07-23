@@ -107,7 +107,7 @@ export default function Header() {
     href: string;
     children: React.ReactNode;
   }) => (
-    <li className="hover:text-white transition-colors">
+    <li className="hover:text-white hover:scale-110 transition duration-100 ">
       <Link href={href} onClick={closeMenu}>
         {children}
       </Link>
@@ -177,7 +177,7 @@ export default function Header() {
         ref={menuRef}
         className={`${
           menuOpen ? "block" : "hidden"
-        } absolute top-full left-0 w-full bg-primary *:hover:scale-110 *:transition *:duration-100 flex flex-col items-start p-4 gap-4 font-semibold md:static md:flex md:flex-row md:items-center md:space-x-6 md:p-0 md:gap-0 md:w-auto z-50`}
+        } absolute top-full left-0 w-full bg-primary  flex flex-col items-start p-4 gap-4 font-semibold md:static md:flex md:flex-row md:items-center md:space-x-6 md:p-0 md:gap-0 md:w-auto z-50`}
       >
         {user?.email && !user?.is_shop_owner && (
           <MenuLink href="/people">People</MenuLink>

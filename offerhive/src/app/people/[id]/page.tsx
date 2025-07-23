@@ -162,7 +162,7 @@ export default function PersonChat() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [id, user, loggedInUser?.user_id, loggedInUser?.is_shop_owner]);
+  }, [id, loggedInUser?.user_id, loggedInUser?.is_shop_owner]);
 
   const handleSendMessage = async () => {
     if (newMessage.trim() === "") return;
@@ -181,19 +181,18 @@ export default function PersonChat() {
     } else {
       await setChatDB(loggedInUser?.user_id, id, updatedChat);
     }
-    const last = updatedChat[updatedChat.length - 1];
+    const secondLast = updatedChat[updatedChat.length - 2];
 
-    if (last.sender != loggedInUser?.user_id) {
-      const secondLast = updatedChat[updatedChat.length - 2];
+    if (secondLast.sender != loggedInUser?.user_id) {
+      const last = updatedChat[updatedChat.length - 1];
 
       const lastTime = new Date(last.timestamp).getTime();
       const secondLastTime = new Date(secondLast.timestamp).getTime();
       const timeDiff = lastTime - secondLastTime;
 
-      // console.log(last,secondLast,timeDiff)
-      //                   console.log(`${user?.email} has sent you a message`)
 
-      if (last.sender != loggedInUser?.user_id && timeDiff > 1000 * 60 * 1) {
+
+      if ( timeDiff > 1000 * 60 * 2) {
         await fetchRequest(
           "/api/notifications",
           {
