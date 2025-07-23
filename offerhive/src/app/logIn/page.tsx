@@ -3,12 +3,12 @@ import { Eye, EyeClosed } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { fetchRequest } from "@/lib/utils/fetch";
-import { passwordRecovery } from "@/lib/database/user";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/lib/redux/user/userSlice";
 import Link from "next/link";
 import WavySvg from "@/components/wavySvg";
 export default function Login() {
+  const [passwordRecoveryLoading,setPasswordRecoveryLoading] = useState(false);
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState<string | null>();
   const [loading, setLoading] = useState(false);
@@ -117,7 +117,7 @@ export default function Login() {
           </section>
 
           {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-          {response&&<p className="text-green-500 text-center mt-4">{response}</p>}
+          {response&&!error&&!loading&&!passwordRecoveryLoading&&<p className="text-green-500 text-center mt-4">{response}</p>}
           <p className="text-center text-gray-600 mt-4">
             Don&apos;t have an account?
             <Link
@@ -127,9 +127,12 @@ export default function Login() {
               Sign Up
             </Link>
           </p>
-          <p
-            className="text-yellow-500 cursor-pointer text-center font-semibold hover:underline"
+         
+        </form>
+         <button
+            className="text-yellow-500 cursor-pointer text-center w-full font-semibold hover:underline"
             onClick={() => {
+
               if (!form.email) {
                 alert("fill the email field first");
               } else {
@@ -140,7 +143,7 @@ export default function Login() {
                   },
                   body:JSON.stringify({email:form?.email}),
                 },
-                ()=>{},
+                setPasswordRecoveryLoading,
                 setError,
                 (data)=>{
                   setResponse(data?.message)
@@ -149,9 +152,8 @@ export default function Login() {
               }
             }}
           >
-            forgot password?
-          </p>
-        </form>
+            {passwordRecoveryLoading?"wait a little...":"forgot password?"}
+          </button>
       </section>
     </section>
   );
