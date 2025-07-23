@@ -1,3 +1,4 @@
+"use client"
 import { updatePassword, getSupabaseUser } from "@/lib/database/user";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";

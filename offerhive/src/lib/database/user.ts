@@ -318,7 +318,7 @@ export async function passwordRecovery(email:string){
    alert(email)
 
    let { data, error } = await supabase.auth.resetPasswordForEmail(email,{
-    redirectTo:"/resetPassword"
+    redirectTo:"https://offer-hive.vercel.app/resetPassword"
    })
     if(error){
         console.log("Error fetching user:", error);
