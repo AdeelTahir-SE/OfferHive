@@ -129,7 +129,7 @@ export default function Login() {
             </Link>
           </p>
           <p
-            className="text-yellow-500 font-semibold hover:underline"
+            className="text-yellow-500 text-center font-semibold hover:underline"
             onClick={() => {
               if (!form.email) {
                 alert("fill the email field first");
