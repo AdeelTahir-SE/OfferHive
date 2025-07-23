@@ -1,9 +1,9 @@
 "use client";
 import { Eye, EyeClosed } from "lucide-react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import OAuthSection from "@/components/oAuthsSection";
-
+import { passwordRecovery } from "@/lib/database/user";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/lib/redux/user/userSlice";
 import Link from "next/link";
@@ -37,16 +37,16 @@ export default function Login() {
       setError,
       setResponse
     );
- 
+
     setLoading(false);
   }
 
   useEffect(() => {
-  if (response?.user) {
-    dispatch(setUser(response.user));
-    router.push("/");
-  }
-}, [response]);
+    if (response?.user) {
+      dispatch(setUser(response.user));
+      router.push("/");
+    }
+  }, [response]);
 
   return (
     <section className="flex flex-col items-center justify-center h-screen bg-white font-sans">
@@ -127,6 +127,19 @@ export default function Login() {
             >
               Sign Up
             </Link>
+          </p>
+          <p
+            className="text-yellow-500 font-semibold hover:underline"
+            onClick={() => {
+              if (!form.email) {
+                alert("fill the email field first");
+              } else {
+                passwordRecovery(form?.email);
+                alert("password recovery email sent");
+              }
+            }}
+          >
+            forgot password?
           </p>
         </form>
       </section>

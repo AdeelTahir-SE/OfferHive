@@ -52,6 +52,18 @@ export async function getUserwithId(user_id: string) {
   }
   return data;
 }
+export async function getUserWithEmail(email:string){
+  const {data,error}= await supabase
+    .from("User")
+    .select("*")
+    .eq("email", email)
+    .single();
+  if(error){
+    console.log("Error in fetching data");
+    return {data:null,error};
+  }
+  return {data,error:null};
+}
 
 export async function getChat(user_id: string|null, shop_user_id: string|null) {
   if(!user_id || !shop_user_id) {
@@ -301,4 +313,36 @@ export async function createNotification(notification:{user_id:string,descriptio
         return {data:null,error};
     }
     return {data,error};
+}
+export async function passwordRecovery(email:string){
+   alert(email)
+
+   let { data, error } = await supabase.auth.resetPasswordForEmail(email,{
+    redirectTo:"/resetPassword"
+   })
+    if(error){
+        console.log("Error fetching user:", error);
+        return {data:null,error};
+    }
+    return {data,error};
+}
+export async function updatePassword(password:string,email:string){
+   let { data, error } = await supabase.auth.updateUser({
+    email,
+    password,
+  })
+    if(error){
+        console.log("Error fetching user:", error);
+        return {data:null,error};
+    }
+    return {data,error};
+}
+
+export async function getSupabaseUser(){
+  const {data,error}=await supabase.auth.getUser()
+  if(error){
+    console.log("Error fetching user:", error);
+    return {data:null,error};
+  }
+  return {data,error};
 }

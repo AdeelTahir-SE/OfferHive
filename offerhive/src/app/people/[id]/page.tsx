@@ -238,7 +238,7 @@ export default function PersonChat() {
         <p className="text-2xl sm:text-3xl mb-4 text-center">Loading chat...</p>
       ) : (
         <>
-          <p className="text-2xl sm:text-3xl mb-4 text-center">
+          <p className="text-2xl sm:text-3xl mb-4 heading-1 text-center">
             Chat with {user?.email || "User"}
           </p>
         </>
