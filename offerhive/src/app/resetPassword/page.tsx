@@ -1,7 +1,7 @@
 "use client"
 import { updatePassword, getSupabaseUser } from "@/lib/database/user";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/lib/redux/user/userSlice";
 import { getUserWithEmail } from "@/lib/database/user";
