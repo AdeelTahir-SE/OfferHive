@@ -1,7 +1,11 @@
+"use server"
+
 import { Click } from "../types";
-import { supabase } from "./db";
+// import { supabase } from "./db";
+import { createClient } from "./db-server";
 
 export async function getClicks(user_id: string) {
+  const supabase = await createClient();
   const { data, error } = await supabase
     .from("UserShopAnalysis")
     .select("*")
@@ -20,6 +24,8 @@ export async function getClicks(user_id: string) {
 }
 
 export async function setClicks(user_id: string, clicks: Click[]) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("UserShopAnalysis")
     .update({ clicks: clicks })
@@ -39,6 +45,8 @@ export async function setClicks(user_id: string, clicks: Click[]) {
 }
 
 export async function getLatestMessages(user_id:string) {
+    const supabase = await createClient();
+
   const { data, error } = await supabase
     .from(`Chat`)
     .select(

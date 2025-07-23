@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { setChatDB } from "@/lib/database/user";
 import { fetchRequest } from "@/lib/utils/fetch";
 import { supabase } from "@/lib/database/db";
@@ -235,7 +235,7 @@ export default function PersonChat() {
   return (
     <section className="flex flex-col items-center justify-center bg-gray-100 min-h-screen p-4 sm:p-6">
       {loading ? (
-        <p className="text-2xl sm:text-3xl mb-4 text-center">Loading chat...</p>
+        <p className="text-2xl sm:text-3xl mb-4 text-center heading-1">Loading chat...</p>
       ) : (
         <>
           <p className="text-2xl sm:text-3xl mb-4 heading-1 text-center">
@@ -264,7 +264,7 @@ export default function PersonChat() {
                     <div className="min-w-[2.5rem] min-h-[2.5rem] w-10 h-10">
                       <Image
                         src={profileImage || "/profile_placeholder.png"}
-                        alt={isSender ? "You" : (user?.email as string)}
+                        alt={isSender ? "You" : (`${user?.email || "User"}`)}
                         width={40}
                         height={40}
                         className="rounded-full object-cover"

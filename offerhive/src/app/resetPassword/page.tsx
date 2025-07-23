@@ -2,26 +2,41 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { updatePassword, getSupabaseUser, getUserWithEmail } from "@/lib/database/user";
 import { setUser } from "@/lib/redux/user/userSlice";
+import { fetchRequest } from "@/lib/utils/fetch";
 
 export default function ResetPassword() {
   const dispatch = useDispatch();
-  const[loading,setLoading]=useState(false);
-  const[error,setError]=useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const router = useRouter();
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
+  async function getSupabaseUser() {
+    await fetchRequest(
+      "/supabase-user",
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      },
+      () => {},
+      () => {},
+      (data) => {
+        setForm((prevForm) => ({
+          ...prevForm,
+          email: data?.email || "",
+        }));
+      }
+    );
+  }
+
   useEffect(() => {
-    getSupabaseUser().then((res) => {
-      setForm((prevForm) => ({
-        ...prevForm,
-        email: res.data?.user?.email || "",
-      }));
-    });
+    getSupabaseUser();
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,28 +51,44 @@ export default function ResetPassword() {
     const { email, password } = form;
 
     if (password) {
-      setLoading(true);
       setError("");
-      const {data,error}=await updatePassword(password, email);
-      if(error){
-        setError(error.message);
-        setLoading(false);
-        return;
-      }
-      const user = await getUserWithEmail(email);
-      dispatch(setUser(user?.data));
-      router.push("/");
-      setLoading(false);
+      await fetchRequest(
+        "/api/resetPassword",
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email,
+            password,
+          }),
+        },
+        ()=>{},
+        (error) => {
+          setError(error as string);
+        },
+        async (data) => {
+          dispatch(setUser(data?.user));
+          router.push("/");
+          setLoading(false);
+        }
+      );
     }
   }
 
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6 text-center">Reset Your Password</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center">
+          Reset Your Password
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700"
+            >
               Email
             </label>
             <input
@@ -70,7 +101,10 @@ export default function ResetPassword() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700"
+            >
               New Password
             </label>
             <input
@@ -89,14 +123,10 @@ export default function ResetPassword() {
             disabled={loading}
             className="w-full bg-yellow-500 hover:bg-yellow-400 text-white font-semibold py-2 px-4 rounded-md transition-colors duration-200"
           >
-            {loading?"loading...":"Update Password"}
+            {loading ? "loading..." : "Update Password"}
           </button>
-          
-          {error && (
-            <div className="text-red-500 text-sm">
-              {error}
-            </div>
-          )}
+
+          {error && <div className="text-red-500 text-sm">{error}</div>}
         </form>
       </div>
     </section>

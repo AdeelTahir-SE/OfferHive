@@ -33,7 +33,13 @@ export const userSlice = createSlice({
       Object.assign(state, action.payload);
 
       if (typeof window !== "undefined") {
-        document.cookie = `offerhive_user=${JSON.stringify(action.payload)}; path=/`;
+        const oneHourFromNow = new Date(
+          Date.now() + 60 * 60 * 1000
+        ).toUTCString();
+
+        document.cookie = `offerhive_user=${encodeURIComponent(
+          JSON.stringify(action.payload)
+        )}; path=/; expires=${oneHourFromNow}`;
       }
     },
     initializeUserFromCookie: (state) => {
@@ -42,11 +48,13 @@ export const userSlice = createSlice({
 
         if (cookie) {
           try {
-            const parsed = typeof cookie === "string" ? JSON.parse(cookie) : cookie;
+            const parsed =
+              typeof cookie === "string" ? JSON.parse(cookie) : cookie;
 
             state.user_id = parsed.user_id || "";
             state.email = parsed.email || "";
-            state.profile_image = parsed.profile_image || "/profile_placeholder.png";
+            state.profile_image =
+              parsed.profile_image || "/profile_placeholder.png";
             state.is_shop_owner = parsed.is_shop_owner || false;
             state.joined_groups = parsed.joined_groups || [];
             state.subscribed_groups = parsed.subscribed_groups || [];
@@ -59,5 +67,10 @@ export const userSlice = createSlice({
   },
 });
 
-export const { setProfileImage, setUser, setIsShopOwner, initializeUserFromCookie } = userSlice.actions;
+export const {
+  setProfileImage,
+  setUser,
+  setIsShopOwner,
+  initializeUserFromCookie,
+} = userSlice.actions;
 export default userSlice.reducer;

@@ -1,8 +1,10 @@
-import { supabase } from "./db";
-import { RealtimeChannel } from "@supabase/supabase-js";
-
+// import { supabase } from "./db";
+"use server";
+import { createClient } from "./db-server";
 
 export async function signIn(email: string, password: string) {
+  const supabase = await createClient();
+
   const { data, error: signInError } = await supabase.auth.signInWithPassword({
     email: email,
     password: password,
@@ -17,6 +19,8 @@ export async function signIn(email: string, password: string) {
   return { userData, signInError, findingError };
 }
 export async function signOut() {
+  const supabase = await createClient();
+
   const { error } = await supabase.auth.signOut();
   if (error) {
     console.log("Error signing out:", error.message);
@@ -40,6 +44,8 @@ export async function signOut() {
 // }
 
 export async function getUserwithId(user_id: string) {
+  const supabase = await createClient();
+
   const { data } = await supabase
     .from("User")
     .select("profile_image,email")
@@ -52,21 +58,32 @@ export async function getUserwithId(user_id: string) {
   }
   return data;
 }
-export async function getUserWithEmail(email:string){
-  const {data,error}= await supabase
+export async function getUserWithEmail(email: string|null|undefined) {
+  if(!email){
+    return { data: null, error: 'Email is required' };
+  }
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
     .from("User")
     .select("*")
     .eq("email", email)
     .single();
-  if(error){
+  if (error) {
     console.log("Error in fetching data");
-    return {data:null,error};
+    return { data: null, error };
   }
-  return {data,error:null};
+  return { data, error: null };
 }
 
-export async function getChat(user_id: string|null, shop_user_id: string|null) {
-  if(!user_id || !shop_user_id) {
+export async function getChat(
+  user_id: string | null,
+  shop_user_id: string | null
+) {
+  const supabase = await createClient();
+
+  if (!user_id || !shop_user_id) {
     return [];
   }
   const { data, error } = await supabase
@@ -143,6 +160,8 @@ export async function setChatDB(
   shop_user_id: string,
   chat: any[]
 ) {
+  const supabase = await createClient();
+
   const { data } = await supabase
     .from("Chat")
     .update({ chat: chat })
@@ -157,20 +176,22 @@ export async function setChatDB(
   return data;
 }
 
-export async function removeChatListener(chatlistener: RealtimeChannel) {
-  try {
-    if (chatlistener && typeof chatlistener.unsubscribe === "function") {
-      chatlistener.unsubscribe();
-    }
-  } catch (error) {
-    console.error("Error unsubscribing from channel:", error);
-  }
-}
+// export async function removeChatListener(chatlistener: RealtimeChannel) {
+//   try {
+//     if (chatlistener && typeof chatlistener.unsubscribe === "function") {
+//       chatlistener.unsubscribe();
+//     }
+//   } catch (error) {
+//     console.error("Error unsubscribing from channel:", error);
+//   }
+// }
 
 export async function setProfileImageDB(
   file: File | null,
   user_id: string | null
 ) {
+  const supabase = await createClient();
+
   if (!user_id || !file) return;
 
   const folderPath = `profile_pics/${user_id}/`;
@@ -240,6 +261,7 @@ export async function setProfileImageDB(
 }
 
 export async function chatWithShopOwners(user_id: string | null) {
+  const supabase = await createClient();
   if (!user_id) {
     return [];
   }
@@ -272,6 +294,8 @@ export async function chatWithShopOwners(user_id: string | null) {
 }
 
 export async function getNotifications(user_id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("Notification")
     .select("*")
@@ -280,12 +304,13 @@ export async function getNotifications(user_id: string) {
 
   if (error) {
     console.error("Error fetching notifications:", error);
-    return {data:null,error};
-
+    return { data: null, error };
   }
-  return {data,error};
+  return { data, error };
 }
 export async function deleteNotifications(user_id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("Notification")
     .delete()
@@ -294,55 +319,67 @@ export async function deleteNotifications(user_id: string) {
 
   if (error) {
     console.error("Error deleting notifications:", error);
-    return {data:null,error};
-
+    return { data: null, error };
   }
 
-  return {data,error};
-
+  return { data, error };
 }
 
-export async function createNotification(notification:{user_id:string,description:string}){
+export async function createNotification(notification: {
+  user_id: string;
+  description: string;
+}) {
+  const supabase = await createClient();
 
-    const { data, error } = await supabase
+  const { data, error } = await supabase
     .from("Notification")
     .insert(notification)
     .select();
-    if(error){
-        console.log("Error creating notification:", error);
-        return {data:null,error};
-    }
-    return {data,error};
+  if (error) {
+    console.log("Error creating notification:", error);
+    return { data: null, error };
+  }
+  return { data, error };
 }
-export async function passwordRecovery(email:string){
-   alert(email)
 
-   let { data, error } = await supabase.auth.resetPasswordForEmail(email,{
-    redirectTo:"https://offer-hive.vercel.app/resetPassword"
-   })
-    if(error){
-        console.log("Error fetching user:", error);
-        return {data:null,error};
-    }
-    return {data,error};
+export async function passwordRecovery(email: string) {
+  const supabase = await createClient();
+
+  let { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: "https://offer-hive.vercel.app/resetPassword",
+  });
+  if (error) {
+    console.log("Error fetching user:", error);
+    return { data: null, error };
+  }
+  return { data, error };
 }
-export async function updatePassword(password:string,email:string){
-   let { data, error } = await supabase.auth.updateUser({
+
+export async function updatePassword(password: string, email: string|null|undefined) {
+    const supabase = await createClient();
+
+  if(!email){
+    return { data: null, error: 'Email is required' };
+  }
+
+  let { data, error } = await supabase.auth.updateUser({
     email,
     password,
-  })
-    if(error){
-        console.log("Error fetching user:", error);
-        return {data:null,error};
-    }
-    return {data,error};
+  });
+  if (error) {
+    console.log("Error fetching user:", error);
+    return { data: null, error };
+  }
+  return { data, error };
 }
 
-export async function getSupabaseUser(){
-  const {data,error}=await supabase.auth.getUser()
-  if(error){
+export async function getSupabaseUser() {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.getUser();
+  if (error) {
     console.log("Error fetching user:", error);
-    return {data:null,error};
+    return { data: null, error };
   }
-  return {data,error};
+  return { data, error };
 }

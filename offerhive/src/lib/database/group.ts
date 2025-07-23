@@ -1,10 +1,14 @@
-import { supabase } from "./db";
+"use server"
+
+// import { supabase } from "./db";
+import { createClient } from "./db-server"; 
 import { GroupUnique } from "../types";
 import { filter } from "motion/react-client";
 export async function getGroups(counter: number) {
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
 
+  const supabase = await createClient();
   const { data, error } = await supabase
   .from('Group')
   .select(`
@@ -47,6 +51,8 @@ export async function getGroups(counter: number) {
 }
 
 export async function getCommunityProviders(community_id:string,searchTrem:string,counter:number){
+    const supabase = await createClient();
+
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
 
@@ -81,6 +87,8 @@ export async function getCommunityProviders(community_id:string,searchTrem:strin
 }
 
 export async function searchGroups(searchTerm: string, counter: number) {
+    const supabase = await createClient();
+
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
   const { data, error } = await supabase
@@ -127,6 +135,8 @@ export async function searchGroups(searchTerm: string, counter: number) {
 
 
 export async function subscribeGroup(user_id:string,group_id:string,isSubscribed:boolean) {
+    const supabase = await createClient();
+
 
   if(isSubscribed) {
 
@@ -157,6 +167,8 @@ export async function subscribeGroup(user_id:string,group_id:string,isSubscribed
 }
 
 export async function joinGroup(user_id:string,group_id:string) {
+    const supabase = await createClient();
+
   const { data: existingGroupUser, error: existingError } = await supabase
     .from("GroupUser")
     .select("*")
@@ -181,6 +193,8 @@ export async function joinGroup(user_id:string,group_id:string) {
 
 
 export async function getGroupById(id: string): Promise<GroupUnique | null> {
+    const supabase = await createClient();
+
   const { data, error } = await supabase
     .from('Group')
     .select(`

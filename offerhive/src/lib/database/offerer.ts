@@ -1,8 +1,11 @@
+"use server"
 
 import { Offer, OfferBeforeCreation } from "../types";
-import { supabase } from "./db";
-
+// import { supabase } from "./db";
+import { createClient } from "./db-server";
 export async function getOfferers(counter: number) {
+  const supabase = await createClient();
+
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
 
@@ -18,6 +21,8 @@ export async function getOfferers(counter: number) {
 }
 
 export async function searchOfferers(searchTerm: string, counter: number) {
+  const supabase = await createClient();
+
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
 
@@ -35,6 +40,8 @@ export async function searchOfferers(searchTerm: string, counter: number) {
 }
 
 export async function getShopById(id: string | null) {
+  const supabase = await createClient();
+
   if (!id) {
     console.log("No ID provided");
     return null;
@@ -89,6 +96,8 @@ export async function createShop(
   shop: any,
   images: File[]
 ) {
+  const supabase = await createClient();
+
   if (!userid) {
   }
   if (!shop.shop_desc || !shop.shop_title || !shop.contact_info || !userid) {
@@ -180,6 +189,8 @@ export async function createShop(
 }
 
 export async function updateShop(id: string, updatedFields: Partial<any>) {
+  const supabase = await createClient();
+
   if (!id) {
     console.log("no id provided");
     return;
@@ -200,6 +211,8 @@ export async function updateShop(id: string, updatedFields: Partial<any>) {
   return data;
 }
 export async function updateOffer(offer: Offer) {
+  const supabase = await createClient();
+
   const { offer_id, ...rest } = offer;
 
   const { data, error } = await supabase
@@ -222,6 +235,8 @@ export async function handleDeleteOfferImage(
   shop_id: string,
   filename: string
 ) {
+  const supabase = await createClient();
+
   const filePath = `offer_pics/${shop_id}/${offer_id}/${filename}`;
 
   const { error } = await supabase.storage.from("images").remove([filePath]);
@@ -235,6 +250,8 @@ export async function handleDeleteOfferImage(
 }
 
 export async function deleteOffer(offer_id: string, shop_id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("Offers")
     .delete()
@@ -277,6 +294,8 @@ export async function deleteOffer(offer_id: string, shop_id: string) {
 }
 
 export async function createOffer(offer: OfferBeforeCreation) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("Offers")
     .insert({
@@ -298,6 +317,8 @@ export async function createOffer(offer: OfferBeforeCreation) {
 }
 
 export async function getOffersById(user_id: string | null) {
+  const supabase = await createClient();
+
   if (!user_id) {
     console.log("No user ID provided");
     return null;
@@ -315,6 +336,8 @@ export async function getOffersById(user_id: string | null) {
   return data;
 }
 export async function deleteShop(id: string) {
+  const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("UserShop")
     .delete()
@@ -330,6 +353,8 @@ export async function deleteShop(id: string) {
   return data;
 }
 export async function handleDeleteShopImage(id: string, filename: string) {
+  const supabase = await createClient();
+
   const filePath = `shop_pics/${id}/${filename}`;
 
   const { error } = await supabase.storage.from("images").remove([filePath]);
@@ -340,6 +365,8 @@ export async function handleDeleteShopImage(id: string, filename: string) {
   return true;
 }
 export async function uploadImage(file: File, userId: string) {
+    const supabase = await createClient();
+
   const filepath = `shop_pics/${userId}/${file.name}`;
   const { error } = await supabase.storage
     .from("images")
@@ -369,6 +396,8 @@ export async function uploadOfferImage(
   userId: string,
   offerId: string
 ) {
+  const supabase = await createClient();
+
   const filepath = `offer_pics/${userId}/${offerId}/${file.name}`;
   const { error } = await supabase.storage
     .from("images")

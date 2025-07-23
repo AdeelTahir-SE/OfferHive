@@ -2,13 +2,12 @@
 import { Eye, EyeClosed } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import OAuthSection from "@/components/oAuthsSection";
+import { fetchRequest } from "@/lib/utils/fetch";
 import { passwordRecovery } from "@/lib/database/user";
 import { useDispatch } from "react-redux";
 import { setUser } from "@/lib/redux/user/userSlice";
 import Link from "next/link";
 import WavySvg from "@/components/wavySvg";
-import { fetchRequest } from "@/lib/utils/fetch";
 export default function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState<string | null>();
@@ -118,7 +117,7 @@ export default function Login() {
           </section>
 
           {error && <p className="text-red-500 text-center mt-4">{error}</p>}
-
+          {response&&<p className="text-green-500 text-center mt-4">{response}</p>}
           <p className="text-center text-gray-600 mt-4">
             Don&apos;t have an account?
             <Link
@@ -129,13 +128,24 @@ export default function Login() {
             </Link>
           </p>
           <p
-            className="text-yellow-500 text-center font-semibold hover:underline"
+            className="text-yellow-500 cursor-pointer text-center font-semibold hover:underline"
             onClick={() => {
               if (!form.email) {
                 alert("fill the email field first");
               } else {
-                passwordRecovery(form?.email);
-                alert("password recovery email sent");
+                fetchRequest("/api/passwordRecoveryMail",{
+                  method:"PUT",
+                  headers:{
+                    "Content-Type":"Application/json",
+                  },
+                  body:JSON.stringify({email:form?.email}),
+                },
+                ()=>{},
+                setError,
+                (data)=>{
+                  setResponse(data?.message)
+                }
+                )
               }
             }}
           >

@@ -1,9 +1,15 @@
-import { supabase } from "./db";
+"use server"
+
+// import { supabase } from "./db";
+import { createClient } from "./db-server"; 
+
 export async function getGroupShopsByGroupId(
   groupId: string,
   counter: number,
   searchQuery: string
 ) {
+    const supabase = await createClient();
+
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
   const { data, error } = await supabase
@@ -22,6 +28,8 @@ export async function getGroupShopsByGroupId(
 }
 
 export async function getGroupShopById(groupShopId: string) {
+    const supabase = await createClient();
+
   const { data, error } = await supabase
     .from("GroupShop")
     .select(`*`)
@@ -40,6 +48,8 @@ export async function getGroupShopOffersById(
   searchQuery: string,
   counter: number
 ) {
+    const supabase = await createClient();
+
   const rangeStart = counter * 10;
   const rangeEnd = rangeStart + 9;
   const { data, error } = await supabase
@@ -58,6 +68,8 @@ export async function getGroupShopOffersById(
 }
 
 export async function createGroupShopOffer(openShopId: string, offer: any) {
+    const supabase = await createClient();
+
   const path = `groupShopOffers/${openShopId}`;
 
   const { error: imageUploadError } = await supabase.storage

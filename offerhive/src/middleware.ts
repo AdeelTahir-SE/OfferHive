@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-
+import { updateSession } from "./lib/database/supabase-middleware";
 export function middleware(request: NextRequest) {
   const update = false;
 
@@ -76,8 +76,8 @@ export function middleware(request: NextRequest) {
       }
     );
   }
+  return  updateSession(request);
 
-  return NextResponse.next();
 }
 
 export const config = {
