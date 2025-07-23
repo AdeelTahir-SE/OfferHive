@@ -87,7 +87,7 @@ export default function People() {
   }
 
   return (
-    <section className="flex flex-col items-center justify-center px-4 py-6 ml-12 h-screen">
+    <section className="flex flex-col  items-center justify-start px-4 py-6  h-screen">
       <div className="text-3xl font-semibold bg-yellow-500 text-black px-6 py-3 rounded-t-lg shadow w-full text-center">
         Chat with Offerers
       </div>

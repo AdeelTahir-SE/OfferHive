@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, use } from "react";
-import {  setChatDB } from "@/lib/database/user";
+import { setChatDB } from "@/lib/database/user";
 import { fetchRequest } from "@/lib/utils/fetch";
 import { supabase } from "@/lib/database/db";
 import { useSelector } from "react-redux";
@@ -115,9 +115,7 @@ export default function PersonChat() {
             () => {},
             (data) => {
               if (data && Array.isArray(data.chat)) {
-                console.log(data);
                 setChat(data.chat);
-                console.log("this is a chat", chat);
               } else {
                 setChat([]);
               }
@@ -148,7 +146,7 @@ export default function PersonChat() {
           schema: "public",
           table: "Chat",
         },
-        (payload) => {
+        async (payload) => {
           const updated = payload.new;
           const isMatch =
             (updated.user_id === sender && updated.shop_user_id === receiver) ||
@@ -156,6 +154,34 @@ export default function PersonChat() {
 
           if (isMatch && Array.isArray(updated.chat)) {
             setChat(updated.chat);
+            const last = updated.chat[updated.chat.length - 1];
+            const secondLast = updated.chat[updated.chat.length - 2];
+            const lastTime = new Date(last.timestamp).getTime();
+            const secondLastTime = new Date(secondLast.timestamp).getTime();
+            const timeDiff = lastTime - secondLastTime;
+
+            // console.log(last,secondLast,timeDiff)
+            //                   console.log(`${user?.email} has sent you a message`)
+
+            if (last.sender != loggedInUser?.user_id && timeDiff > 1000 * 60*1) {
+              await fetchRequest(
+                "/api/notifications",
+                {
+                  method: "POST",
+                  headers: {
+                    user_id: loggedInUser?.user_id,
+                  },
+
+                  body: JSON.stringify({
+                    user_id: loggedInUser?.user_id,
+                    description: `${user?.email} has sent you a message`,
+                  }),
+                },
+                () => {},
+                () => {},
+                (data) => {}
+              );
+            }
           }
         }
       )
@@ -164,7 +190,7 @@ export default function PersonChat() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [id, loggedInUser?.user_id, loggedInUser?.is_shop_owner]);
+  }, [id, user, loggedInUser?.user_id, loggedInUser?.is_shop_owner]);
 
   const handleSendMessage = async () => {
     if (newMessage.trim() === "") return;

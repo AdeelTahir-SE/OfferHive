@@ -5,7 +5,9 @@ import Link from "next/link";
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X, Bell } from "lucide-react";
+import { fetchRequest } from "@/lib/utils/fetch";
 import { getNotifications, deleteNotifications } from "@/lib/database/user";
+
 type Notification = {
   user_id: string;
   description: string;
@@ -29,15 +31,40 @@ export default function Header() {
 
   async function removeNotifications() {
     if (user?.user_id) {
-      await deleteNotifications(user.user_id);
-      setNotifications([]); // Clear the notifications from state
+      fetchRequest("/api/notifications",{
+        method:"DELETE",
+        headers:{
+          "user_id":user?.user_id,
+        }
+
+      },
+      ()=>{},
+      ()=>{},
+      (data)=>{
+        if(data?.success)
+        setNotifications([]); 
+      }
+    
+    )
+
     }
   }
 
   async function getAndSetNotifications() {
     if (user?.user_id) {
-      const notifications = await getNotifications(user.user_id);
-      setNotifications(notifications);
+      fetchRequest("/api/notifications",{
+        method:"GET",
+        headers:{
+          "user_id":user?.user_id,
+        }
+      },
+      ()=>{},
+      ()=>{},
+      (data)=>{
+        if(data?.success)
+        setNotifications(data?.data); 
+      })
+
     }
   }
 

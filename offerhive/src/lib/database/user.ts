@@ -268,10 +268,10 @@ export async function getNotifications(user_id: string) {
 
   if (error) {
     console.error("Error fetching notifications:", error);
-    return null;
+    return {data:null,error};
+
   }
-  console.log("notifications", data);
-  return data;
+  return {data,error};
 }
 export async function deleteNotifications(user_id: string) {
   const { data, error } = await supabase
@@ -282,8 +282,23 @@ export async function deleteNotifications(user_id: string) {
 
   if (error) {
     console.error("Error deleting notifications:", error);
-    return null;
+    return {data:null,error};
+
   }
 
-  return data;
+  return {data,error};
+
+}
+
+export async function createNotification(notification:{user_id:string,description:string}){
+
+    const { data, error } = await supabase
+    .from("Notification")
+    .insert(notification)
+    .select();
+    if(error){
+        console.log("Error creating notification:", error);
+        return {data:null,error};
+    }
+    return {data,error};
 }
