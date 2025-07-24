@@ -153,7 +153,7 @@ export default function CreateStore() {
   if (user?.email == "") {
     return (
       <section className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br max-w-screen from-yellow-50 to-white p-6">
-        <div className="bg-white shadow-xl rounded-2xl p-10  w-full text-center border border-yellow-200">
+        <div className="bg-white shadow-xl rounded-2xl p-10  w-full text-center ">
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
             Create Shop and Offers
           </h1>
@@ -278,6 +278,7 @@ export default function CreateStore() {
                   maxLength={15}
                   className="px-4 py-3 border text-base rounded-md focus:outline-none"
                   value={tagsInput}
+                  disabled={shop?.shop_tags?.length>=5}
                   onChange={(e) => setTagsInput(e.target.value)}
                 />
                 <button
@@ -288,6 +289,11 @@ export default function CreateStore() {
                   Add Tag
                 </button>
               </div>
+              {shop?.shop_tags?.length>=5 && (
+                <p className="text-red-500 text-sm">
+                  You can only add up to 5 tags.
+                </p>
+              )}
               <div className="flex flex-row items-center flex-wrap justify-center gap-2 mt-2">
                 {shop.shop_tags.map((tag, idx) => (
                   <span
@@ -331,14 +337,14 @@ export default function CreateStore() {
                   Drag and drop or click to select images
                 </label>
               </div>
-              <div className="flex gap-2 mt-2">
+              <div className="flex flex-row items-center justify-center flex-wrap gap-2 mt-2">
                 {imagesInput.length > 0 &&
                   imagesInput.map((image, idx) => (
                     <span
                       key={idx}
                       className="bg-yellow-200 px-4 py-1 rounded-full relative"
                     >
-                      {image.name}
+                      {image.name.substring(0,10)}...
                       <button
                         type="button"
                         onClick={() => handleRemoveImage(idx)}
@@ -366,6 +372,7 @@ export default function CreateStore() {
                   placeholder="Enter shop link"
                   className="px-4 py-3 border text-base rounded-md focus:outline-none"
                   value={linksInput}
+                  disabled={shop?.links?.length>=3}
                   onChange={(e) => setLinksInput(e.target.value)}
                 />
                 <button
@@ -376,6 +383,11 @@ export default function CreateStore() {
                   Add Link
                 </button>
               </div>
+              {shop?.links?.length>=3 && (
+                <p className="text-red-500 text-sm">
+                  You can only add up to 3 links.
+                </p>
+              )}
               <div className="flex flex-row items-center justify-center flex-wrap gap-2 mt-2">
                 {shop.links.map((link, idx) => (
                   <span

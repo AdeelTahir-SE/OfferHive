@@ -28,6 +28,12 @@ export const userSlice = createSlice({
     },
     setIsShopOwner: (state, action: PayloadAction<boolean>) => {
       state.is_shop_owner = action.payload;
+      const oneHourFromNow = new Date(
+          Date.now() + 60 * 60 * 1000
+        ).toUTCString();
+      document.cookie = `offerhive_user=${encodeURIComponent(
+        JSON.stringify(state)
+      )}; path=/; expires=${oneHourFromNow}`;
     },
     setUser(state, action: PayloadAction<userState>) {
       Object.assign(state, action.payload);

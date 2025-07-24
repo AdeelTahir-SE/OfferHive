@@ -1,10 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
-import {
-  updateShop,
-
-} from "@/lib/database/offerer";
+import { updateShop } from "@/lib/database/offerer";
 import { Shop, Offer } from "@/lib/types";
 import EditableText from "@/components/editableText";
 import { useSelector } from "react-redux";
@@ -37,7 +34,9 @@ export default function ManageShop() {
         },
         setLoading,
         (error) => {
-          console.error("Failed to fetch shop data:", error);
+          if (error) {
+            // console.error("Failed to fetch shop data:", error);
+          }
         },
         (data) => {
           if (data) {
@@ -145,7 +144,7 @@ export default function ManageShop() {
   };
 
   const handleCreateOffer = async () => {
-   if(!id){
+    if (!id) {
       console.error("User ID is not available");
       return;
     }
@@ -156,7 +155,7 @@ export default function ManageShop() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({id}),
+        body: JSON.stringify({ id }),
       },
       () => {
         console.log("Offer created successfully");
@@ -168,12 +167,11 @@ export default function ManageShop() {
         setOffers([...offers, offerCreated]);
       }
     );
-
   };
 
   if (loading) {
     return (
-      <section className="h-screen max-w-screen w-screen bg-white flex items-center justify-center">
+      <section className="h-screen max-w-screen w-full bg-white flex items-center justify-center">
         <Loader size={12} />
       </section>
     );
@@ -203,12 +201,12 @@ export default function ManageShop() {
         />
       </h1>
 
-      <p className="text-xl flex flex-row items-center justify-center text-gray-600 w-full text-center mb-6">
+      <div className="text-xl flex flex-row items-center justify-center text-gray-600 w-full text-center mb-6">
         <EditableText
           text={shop.shop_desc}
           onSave={(val) => handleShopUpdate("shop_desc", val)}
         />
-      </p>
+      </div>
 
       <EditableImages
         images={shop.shop_images ?? []}
@@ -259,7 +257,7 @@ export default function ManageShop() {
                     />
                   </h3>
 
-                  <p className="text-gray-600 text-sm">
+                  <div className="text-gray-600 text-sm">
                     <EditableText
                       text={offer.offer_desc}
                       isEditing={isEditing}
@@ -267,10 +265,10 @@ export default function ManageShop() {
                         handleOfferUpdate(index, "offer_desc", val)
                       }
                     />
-                  </p>
+                  </div>
 
                   <div className="text-gray-500 text-sm space-y-1">
-                    <p>
+                    <div>
                       <span className="font-medium">Valid From:</span>{" "}
                       <EditableText
                         text={offer.starts_at}
@@ -279,8 +277,8 @@ export default function ManageShop() {
                           handleOfferUpdate(index, "starts_at", val)
                         }
                       />
-                    </p>
-                    <p>
+                    </div>
+                    <div>
                       <span className="font-medium">Valid Until:</span>{" "}
                       <EditableText
                         text={offer.valid_uptill}
@@ -289,7 +287,7 @@ export default function ManageShop() {
                           handleOfferUpdate(index, "valid_uptill", val)
                         }
                       />
-                    </p>
+                    </div>
                   </div>
                   <div className="flex flex-row items-center justify-between *:text-lg *:font-semibold *:hover:cursor-pointer ">
                     <button
@@ -350,7 +348,7 @@ export default function ManageShop() {
                 }}
                 className="ml-1 text-red-500 font-bold hover:text-red-700"
               >
-                <X/>
+                <X />
               </button>
             </div>
           ))}
@@ -379,12 +377,12 @@ export default function ManageShop() {
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             Shop Address
           </h2>
-          <p className="text-gray-600 font-extrabold text-center text-3xl mb-2">
+          <div className="text-gray-600 font-extrabold text-center text-3xl mb-2">
             <EditableText
               text={shop.shop_address}
               onSave={(val) => handleShopUpdate("shop_address", val)}
             />
-          </p>
+          </div>
         </div>
       }
 
@@ -394,12 +392,12 @@ export default function ManageShop() {
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             Contact Info
           </h2>
-          <p className=" font-extrabold text-3xl text-gray-700 mb-1">
+          <div className=" font-extrabold text-3xl text-gray-700 mb-1">
             <EditableText
               text={shop.contact_info}
               onSave={(val) => handleShopUpdate("contact_info", val)}
             />
-          </p>
+          </div>
         </div>
       }
 
@@ -408,10 +406,7 @@ export default function ManageShop() {
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Shop Links</h2>
           <section className="flex flex-col items-center justify-center gap-3 ">
             {shop.links.map((link, index) => (
-              <div
-                key={index}
-                className="flex items-center  p-2 rounded-md"
-              >
+              <div key={index} className="flex items-center  p-2 rounded-md">
                 <EditableText
                   text={link}
                   onSave={(val) => {
@@ -432,7 +427,7 @@ export default function ManageShop() {
                   }}
                   className=" text-red-500  hover:text-red-700 text-sm font-bold"
                 >
-                  <X/>
+                  <X />
                 </button>
               </div>
             ))}

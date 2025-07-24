@@ -70,8 +70,8 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <section className="flex items-center justify-center h-screen w-screen">
-        <Loader size={3} />
+      <section className="flex items-center justify-center h-screen w-full max-w-screen">
+        <Loader size={5} />
       </section>
     );
   }

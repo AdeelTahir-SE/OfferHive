@@ -65,7 +65,7 @@ export default function OfferDetails() {
 
   if (loading) {
     return (
-      <section className="h-screen w-screen bg-white flex items-center justify-center">
+      <section className="h-screen max-w-screen w-full bg-white flex items-center justify-center">
         <Loader size={12} />
       </section>
     );
