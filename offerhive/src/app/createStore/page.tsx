@@ -125,26 +125,25 @@ export default function CreateStore() {
         },
         setLoading,
         setError,
-        setResponse
+        (response) => {
+          if (response?.success) {
+            setShop({
+              shop_desc: "",
+              shop_title: "",
+              contact_info: "",
+              links: [],
+              shop_tags: [],
+              shop_address: "",
+            });
+            setTagsInput("");
+            setImagesInput([]);
+            setLinksInput("");
+            dispatch(setIsShopOwner(true));
+            router.push("/shop/dashboard");
+            setResponse(null);
+          } 
+        }
       );
-
-      if (response) {
-        setShop({
-          shop_desc: "",
-          shop_title: "",
-          contact_info: "",
-          links: [],
-          shop_tags: [],
-          shop_address: "",
-        });
-        setTagsInput("");
-        setImagesInput([]);
-        setLinksInput("");
-        dispatch(setIsShopOwner(true));
-        router.push("/shop/dashboard");
-        setResponse(null);
-      } else {
-      }
     } catch (error) {
       setError("An error occurred while creating the shop. Please try again.");
     } finally {
@@ -153,7 +152,7 @@ export default function CreateStore() {
   };
   if (user?.email == "") {
     return (
-      <section className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-yellow-50 to-white p-6">
+      <section className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br max-w-screen from-yellow-50 to-white p-6">
         <div className="bg-white shadow-xl rounded-2xl p-10  w-full text-center border border-yellow-200">
           <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4">
             Create Shop and Offers
@@ -175,9 +174,7 @@ export default function CreateStore() {
   } else if (user.is_shop_owner === false) {
     return (
       <section className="flex flex-col items-center justify-center p-6 border-2 mx-auto">
-        <h1 className="heading-1 mb-[30px]">
-          Create Shop and Offers
-        </h1>
+        <h1 className="heading-1 mb-[30px]">Create Shop and Offers</h1>
 
         <form
           onSubmit={handleSubmit}
@@ -199,7 +196,8 @@ export default function CreateStore() {
               <input
                 id="shop_title"
                 type="text"
-                placeholder="Enter your shop title"
+                placeholder="Enter your shop title max length 50"
+                maxLength={50}
                 className="px-4 py-3 border text-base rounded-md focus:outline-none"
                 value={shop.shop_title}
                 onChange={handleChange}
@@ -217,7 +215,8 @@ export default function CreateStore() {
               <input
                 id="shop_address"
                 type="text"
-                placeholder="Enter your shop address"
+                maxLength={60}
+                placeholder="Enter your shop address max length 60"
                 className="px-4 py-3 border text-base rounded-md focus:outline-none"
                 value={shop.shop_address || ""}
                 onChange={handleChange}
@@ -234,7 +233,8 @@ export default function CreateStore() {
               </label>
               <textarea
                 id="shop_desc"
-                placeholder="Enter your shop description"
+                placeholder="Enter your shop description max length 600"
+                maxLength={600}
                 className="px-4 py-3 border text-base rounded-md focus:outline-none"
                 value={shop.shop_desc}
                 onChange={handleChange}
@@ -253,7 +253,8 @@ export default function CreateStore() {
               <input
                 id="contact_info"
                 type="text"
-                placeholder="Enter your contact info"
+                placeholder="Enter your contact info max length 15"
+                maxLength={15}
                 className="px-4 w-full py-3 border text-base rounded-md focus:outline-none"
                 value={shop.contact_info}
                 onChange={handleChange}
@@ -273,7 +274,8 @@ export default function CreateStore() {
                 <input
                   id="tags"
                   type="text"
-                  placeholder="Enter tags"
+                  placeholder="Enter tags max length 15"
+                  maxLength={15}
                   className="px-4 py-3 border text-base rounded-md focus:outline-none"
                   value={tagsInput}
                   onChange={(e) => setTagsInput(e.target.value)}
@@ -286,7 +288,7 @@ export default function CreateStore() {
                   Add Tag
                 </button>
               </div>
-              <div className="flex gap-2 mt-2">
+              <div className="flex flex-row items-center flex-wrap justify-center gap-2 mt-2">
                 {shop.shop_tags.map((tag, idx) => (
                   <span
                     key={idx}
@@ -374,11 +376,11 @@ export default function CreateStore() {
                   Add Link
                 </button>
               </div>
-              <div className="flex gap-2 mt-2">
+              <div className="flex flex-row items-center justify-center flex-wrap gap-2 mt-2">
                 {shop.links.map((link, idx) => (
                   <span
                     key={idx}
-                    className="bg-yellow-200 px-4 py-1 rounded-full relative"
+                    className="bg-yellow-200 px-4 py-1 rounded-full relative overflow-hidden text-ellipsis whitespace-nowrap"
                   >
                     {link}
                     <button
@@ -402,11 +404,12 @@ export default function CreateStore() {
               {loading ? "Creating Shop..." : "Create Shop"}
             </button>
 
-            {/* Error message */}
+            
+          </section>
+          {/* Error message */}
             {error && (
               <div className="mt-4 text-red-500 text-center">{error}</div>
             )}
-          </section>
         </form>
       </section>
     );

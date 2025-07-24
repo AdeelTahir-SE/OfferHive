@@ -129,46 +129,44 @@ export default function GroupPage() {
     <section className="flex flex-col md:flex-row items-center justify-center px-[40px] xxl:px-[450px] xl:px-[200px] md:px-[100px] py-[50px] md:py-[130px]">
       {group ? (
         <div className="flex flex-col md:flex-row items-center  justify-center gap-[50px] w-full ">
-            <div className="md:flex hidden  md:flex-col items-center justify-center gap-[30px] md:w-1/4">
-              <h2 className="heading-3 text-black text-center ">
-                Group Details
-              </h2>
+          <div className="md:flex hidden  md:flex-col items-center justify-center gap-[30px] md:w-1/4">
+            <h2 className="heading-3 text-black text-center ">Group Details</h2>
 
-              <div className="flex flex-col items-center ">
-                <p className="text-sm text-gray-600 text-center">
-                  <span className="font-semibold ">Created On:</span>{" "}
-                  {new Date(group?.created_at).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
+            <div className="flex flex-col items-center ">
+              <p className="text-sm text-gray-600 text-center">
+                <span className="font-semibold ">Created On:</span>{" "}
+                {new Date(group?.created_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
 
-                {group?.GroupDetail?.group_image && (
-                  <Image
-                    src={group.GroupDetail?.group_image}
-                    alt="Group Image"
-                    width={250}
-                    height={250}
-                    className="rounded-lg object-cover"
-                  />
-                )}
+              {group?.GroupDetail?.group_image && (
+                <Image
+                  src={group.GroupDetail?.group_image}
+                  alt="Group Image"
+                  width={250}
+                  height={250}
+                  className="rounded-lg object-cover"
+                />
+              )}
 
-                {group?.GroupDetail?.group_tags?.length > 0 && (
-                  <div className="flex flex-wrap justify-center gap-2 ">
-                    {group.GroupDetail.group_tags.map(
-                      (tag: string, index: number) => (
-                        <span
-                          key={index}
-                          className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full shadow"
-                        >
-                          {tag}
-                        </span>
-                      )
-                    )}
-                  </div>
-                )}
-              </div>
+              {group?.GroupDetail?.group_tags?.length > 0 && (
+                <div className="flex flex-wrap justify-center gap-2 ">
+                  {group.GroupDetail.group_tags.map(
+                    (tag: string, index: number) => (
+                      <span
+                        key={index}
+                        className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full shadow"
+                      >
+                        {tag}
+                      </span>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           <section className="flex flex-col items-center justify-center gap-[30px] md:min-w-1/2 ">
@@ -179,51 +177,46 @@ export default function GroupPage() {
               {group?.GroupDetail?.group_desc}
             </p>
           </section>
-      
 
+          <div className="flex md:hidden flex-col items-center justify-center gap-[30px] md:w-1/4">
+            <h2 className="heading-3 text-black text-center ">Group Details</h2>
 
-       <div className="flex md:hidden flex-col items-center justify-center gap-[30px] md:w-1/4">
-              <h2 className="heading-3 text-black text-center ">
-                Group Details
-              </h2>
+            <div className="flex flex-col items-center ">
+              <p className="text-sm text-gray-600 text-center">
+                <span className="font-semibold ">Created On:</span>{" "}
+                {new Date(group?.created_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </p>
 
-              <div className="flex flex-col items-center ">
-                <p className="text-sm text-gray-600 text-center">
-                  <span className="font-semibold ">Created On:</span>{" "}
-                  {new Date(group?.created_at).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </p>
+              {group?.GroupDetail?.group_image && (
+                <Image
+                  src={group.GroupDetail?.group_image}
+                  alt="Group Image"
+                  width={250}
+                  height={250}
+                  className="rounded-lg object-cover"
+                />
+              )}
 
-                {group?.GroupDetail?.group_image && (
-                  <Image
-                    src={group.GroupDetail?.group_image}
-                    alt="Group Image"
-                    width={250}
-                    height={250}
-                    className="rounded-lg object-cover"
-                  />
-                )}
-
-                {group?.GroupDetail?.group_tags?.length > 0 && (
-                  <div className="flex flex-wrap justify-center gap-2 ">
-                    {group.GroupDetail.group_tags.map(
-                      (tag: string, index: number) => (
-                        <span
-                          key={index}
-                          className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full shadow"
-                        >
-                          {tag}
-                        </span>
-                      )
-                    )}
-                  </div>
-                )}
-              </div>
+              {group?.GroupDetail?.group_tags?.length > 0 && (
+                <div className="flex flex-wrap justify-center gap-2 ">
+                  {group.GroupDetail.group_tags.map(
+                    (tag: string, index: number) => (
+                      <span
+                        key={index}
+                        className="bg-yellow-200 text-yellow-800 text-sm font-semibold px-3 py-1 rounded-full shadow"
+                      >
+                        {tag}
+                      </span>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-
 
           <div className="flex flex-col items-center justify-center gap-[30px] ">
             {user && (
@@ -233,12 +226,12 @@ export default function GroupPage() {
                     ? joinStatus === "rejected"
                       ? "join request rejected"
                       : joinStatus == "pending"
-                      ? "Your request is pending approval."
-                      : joinStatus === "joined"
-                      ? "You are already a group member."
-                      : joinStatus == "unjoined"
-                      ? "Request to join the group."
-                      : "Sign in to join the group."
+                        ? "Your request is pending approval."
+                        : joinStatus === "joined"
+                          ? "You are already a group member."
+                          : joinStatus == "unjoined"
+                            ? "Request to join the group."
+                            : "Sign in to join the group."
                     : "Sign in to join the group."}
                 </p>
                 {user?.is_shop_owner ? (
@@ -248,10 +241,10 @@ export default function GroupPage() {
                       joinStatus === "unjoined"
                         ? "bg-yellow-500 hover:bg-yellow-600"
                         : joinStatus === "pending"
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : joinStatus === "rejected"
-                        ? "bg-red-500 hover:bg-red-600"
-                        : "bg-yellow-600 cursor-not-allowed"
+                          ? "bg-gray-400 cursor-not-allowed"
+                          : joinStatus === "rejected"
+                            ? "bg-red-500 hover:bg-red-600"
+                            : "bg-yellow-600 cursor-not-allowed"
                     }`}
                     disabled={
                       joinStatus === "pending" ||
@@ -262,10 +255,10 @@ export default function GroupPage() {
                     {joinStatus === "unjoined"
                       ? "Click to Join"
                       : joinStatus === "pending"
-                      ? "Approval Pending"
-                      : joinStatus === "rejected"
-                      ? "Request Rejected "
-                      : "Already Joined"}
+                        ? "Approval Pending"
+                        : joinStatus === "rejected"
+                          ? "Request Rejected "
+                          : "Already Joined"}
                   </button>
                 ) : (
                   <button

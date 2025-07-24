@@ -81,10 +81,10 @@ export default function OfferDetails() {
     <section className="flex flex-col items-center justify-center gap-[30px] ">
             <ImagesSlider images={shop.shop_images} />
 
-      <h1 className="heading-1 lg:px-[200px] text-center px-4 py-7 ">
+      <h1 className="heading-1 lg:px-[200px] max-w-full text-wrap break-words text-center px-4 py-7 ">
         {shop.shop_title}
       </h1>
-      <p className="description text-center px-4 lg:px-[200px]">
+      <p className="description text-center text-wrap max-w-full  break-words px-7 lg:px-[200px]">
         {shop.shop_desc}
       </p>
 
@@ -167,7 +167,7 @@ export default function OfferDetails() {
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-500 underline text-lg break-words text-center w-full max-w-full"
+              className="text-yellow-500 underline text-lg break-words text-center w-full max-w-full"
             >
               {link}
             </a>

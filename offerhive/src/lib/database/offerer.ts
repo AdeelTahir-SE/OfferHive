@@ -1,5 +1,6 @@
 "use server"
 
+import { code } from "motion/react-client";
 import { Offer, OfferBeforeCreation } from "../types";
 // import { supabase } from "./db";
 import { createClient } from "./db-server";
@@ -101,7 +102,7 @@ export async function createShop(
   if (!userid) {
   }
   if (!shop.shop_desc || !shop.shop_title || !shop.contact_info || !userid) {
-    return { data: null, error: new Error("missing required fields") };
+    return { data: null, error: "missing required fields"};
   }
   console.log(userid);
   const { error: chatDeleteError } = await supabase
@@ -115,7 +116,7 @@ export async function createShop(
     .eq("user_id", userid);
   if (UserUpdateError) {
     console.log("User update error", UserUpdateError);
-    return { data: null, error: UserUpdateError };
+    return { data: null, error: UserUpdateError.message,code:UserUpdateError?.code };
   }
 
   const imageurls: string[] = [];
@@ -131,8 +132,8 @@ export async function createShop(
       });
 
     if (error) {
-      console.error("Error uploading image:", error);
-      return { data: null, error };
+      console.error("Error uploading image:", error.message);
+      return { data: null, error:error.message,code:null };
     }
 
     const { data: urlData } = supabase.storage
@@ -179,13 +180,13 @@ export async function createShop(
 
   if (shopError) {
     console.error("Error creating shop:", shopError);
-    return { data: null, error: shopError };
+    return { data: null, error: shopError.message ,code:shopError.code};
   }
 
   if (chatDeleteError) {
     console.error("Error deleting chat:", chatDeleteError);
   }
-  return { data: shopData, error: shopError };
+  return { data: shopData, error: chatDeleteError?.message,code:chatDeleteError?.code };
 }
 
 export async function updateShop(id: string, updatedFields: Partial<any>) {
@@ -205,10 +206,10 @@ export async function updateShop(id: string, updatedFields: Partial<any>) {
 
   if (error) {
     console.error("Error updating shop:", error);
-    return null;
+    return {data:null,error};
   }
 
-  return data;
+  return {data,error:null};
 }
 export async function updateOffer(offer: Offer) {
   const supabase = await createClient();

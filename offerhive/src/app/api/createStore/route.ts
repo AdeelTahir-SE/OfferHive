@@ -1,5 +1,6 @@
 import { NextResponse, NextRequest } from "next/server";
 import { createShop } from "@/lib/database/offerer";
+import { object } from "motion/react-client";
 export async function POST(request: NextRequest) {
 
   const formData = await request.formData();
@@ -22,14 +23,20 @@ export async function POST(request: NextRequest) {
     shop_tags: shop_tags,
     shop_address: shop_address,
   };
-  const { data, error } = await createShop(
+  const { data, error,code } = await createShop(
     shop_owner_id as string,
     shop,
     shop_images as File[]
   );
   if (error||!data) {
+    if(code=="23505"){
+      return NextResponse.json(
+        { error: "Shop already exists" },
+        { status: 400 }
+      );
+    }
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: `Error in creating shop:${error}` },
       { status: 500 }
     );
   }

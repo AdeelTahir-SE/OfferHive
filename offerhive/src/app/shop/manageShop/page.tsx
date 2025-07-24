@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { X } from "lucide-react";
 import {
   updateShop,
 
@@ -194,20 +195,18 @@ export default function ManageShop() {
     );
   }
   return (
-    <section className="flex flex-col items-center justify-center p-4 md:max-w-6xl mx-auto max-w-screen">
+    <section className="flex flex-col items-center justify-center p-4   mx-auto max-w-screen">
       <h1 className="text-5xl text-center font-extrabold text-gray-800 mb-4">
         <EditableText
           text={shop.shop_title}
           onSave={(val) => handleShopUpdate("shop_title", val)}
-          isEditing={true}
         />
       </h1>
 
-      <p className="text-xl text-gray-600 text-center max-w-2xl mb-6">
+      <p className="text-xl flex flex-row items-center justify-center text-gray-600 w-full text-center mb-6">
         <EditableText
           text={shop.shop_desc}
           onSave={(val) => handleShopUpdate("shop_desc", val)}
-          isEditing={true}
         />
       </p>
 
@@ -330,7 +329,7 @@ export default function ManageShop() {
           {shop?.shop_tags.map((tag, index) => (
             <div
               key={index}
-              className="flex items-center gap-1 bg-yellow-500 text-white px-3 py-1 rounded-full text-sm font-semibold"
+              className="flex items-center gap-1 bg-yellow-500 text-white  py-1 rounded-full text-lg font-semibold"
             >
               <EditableText
                 text={tag}
@@ -349,9 +348,9 @@ export default function ManageShop() {
                   setShop({ ...shop, shop_tags: updatedTags });
                   updateShop(id, { shop_tags: updatedTags });
                 }}
-                className="ml-1 text-white font-bold hover:text-red-200"
+                className="ml-1 text-red-500 font-bold hover:text-red-700"
               >
-                ✖
+                <X/>
               </button>
             </div>
           ))}
@@ -380,7 +379,7 @@ export default function ManageShop() {
           <h2 className="text-3xl font-bold text-gray-800 mb-4">
             Shop Address
           </h2>
-          <p className="text-gray-600 font-extrabold text-3xl mb-2">
+          <p className="text-gray-600 font-extrabold text-center text-3xl mb-2">
             <EditableText
               text={shop.shop_address}
               onSave={(val) => handleShopUpdate("shop_address", val)}
@@ -407,11 +406,11 @@ export default function ManageShop() {
       {shop && shop.links && (
         <div className="flex flex-col items-center justify-center mt-10 w-full bg-gray-100 p-6 rounded-lg shadow-lg">
           <h2 className="text-3xl font-bold text-gray-800 mb-4">Shop Links</h2>
-          <section className="flex flex-wrap gap-3 justify-center">
+          <section className="flex flex-col items-center justify-center gap-3 ">
             {shop.links.map((link, index) => (
               <div
                 key={index}
-                className="flex items-center bg-white shadow p-2 rounded-md"
+                className="flex items-center  p-2 rounded-md"
               >
                 <EditableText
                   text={link}
@@ -421,7 +420,7 @@ export default function ManageShop() {
                     setShop({ ...shop, links: updatedLinks });
                     updateShop(id, { links: updatedLinks });
                   }}
-                  className="text-yellow-500 underline"
+                  className="text-yellow-500 underline bg-white"
                 />
                 <button
                   onClick={() => {
@@ -431,9 +430,9 @@ export default function ManageShop() {
                     setShop({ ...shop, links: updatedLinks });
                     updateShop(id, { links: updatedLinks });
                   }}
-                  className=" text-red-500 hover:text-red-700 text-sm font-bold"
+                  className=" text-red-500  hover:text-red-700 text-sm font-bold"
                 >
-                  ✖
+                  <X/>
                 </button>
               </div>
             ))}
