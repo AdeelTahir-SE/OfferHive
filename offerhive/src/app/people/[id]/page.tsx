@@ -192,7 +192,7 @@ export default function PersonChat() {
 
 
 
-      if ( timeDiff > 1000 * 60 * 2) {
+      if ( timeDiff > 1000 * 60 * 2||updatedChat?.length<2) {
         await fetchRequest(
           "/api/notifications",
           {
