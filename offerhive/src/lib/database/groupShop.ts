@@ -70,7 +70,7 @@ export async function getGroupShopOffersById(
 export async function createGroupShopOffer(openShopId: string, offer: any) {
     const supabase = await createClient();
 
-  const path = `groupShopOffers/${openShopId}/${offer?.title}`;
+  const path = `groupShopOffers/${openShopId}/${offer?.title}${offer?.price}${offer?.contact}${offer?.description.substring(0, 10)}`;
 
   const { error: imageUploadError } = await supabase.storage
     .from("images")
