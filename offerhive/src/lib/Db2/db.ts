@@ -1,13 +1,12 @@
 "use server"
 import { createClient } from '@supabase/supabase-js';
-
  const supabaseService = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,       
   process.env.SUPABASE_SERVICE_ROLE_KEY!       
 );
 
 
-export async function signUp(email: string, password: string) {
+export async function signUp(name:string,email: string, password: string) {
   const { data: signUpData, error: signUpError } =
     await supabaseService.auth.signUp({
       email,
@@ -30,6 +29,7 @@ console.log(signUpError)
     .insert([
       {
         email,
+        name,
         user_id: signUpData.user.id,
         profile_image: "",
         is_shop_owner: false,

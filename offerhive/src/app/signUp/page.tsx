@@ -13,6 +13,7 @@ export default function SignUp() {
   const [dbUser, setDbUser] = useState<any>();
   const [successMessage, setSuccessMessage] = useState("");
   const [form, setForm] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -54,6 +55,23 @@ export default function SignUp() {
 
         <form onSubmit={handleSignUp} className="w-full">
           <section className="flex flex-col gap-5 w-full max-w-xs mx-auto">
+            <label
+              htmlFor="name"
+              className="text-base font-semibold text-gray-700"
+            >
+              Name
+            </label>
+            <input
+              id="name"
+              type="text"
+              value={form.name}
+              onChange={(e) => {
+                setForm({ ...form, name: e.target.value });
+              }}
+              placeholder="Enter your name"
+              className="px-4 py-3 border text-base rounded-md focus:outline-none"
+              required
+            />
             <label
               htmlFor="email"
               className="text-base font-semibold text-gray-700"
