@@ -88,32 +88,40 @@ export default function CreateOffer() {
     console.log("Offer data:", form);
   };
 
-
   if (user?.email == "") {
-  return (
-    <section className="flex flex-col items-center justify-center min-h-screen px-4 ">
-      <div className="w-full max-w-xl bg-white/70 backdrop-blur-lg border border-yellow-200 shadow-2xl rounded-3xl p-10 text-center ">
-        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 tracking-tight">
-          Add an Offer
-        </h1>
+    return (
+      <section className="flex flex-col items-center justify-center min-h-screen px-4 ">
+        <div className="w-full max-w-xl bg-white/70 backdrop-blur-lg border border-yellow-200 shadow-2xl rounded-3xl p-10 text-center ">
+          <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4 tracking-tight">
+            Add an Offer
+          </h1>
 
-        <p className="text-lg md:text-xl text-gray-700 font-medium">
-          You need to be logged in to post an offer. Log in to get started and connect with students!
-        </p>
+          <p className="text-lg md:text-xl text-gray-700 font-medium">
+            You need to be logged in to post an offer. Log in to get started and
+            connect with students!
+          </p>
 
-        <Link
-          href="/logIn"
-          className="inline-flex items-center gap-2 mt-8 text-white bg-yellow-500 hover:bg-yellow-400 text-lg md:text-xl font-semibold py-3 px-6 rounded-full transition-all duration-200 shadow-md"
-        >
-          Login
-          <ArrowRight className="w-5 h-5" />
-        </Link>
-      </div>
-    </section>
+          <Link
+            href="/logIn"
+            className="inline-flex items-center gap-2 mt-8 text-white bg-yellow-500 hover:bg-yellow-400 text-lg md:text-xl font-semibold py-3 px-6 rounded-full transition-all duration-200 shadow-md"
+          >
+            Login
+            <ArrowRight className="w-5 h-5" />
+          </Link>
+        </div>
+      </section>
     );
   }
   return (
     <section className="max-w-lg mx-auto p-4 bg-white shadow-lg rounded-xl">
+      <section className="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-lg shadow-sm max-w-2xl mx-auto my-8">
+        <h2 className="text-xl font-semibold text-yellow-700 mb-2">⚠️ Note</h2>
+        <p className="text-gray-800 text-base leading-relaxed">
+          Offers created on this platform may be automatically removed after{" "}
+          <strong>30 days</strong> to ensure relevance and freshness.
+        </p>
+      </section>
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex flex-col">
           <label className="text-sm font-semibold text-gray-700">Image</label>
