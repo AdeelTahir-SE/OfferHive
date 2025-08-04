@@ -58,6 +58,7 @@ export default function CreateOffer() {
     formData.append("description", form.description);
     formData.append("price", form.price);
     formData.append("openShopId", openShopId);
+    formData.append("userId", user?.user_id);
 
     await fetchRequest(
       `/api/communities/openShops/${id}/createOffer`,

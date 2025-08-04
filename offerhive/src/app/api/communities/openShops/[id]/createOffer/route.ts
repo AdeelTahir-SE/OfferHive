@@ -9,6 +9,7 @@ export async function POST(req: NextRequest) {
   const price = formData.get("price");
   const openShopId = formData.get("openShopId");
   const image = formData.get("image");
+  const userId = formData.get("userId");
 
   const offer = {
     title,
@@ -16,10 +17,11 @@ export async function POST(req: NextRequest) {
     description,
     price,
     image,
+    user_id:userId as string,
   };
   const { data, error } = await createGroupShopOffer(
     openShopId as string,
-    offer
+    offer,
   );
   if (error || !data) {
     console.log(error)

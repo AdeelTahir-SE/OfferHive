@@ -94,6 +94,7 @@ export async function createGroupShopOffer(openShopId: string, offer: any) {
     group_shop_offer_title: offer?.title,
     contact: offer?.contact,
     price: offer?.price,
+    user_id: offer?.user_id,
   });
   if ( error) {
     return { data: null, error: `Error creating Offer${error}` };

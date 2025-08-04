@@ -57,9 +57,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* <head>
-      <meta name="google-site-verification" content="MQZOMrHjT4vuDeii8jZcMN48drxQ7sGqvgh4RNXkG_g" />
-      </head> */}
+   <head>
+        <link rel="icon" href="/offerhive-radial.png" sizes="any" />
+        {/* Optional Apple icon */}
+        <link rel="apple-touch-icon" href="/offerhive-radial.png" />
+        {/* Optional site verification */}
+        {/* <meta name="google-site-verification" content="your-token" /> */}
+      </head>
       <body
       className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
