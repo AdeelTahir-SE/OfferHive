@@ -17,7 +17,7 @@ export default function Home() {
   };
 
   return (
-    <section className="flex flex-col items-center justify-center py-[40px] gap-[30px] px-[40px] md:px-[100px] xl:px-[150px] xxl:px-[450px]   max-w-screen">
+    <section className="flex flex-col items-center justify-center py-[20px] gap-[30px] px-[40px] md:px-[100px] xl:px-[150px] xxl:px-[450px]   max-w-screen">
       <HeroSection />
       <OurUsers />
       {/* <Stats /> */}
