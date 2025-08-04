@@ -19,7 +19,7 @@ export default function OurUsers() {
   ];
 
   return (
-    <section className="pb-40 lg:pb-20   bg-white">
+    <section className="pb-40 lg:pb-20 lg:mt-35   bg-white">
       <div className=" mx-auto flex flex-col justify-center  lg:flex-row items-center gap-8 md:gap-32 lg:gap-16  ">
 
         <div className="lg:w-1/2 text-center lg:text-left flex-wrap max-w-screen px-4 lg:px-0 ">

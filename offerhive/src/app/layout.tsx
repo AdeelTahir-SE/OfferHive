@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     siteName: "OfferHive",
     images: [
       {
-        url: "/hive.png", 
+        url: "/offerhive-radial.png", 
         width: 1200,
         height: 630,
         alt: "OfferHive - Explore trending deals",
@@ -41,11 +41,11 @@ export const metadata: Metadata = {
     title: "OfferHive",
     description:
       "Explore trending deals and connect with local student-run shops on OfferHive.",
-    images: ["/hive.png"],
+    images: ["/offerhive-radial.png"],
   },
 
   icons: {
-    icon: "/hive.png",
+    icon: "/offerhive-radial.png",
   },
 };
 
