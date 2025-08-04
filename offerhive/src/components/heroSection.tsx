@@ -148,7 +148,7 @@ export default function HeroSection() {
   };
 
   return (
-    <section className="relative flex flex-col items-center gap-[30px] justify-center  md:py-0 md:h-screen text-center overflow-hidden">
+    <section className="relative flex flex-col items-center gap-[30px] justify-center  py-20 md:py-0 md:h-screen text-center overflow-hidden">
       {/* Background Effects */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Gradient Orbs */}
