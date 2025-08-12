@@ -1,6 +1,5 @@
 import {
   updatePassword,
-  getSupabaseUser,
   getUserWithEmail,
 } from "@/lib/database/user";
 import { NextRequest, NextResponse } from "next/server";
