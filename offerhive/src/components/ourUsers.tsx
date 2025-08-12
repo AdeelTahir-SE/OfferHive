@@ -15,7 +15,7 @@ export default function OurUsers() {
     { id: 1, image: "/nust.png", name: "NUST" },
     { id: 2, image: "/GIKI.jpg", name: "GIKI" },
     { id: 3, image: "/LUMS.png", name: "LUMS" },
-    { id: 4, image: "/FAAST.png", name: "FAAST" },
+    { id: 4, image: "/FAAST.png", name: "FAST" },
   ];
 
   return (

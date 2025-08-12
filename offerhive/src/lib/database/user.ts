@@ -373,10 +373,21 @@ export async function updatePassword(password: string, email: string|null|undefi
   return { data, error };
 }
 
-export async function getSupabaseUser() {
+export async function updateUser(user_id: string, data: {
+  name: string | null;
+  email: string | null;
+  bio: string | null;
+  university: string | null;
+  year: string | null;
+  major: string | null;
+}) {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.getUser();
+  const { data: updatedUser, error } = await supabase
+    .from("User")
+    .update(data)
+    .eq("user_id", user_id)
+    .single();
   if (error) {
     console.log("Error fetching user:", error);
     return { data: null, error };

@@ -8,6 +8,7 @@ export interface userState {
   is_shop_owner: boolean;
   joined_groups: string[];
   subscribed_groups: string[];
+  name:string;
 }
 
 const initialState: userState = {
@@ -17,6 +18,7 @@ const initialState: userState = {
   is_shop_owner: false,
   joined_groups: [],
   subscribed_groups: [],
+  name:"",
 };
 
 export const userSlice = createSlice({
@@ -59,6 +61,8 @@ export const userSlice = createSlice({
 
             state.user_id = parsed.user_id || "";
             state.email = parsed.email || "";
+            state.name = parsed.name || "";
+
             state.profile_image =
               parsed.profile_image || "/profile_placeholder.png";
             state.is_shop_owner = parsed.is_shop_owner || false;
